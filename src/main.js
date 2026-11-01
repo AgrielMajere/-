@@ -98,6 +98,7 @@ function lsGet(k, d){ try{ const v = localStorage.getItem(k); return v == null ?
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 
 import { createLife } from './life.js';
+import { rosterNpcs, patchNpcs } from './roster.js';
 import { OPT as WOPT } from './world.js';
 export function open(ctx){
   if(state) close();
@@ -242,6 +243,7 @@ export function open(ctx){
     ];
     return Q.npcs < 14 ? L.filter(d => d.service || ['herald', 'elfelder', 'dwarfking', 'beastchief', 'cg1', 'cg2'].includes(d.id)) : L;
   })()).concat(ADV_DEFS.map(d => Object.assign({ adv: true, at: [0, 140] }, d)));
+  patchNpcs(npcDefs); rosterNpcs().forEach((d, i) => { if(Q.npcs >= 14 || i % 4 === 0 || d.statue) npcDefs.push(d); });
   const npcs = [];
   npcDefs.forEach((d, i) => {
     const o = new THREE.Group();
@@ -387,7 +389,7 @@ export function open(ctx){
     if(P.reg && P.eq.shield && C.off) gear.left = { type: 'shield', kite: P.cls === 'paladin' };
     if(C){ gear.cape = C.look.cape; if(C.look.hat){ gear.hat = C.look.hat; gear.hatColor = C.look.hatColor; } }
     if(C) await F.preload([kind], C.atk.concat(C.skills.map(s => s.anim), ['Hit', 'Death', 'Interact', 'Cheer']));
-    const inst = await F.make({ body: kind, look, gear, height: kind === 'woman' ? 1.68 : 1.8 });
+    const inst = await F.make({ body: kind, look, gear, height: kind === 'woman' ? 1.68 : kind.startsWith('nm_') ? F.BODIES[kind].height : 1.8 });
     if(seq !== spawnSeq) return;
     if(heroInst){ heroObj.remove(heroInst.obj); }
     heroInst = inst; heroObj.add(inst.obj); inst.obj.rotation.y = agent.heading;
@@ -500,7 +502,7 @@ export function open(ctx){
     if(C){ gear.cape = C.look.cape; if(C.look.hat){ gear.hat = C.look.hat; gear.hatColor = C.look.hatColor; } }
     try{
       if(C) await F.preload([kind], C.atk.concat(C.skills.map(s2 => s2.anim), ['Hit', 'Death', 'Cheer']));
-      const inst = await F.make({ body: kind, look, gear, height: kind === 'woman' ? 1.68 : 1.8 });
+      const inst = await F.make({ body: kind, look, gear, height: kind === 'woman' ? 1.68 : kind.startsWith('nm_') ? F.BODIES[kind].height : 1.8 });
       if(!remotes.has(r.peer)){ return; }
       if(r.inst) r.obj.remove(r.inst.obj);
       r.inst = inst; r.obj.add(inst.obj);
@@ -562,7 +564,7 @@ export function open(ctx){
 
   function wardrobe(){
     const S = saveGet(); S.look3d = S.look3d || { kind: 'man', outfit: 0 };
-    const kinds = [['man', '🧔', 'Чоловік'], ['woman', '👩', 'Жінка'], ['soldier', '🛡️', 'У латах']];
+    const kinds = [['man', '🧔', 'Чоловік'], ['woman', '👩', 'Жінка'], ['soldier', '🛡️', 'У латах'], ['nm_catfig', '🐱', 'Котяча шапка']];
     const html = '<p>Оберіть тіло героя й колір одягу. Зброя, плащ і капелюх залежать від класу та спорядження.</p><div class="gm-pick">' + kinds.map(k => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : '') + '><i>' + k[1] + '</i>' + k[2] + '</button>').join('') + '</div>' +
       '<p style="margin-bottom:6px">Колір одягу</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + ' 50%,' + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : '') + '></button>').join('') + '</div>';
     sheetOpts({ title: 'Герой', html, buttons: [{ label: 'Готово', primary: true, fn: hideSheet }], after: el => {

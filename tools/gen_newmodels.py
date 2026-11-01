@@ -1,5 +1,6 @@
 import json
 M = {m['id']: m for m in json.load(open('/home/claude/work/manifest.json'))}
+M['catfig'] = {'id': 'catfig', 'n': 'Фігурка в котячій шапці', 'kind': 'static'}
 # id: (group, height-or-length, yaw, note)
 P = 3.14159265
 S = {
@@ -40,6 +41,7 @@ S = {
  'orc_shaman': ('monster', 1.8, 0, 'Кістки автоматичні.'), 'orc_warrior': ('monster', 1.9, 0, 'Кістки автоматичні.'),
  'stone_monster': ('boss', 3.4, 0, 'Кістки автоматичні.'),
  'urukhai': ('monster', 2.0, 0, 'Це сценка: двоє бійців на підставці. Не рухається.'),
+ 'catfig': ('hero', 1.6, 0, 'Твоя фігурка з артефакту — тепер з кістками, можна грати нею.'),
  'wolfgirl': ('race', 1.7, 0, 'Увага: кашкет і червона пов\'язка на рукаві схожі на нацистську форму — раджу 👎.')}
 STATIC = {'bishop', 'urukhai', 'dark_wraith', 'mermaid', 'demon_dragon'}
 DROP = {'minotaur_s', 'icy_dragon'}

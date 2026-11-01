@@ -236,5 +236,23 @@ if nz > .3*len(me.vertices):
     nz = sum(1 for v in me.vertices if len(v.groups) == 0)
 print('verts without weights', nz, 'of', len(me.vertices))
 
+# keep hair / cloaks / props hanging near the arms out of the arm bones: anything far from the arm chain goes to the torso
+ARMB = [b for b in ('LeftArm', 'LeftForeArm', 'LeftHand', 'RightArm', 'RightForeArm', 'RightHand') if ob.vertex_groups.get(b)]
+if ARMB:
+    segs = [(np.array(J[b]), np.array(J[TAIL[b]])) for b in ARMB]
+    def dseg(p, a, b):
+        ab = b - a; t = max(0.0, min(1.0, float(np.dot(p - a, ab)/max(1e-9, np.dot(ab, ab))))); return float(np.linalg.norm(p - (a + t*ab)))
+    gi = {ob.vertex_groups[b].index: b for b in ARMB}
+    sp2 = ob.vertex_groups.get('Spine2') or ob.vertex_groups.new(name='Spine2'); hip = ob.vertex_groups.get('Hips') or ob.vertex_groups.new(name='Hips')
+    R = .085*H; moved = 0
+    for v in me.vertices:
+        arm_w = [(g.group, g.weight) for g in v.groups if g.group in gi]
+        if not arm_w: continue
+        p = np.array(v.co[:]); d = min(dseg(p, a, b) for a, b in segs)
+        if d > R:
+            k = min(1.0, (d - R)/(.05*H)); tot = 0.0
+            for gidx, w in arm_w: ob.vertex_groups[gidx].add([v.index], w*(1 - k), 'REPLACE'); tot += w*k
+            (sp2 if p[2] > hz(.6) else hip).add([v.index], tot, 'ADD'); moved += 1
+    print('arm weights moved to torso on', moved, 'verts')
 bpy.ops.export_scene.gltf(filepath=out, export_format='GLB', export_skins=True, export_animations=False, export_yup=True, export_image_format='JPEG', export_jpeg_quality=88)
 print('written', out)

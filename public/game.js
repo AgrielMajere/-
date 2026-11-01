@@ -22373,11 +22373,11 @@ void main() {
       }
       for (let i = 0; i < segments; i++) {
         for (let j = 0; j < points.length - 1; j++) {
-          const base = j + i * points.length;
-          const a = base;
-          const b = base + points.length;
-          const c = base + points.length + 1;
-          const d = base + 1;
+          const base2 = j + i * points.length;
+          const a = base2;
+          const b = base2 + points.length;
+          const c = base2 + points.length + 1;
+          const d = base2 + 1;
           indices.push(a, b, d);
           indices.push(c, d, b);
         }
@@ -24440,16 +24440,16 @@ void main() {
       const P1 = new Vector3();
       const P2 = new Vector3();
       const B = new Vector3();
-      const T = new Vector3();
+      const T2 = new Vector3();
       const N2 = new Vector3();
       for (let i = 0; i <= tubularSegments; ++i) {
         const u = i / tubularSegments * p * Math.PI * 2;
         calculatePositionOnCurve(u, p, q, radius, P1);
         calculatePositionOnCurve(u + 0.01, p, q, radius, P2);
-        T.subVectors(P2, P1);
+        T2.subVectors(P2, P1);
         N2.addVectors(P2, P1);
-        B.crossVectors(T, N2);
-        N2.crossVectors(B, T);
+        B.crossVectors(T2, N2);
+        N2.crossVectors(B, T2);
         B.normalize();
         N2.normalize();
         for (let j = 0; j <= radialSegments; ++j) {
@@ -41179,8 +41179,8 @@ ${indent})`;
       const d = Math.hypot(x - Zn.x, z - Zn.z);
       const f = 1 - ss(d, Zn.r * 0.55, Zn.r * 1.25);
       if (f > 0) {
-        const base = (fbm2(Zn.x * 85e-4 + 10, Zn.z * 85e-4 - 4, 2) - 0.42) * 14 + 1.5;
-        h = h * (1 - f * 0.8) + base * f * 0.8;
+        const base2 = (fbm2(Zn.x * 85e-4 + 10, Zn.z * 85e-4 - 4, 2) - 0.42) * 14 + 1.5;
+        h = h * (1 - f * 0.8) + base2 * f * 0.8;
       }
     }
     const rd = roadDist(x, z);
@@ -41276,8 +41276,8 @@ float gNoise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
   return mix(mix(gHash(i), gHash(i+vec2(1,0)), u.x), mix(gHash(i+vec2(0,1)), gHash(i+vec2(1,1)), u.x), u.y); }
 float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p); p *= 2.07; a *= .5; } return v; }
 `;
-  function groundMaterial(town, wmask, m2) {
-    const mask = new CanvasTexture(town.canvas);
+  function groundMaterial(town2, wmask, m2) {
+    const mask = new CanvasTexture(town2.canvas);
     mask.colorSpace = NoColorSpace;
     mask.flipY = false;
     const mk2 = new CanvasTexture(m2.canvas);
@@ -41291,7 +41291,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     const rock = tex("caverock_c.jpg", { srgb: true }), rockN = tex("caverock_n.jpg"), sand = tex("sandstone_c.jpg", { srgb: true });
     const m3 = new MeshStandardMaterial({ color: "#ffffff", roughness: 1, metalness: 0, normalMap: dirtN });
     m3.onBeforeCompile = (sh) => {
-      Object.assign(sh.uniforms, { uMask: { value: mask }, uMask2: { value: mk2 }, uMask2P: { value: new Vector3(m2.x, m2.z, m2.size) }, uWMask: { value: wm }, uGrass: { value: grass }, uGrass2: { value: grass2 }, uDirt: { value: dirt }, uDirtN: { value: dirtN }, uCob: { value: cob }, uCobN: { value: cobN }, uCobR: { value: cobR }, uRock: { value: rock }, uRockN: { value: rockN }, uSand: { value: sand }, uLake: { value: new Vector4(LAKE.x, LAKE.z, LAKE.r, LAKE.level) }, uSwamp: { value: new Vector4(SWAMP.x, SWAMP.z, SWAMP.r, SWAMP.level) }, uMaskSize: { value: town.size }, uWMaskSize: { value: wmask.size } });
+      Object.assign(sh.uniforms, { uMask: { value: mask }, uMask2: { value: mk2 }, uMask2P: { value: new Vector3(m2.x, m2.z, m2.size) }, uWMask: { value: wm }, uGrass: { value: grass }, uGrass2: { value: grass2 }, uDirt: { value: dirt }, uDirtN: { value: dirtN }, uCob: { value: cob }, uCobN: { value: cobN }, uCobR: { value: cobR }, uRock: { value: rock }, uRockN: { value: rockN }, uSand: { value: sand }, uLake: { value: new Vector4(LAKE.x, LAKE.z, LAKE.r, LAKE.level) }, uSwamp: { value: new Vector4(SWAMP.x, SWAMP.z, SWAMP.r, SWAMP.level) }, uMaskSize: { value: town2.size }, uWMaskSize: { value: wmask.size } });
       sh.vertexShader = GROUND_VS_PARS + sh.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\n vWPos = (modelMatrix*vec4(transformed,1.0)).xyz; vWN = normalize(mat3(modelMatrix)*objectNormal);");
       sh.fragmentShader = GROUND_FS_PARS + sh.fragmentShader.replace("#include <map_fragment>", `
         vec2 wp = vWPos.xz;
@@ -41378,12 +41378,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         idx.push(a, cc, b, b, cc, d);
       }
       const edge = (list) => {
-        const base = [];
+        const base2 = [];
         list.forEach((k) => {
-          base.push(put(pos[k * 3], pos[k * 3 + 1] - 4, pos[k * 3 + 2]));
+          base2.push(put(pos[k * 3], pos[k * 3 + 1] - 4, pos[k * 3 + 2]));
         });
         for (let q = 0; q < list.length - 1; q++) {
-          const a = list[q], b = list[q + 1], a2 = base[q], b2 = base[q + 1];
+          const a = list[q], b = list[q + 1], a2 = base2[q], b2 = base2[q + 1];
           idx.push(a, b, a2, b, b2, a2, a, a2, b, b, a2, b2);
         }
       };
@@ -41562,9 +41562,9 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         seed = seed * 1664525 + 1013904223 >>> 0;
         return seed / 4294967296;
       };
-      const base = slot * K2, kk = Math.round(K2 * kMul);
+      const base2 = slot * K2, kk = Math.round(K2 * kMul);
       meshes.forEach((im) => {
-        for (let i = 0; i < K2; i++) im.setMatrixAt(base + i, zero);
+        for (let i = 0; i < K2; i++) im.setMatrixAt(base2 + i, zero);
       });
       let n = 0;
       for (let t = 0; t < kk * 2 && n < kk; t++) {
@@ -41587,14 +41587,14 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         d.scale.set(s, s * (0.8 + R2() * 0.6), s);
         d.updateMatrix();
         if (opts.kind === "grass") {
-          meshes[0].setMatrixAt(base + n, d.matrix);
+          meshes[0].setMatrixAt(base2 + n, d.matrix);
           col.setRGB(0.25 + R2() * 0.1, 0.3 + R2() * 0.3, 0.1).multiplyScalar(1.15);
           if (opts.tint) opts.tint(x, z, col);
-          meshes[0].setColorAt(base + n, col);
+          meshes[0].setColorAt(base2 + n, col);
         } else {
           const pi = R2() * parts.length | 0;
           meshes.forEach((im) => {
-            if (im.userData.pi === pi) im.setMatrixAt(base + n, d.matrix);
+            if (im.userData.pi === pi) im.setMatrixAt(base2 + n, d.matrix);
           });
         }
         n++;
@@ -41837,7 +41837,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       sets.forEach((S) => {
         let n = 0, f = 0;
         const near = [];
-        const cap = S.imp ? opts.maxFull || 30 : 1e9;
+        const cap2 = S.imp ? opts.maxFull || 30 : 1e9;
         for (const it of S.list) {
           const dd = Math.hypot(it.p.x - x, it.p.z - z);
           if (dd < R2 || !S.imp) {
@@ -41849,9 +41849,9 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
             S.imp.setMatrixAt(f++, it.m);
           }
         }
-        if (near.length > cap) near.sort((a, b) => a.dd - b.dd);
+        if (near.length > cap2) near.sort((a, b) => a.dd - b.dd);
         near.forEach((it, k) => {
-          if (k < cap) {
+          if (k < cap2) {
             S.ib.setMatrixAt(n, it.m);
             if (S.il) S.il.setMatrixAt(n, it.m);
             n++;
@@ -42145,8 +42145,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     const pos = [], uv = [];
     const tri = (a, b, c) => {
       const cr = (b[1] - a[1]) * (c[0] - a[0]) - (b[0] - a[0]) * (c[1] - a[1]);
-      const T = cr >= 0 ? [a, b, c] : [a, c, b];
-      T.forEach((p) => {
+      const T2 = cr >= 0 ? [a, b, c] : [a, c, b];
+      T2.forEach((p) => {
         pos.push(p[0], y, p[1]);
         uv.push(p[0], p[1]);
       });
@@ -42203,7 +42203,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     const pos = [], uv = [], idx = [];
     const ROWS = style === "crypt" ? 2 : 6;
     for (const L2 of loops) {
-      const n = L2.length, base = pos.length / 3, R1 = ROWS + 1;
+      const n = L2.length, base2 = pos.length / 3, R1 = ROWS + 1;
       const nrm = L2.map((p) => grad(G2, p[0], p[1]));
       let arc = 0;
       for (let k = 0; k <= n; k++) {
@@ -42228,7 +42228,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const ex = a1[0] - a0[0], ez = a1[1] - a0[1];
       const flip = -ez * nrm[0][0] + ex * nrm[0][1] < 0;
       for (let k = 0; k < n; k++) for (let r = 0; r < ROWS; r++) {
-        const a = base + k * R1 + r, b = a + R1, c = b + 1, d = a + 1;
+        const a = base2 + k * R1 + r, b = a + R1, c = b + 1, d = a + 1;
         if (!flip) idx.push(a, b, c, a, c, d);
         else idx.push(a, c, b, a, d, c);
       }
@@ -42362,11 +42362,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     return TX = { lava, rune, seal, web };
   }
   function buildDungeon(o) {
-    const { world, colliders, anim, M: M2, fires, nightLight, glowSprite, paint, rand } = o;
+    const { world, colliders, anim, M: M3, fires, nightLight, glowSprite, paint, rand } = o;
     const dg = new Group();
     dg.name = "dungeon";
     const dInter = [], dPick = [], spawns = [], rockSpots = [], surfaceRocks = [];
-    const T = textures2();
+    const T2 = textures2();
     const mats2 = {
       cave: { wall: pbr("caverock", { scale: 3.4, normal: 1.6, color: "#b8ab98" }), floor: pbr("caverock", { scale: 2.4, normal: 1.3, color: "#857a6c" }), cap: pbr("caverock", { scale: 4, color: "#a69a88" }) },
       crypt: { wall: pbr("stonewall", { scale: 2.4, color: "#9c968c" }), floor: pbr("flagstone", { scale: 2.6, color: "#b0aca4" }), cap: pbr("stonewall", { scale: 2.4, color: "#9a948a" }) },
@@ -42444,9 +42444,9 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       walls.castShadow = false;
       walls.userData.keep = true;
       fg.add(walls);
-      const cap = new Mesh(fillGeo(V, WALL_H, true, 9), Mt.cap);
-      cap.userData.keep = true;
-      fg.add(cap);
+      const cap2 = new Mesh(fillGeo(V, WALL_H, true, 9), Mt.cap);
+      cap2.userData.keep = true;
+      fg.add(cap2);
       const floor2 = new Mesh(fillGeo(V, 0, false, 0, hole), Mt.floor);
       floor2.receiveShadow = true;
       floor2.userData.keep = true;
@@ -42485,8 +42485,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           L2.userData.flicker = 1 + Math.sin(t * 9 + ph) * 0.12 + Math.sin(t * 23 + ph * 3) * 0.06;
         });
       });
-      const lights = (color, base, dist, x, y, z) => {
-        const L2 = nightLight(color, base, dist, x, y, z, fg);
+      const lights = (color, base2, dist, x, y, z) => {
+        const L2 = nightLight(color, base2, dist, x, y, z, fg);
         L2.userData.always = 1;
         return L2;
       };
@@ -42577,7 +42577,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           glowSprite("#ffc070", 0.55, x + wp.x, 1.2, z + wp.z, fg, 1);
           if (k % 2 === 0) lights("#ffb060", 2.2, 6, x + wp.x, 1.5, z + wp.z);
         });
-        const wm = new MeshBasicMaterial({ map: T.web, transparent: true, depthWrite: false, side: DoubleSide, opacity: 0.55, fog: true });
+        const wm = new MeshBasicMaterial({ map: T2.web, transparent: true, depthWrite: false, side: DoubleSide, opacity: 0.55, fog: true });
         let webs = 0;
         loops.forEach((L2) => {
           for (let k = 2; k < L2.length - 2 && webs < 18; k += 3) {
@@ -42595,7 +42595,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         });
       }
       if (F.style === "lair") {
-        const lm = new MeshStandardMaterial({ color: "#2a0600", emissive: "#ffffff", emissiveMap: T.lava, emissiveIntensity: 0.8, map: T.lava, roughness: 0.6 });
+        const lm = new MeshStandardMaterial({ color: "#2a0600", emissive: "#ffffff", emissiveMap: T2.lava, emissiveIntensity: 0.8, map: T2.lava, roughness: 0.6 });
         (F.lava || []).forEach(([x, z, r], k) => {
           const d = mesh(new CircleGeometry(r, 40), lm, x, 0.035, z, false);
           d.rotation.x = -Math.PI / 2;
@@ -42625,10 +42625,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           }));
         });
         anim.push((t, dt) => {
-          T.lava.offset.x += (dt || 0.016) * 0.012;
-          T.lava.offset.y += (dt || 0.016) * 7e-3;
+          T2.lava.offset.x += (dt || 0.016) * 0.012;
+          T2.lava.offset.y += (dt || 0.016) * 7e-3;
         });
-        const seal = mesh(new CircleGeometry(12.5, 64), new MeshBasicMaterial({ map: T.seal, color: "#7a2a14", transparent: true, depthWrite: false, blending: AdditiveBlending, opacity: 0.3 }), 0, 0.03, -24, false);
+        const seal = mesh(new CircleGeometry(12.5, 64), new MeshBasicMaterial({ map: T2.seal, color: "#7a2a14", transparent: true, depthWrite: false, blending: AdditiveBlending, opacity: 0.3 }), 0, 0.03, -24, false);
         seal.rotation.x = -Math.PI / 2;
         seal.userData.keep = true;
         fg.add(seal);
@@ -42728,7 +42728,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g = new Group();
         g.position.set(x, 0, z);
         fg.add(g);
-        const d = mesh(new CircleGeometry(1.5, 48), new MeshBasicMaterial({ map: T.rune, color: "#3a8aaa", transparent: true, depthWrite: false, blending: AdditiveBlending }), 0, 0.04, 0, false);
+        const d = mesh(new CircleGeometry(1.5, 48), new MeshBasicMaterial({ map: T2.rune, color: "#3a8aaa", transparent: true, depthWrite: false, blending: AdditiveBlending }), 0, 0.04, 0, false);
         d.rotation.x = -Math.PI / 2;
         d.userData.keep = true;
         g.add(d);
@@ -42885,7 +42885,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const y0 = heightAt(ENTRY.x, ENTRY.z);
       g.position.set(ENTRY.x, y0, ENTRY.z);
       g.rotation.y = Math.PI / 2;
-      const S = M2.stone, SD = M2.stoneDark;
+      const S = M3.stone, SD = M3.stoneDark;
       g.add(boxM(1.3, 5.6, 1.5, S, -2.4, 1.8, 0));
       g.add(boxM(1.3, 5.6, 1.5, S, 2.4, 1.8, 0));
       g.add(boxM(6.4, 1, 1.8, SD, 0, 5, 0));
@@ -42893,7 +42893,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const em = new Group();
         em.position.set(0, 5, 0.93);
         g.add(em);
-        const gold = M2.gold;
+        const gold = M3.gold;
         const sh = new Shape();
         sh.moveTo(-0.38, 0.34);
         sh.lineTo(0.38, 0.34);
@@ -42902,7 +42902,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         sh.quadraticCurveTo(-0.3, -0.32, -0.38, -0.05);
         sh.closePath();
         const sg2 = new ExtrudeGeometry(sh, { depth: 0.06, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02, bevelSegments: 1 });
-        em.add(mesh(sg2, M2.iron));
+        em.add(mesh(sg2, M3.iron));
         [-1, 1].forEach((s2) => {
           const sw = boxM(0.05, 0.62, 0.03, gold, 0, 0, 0.1);
           sw.rotation.z = s2 * 0.7;
@@ -42928,15 +42928,15 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         tuft.scale.set(4.8, 1.6, 4.2);
         g.add(tuft);
       }
-      g.add(boxM(4, 5, 4, M2.dark, 0, 1.5, -2.3));
+      g.add(boxM(4, 5, 4, M3.dark, 0, 1.5, -2.3));
       for (let i = 0; i < 4; i++) g.add(boxM(3.5, 0.3, 0.55, SD, 0, 0.12 - i * 0.3, 0.45 - i * 0.5));
-      g.add(boxM(3.5, 0.06, 3.5, M2.dark, 0, -0.9, -1.4));
+      g.add(boxM(3.5, 0.06, 3.5, M3.dark, 0, -0.9, -1.4));
       [-3.6, 3.6].forEach((s) => {
         const b = new Group();
         b.position.set(s, 0, 1.3);
         g.add(b);
-        b.add(cylM(0.12, 0.18, 1, 8, M2.iron, 0, 0.5, 0));
-        const bowl = mesh(new CylinderGeometry(0.42, 0.22, 0.32, 14, 1, true), M2.iron, 0, 1.15, 0);
+        b.add(cylM(0.12, 0.18, 1, 8, M3.iron, 0, 0.5, 0));
+        const bowl = mesh(new CylinderGeometry(0.42, 0.22, 0.32, 14, 1, true), M3.iron, 0, 1.15, 0);
         b.add(bowl);
         fires.push({ parent: b, x: 0, y: 1.25, z: 0, s: 0.85, color: "#ff7a2a" });
         const wp = new Vector3(s, 1.9, 1.3).applyAxisAngle(new Vector3(0, 1, 0), g.rotation.y).add(g.position);
@@ -42951,8 +42951,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       sg.position.set(-3.4, 0, 3.2);
       sg.rotation.y = -0.35;
       g.add(sg);
-      sg.add(cylM(0.08, 0.09, 2.6, 8, M2.wood, -1.3, 1.3, 0));
-      sg.add(cylM(0.08, 0.09, 2.6, 8, M2.wood, 1.3, 1.3, 0));
+      sg.add(cylM(0.08, 0.09, 2.6, 8, M3.wood, -1.3, 1.3, 0));
+      sg.add(cylM(0.08, 0.09, 2.6, 8, M3.wood, 1.3, 1.3, 0));
       const tx = canvasTexture(640, 240, (c, w, h) => {
         c.fillStyle = "#2c2016";
         c.fillRect(0, 0, w, h);
@@ -42970,7 +42970,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         c.fillStyle = "#d8b878";
         c.fillText("\u0413\u0456\u043B\u044C\u0434\u0456\u044F \xB7 \u0442\u0440\u0438 \u044F\u0440\u0443\u0441\u0438 \xB7 \u0431\u043E\u0441 \u043D\u0430 \u0434\u043D\u0456", w / 2, 186);
       });
-      const board = mesh(new BoxGeometry(2.7, 1, 0.08), M2.beam, 0, 2, 0);
+      const board = mesh(new BoxGeometry(2.7, 1, 0.08), M3.beam, 0, 2, 0);
       sg.add(board);
       const face = mesh(new PlaneGeometry(2.6, 0.95), new MeshStandardMaterial({ map: tx, roughness: 0.85 }), 0, 2, 0.045);
       face.userData.keep = true;
@@ -43162,7 +43162,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
 
   // src/wild.js
   function buildWild(ctx2) {
-    const { world, colliders, anim, M: M2, rand, fires, nightLight, glowSprite, paint, interactives } = ctx2;
+    const { world, colliders, anim, M: M3, rand, fires, nightLight, glowSprite, paint, interactives } = ctx2;
     const treeSpots = [], rockSpots = [], spawns = [], deadTrees = [];
     const Y = (x, z) => heightAt(x, z);
     const place = (g, x, z, ry) => {
@@ -43183,14 +43183,14 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     }));
     {
       const g = new Group();
-      g.add(cylM(0.08, 0.09, 2.8, 8, M2.wood, 0, 1.4, 0));
+      g.add(cylM(0.08, 0.09, 2.8, 8, M3.wood, 0, 1.4, 0));
       const signs = [["\u0413\u0410\u0419 \u0413\u041E\u0411\u041B\u0406\u041D\u0406\u0412", -2.4, 2.4], ["\u0422\u0410\u0411\u0406\u0420 \u041E\u0420\u041A\u0406\u0412", 2.4, 2], ["\u0420\u0423\u0407\u041D\u0418", 0, 1.6]];
       signs.forEach(([t, dir, y]) => {
         const bg = new Group();
         bg.position.y = y;
         bg.rotation.y = dir === 0 ? -Math.PI / 2 : dir < 0 ? 0 : Math.PI;
         g.add(bg);
-        bg.add(boxM(1.4, 0.3, 0.06, M2.beam, 0.65, 0, 0));
+        bg.add(boxM(1.4, 0.3, 0.06, M3.beam, 0.65, 0, 0));
         const st = canvasTexture(512, 110, (c, w, h) => {
           c.fillStyle = "#3a2a1c";
           c.fillRect(0, 0, w, h);
@@ -43213,8 +43213,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       circ(cross[0] + 3.2, cross[1], 0.35);
     }
     {
-      const Z2 = ZONES[0];
-      const px2 = Z2.x + 9, pz2 = Z2.z + 6;
+      const Z3 = ZONES[0];
+      const px2 = Z3.x + 9, pz2 = Z3.z + 6;
       const wn = tex("water_n.jpg", { repeat: 0.5 });
       const water = new Mesh(new CircleGeometry(4.2, 48), new MeshStandardMaterial({ color: "#16262a", roughness: 0.04, metalness: 0.1, normalMap: wn, normalScale: new Vector2(0.25, 0.25), envMapIntensity: 1.5, transparent: true, opacity: 0.93 }));
       water.rotation.x = -Math.PI / 2;
@@ -43247,44 +43247,44 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       circ(px2, pz2, 4.4);
       for (let i = 0; i < 8; i++) {
         const a = rand() * 6.28, d = 8 + rand() * 14;
-        rockSpots.push({ x: Z2.x + Math.cos(a) * d, z: Z2.z + Math.sin(a) * d, s: 0.6 + rand() * 1.1, r: rand() * 6, sy: 0.6, v: i });
+        rockSpots.push({ x: Z3.x + Math.cos(a) * d, z: Z3.z + Math.sin(a) * d, s: 0.6 + rand() * 1.1, r: rand() * 6, sy: 0.6, v: i });
       }
       for (let i = 0; i < 9; i++) {
         const a = i / 9 * 6.28 + rand(), d = 4 + rand() * 13;
-        spawns.push({ type: i < 7 ? "slime" : "slime_b", x: Z2.x + Math.cos(a) * d, z: Z2.z + Math.sin(a) * d, wander: 6 });
+        spawns.push({ type: i < 7 ? "slime" : "slime_b", x: Z3.x + Math.cos(a) * d, z: Z3.z + Math.sin(a) * d, wander: 6 });
       }
-      spawns.push({ type: "king_slime", x: Z2.x - 10, z: Z2.z + 14, wander: 4 });
+      spawns.push({ type: "king_slime", x: Z3.x - 10, z: Z3.z + 14, wander: 4 });
     }
     {
-      const Z2 = ZONES[1];
+      const Z3 = ZONES[1];
       const thatch = new MeshStandardMaterial({ color: "#8a7448", roughness: 1, map: tex("grass2.jpg", { srgb: true, repeat: 1.5 }) });
       const hut = (x, z, s) => {
         const g = new Group();
         const k = s || 1;
-        const wall = mesh(new CylinderGeometry(1.5 * k, 1.6 * k, 1.4 * k, 14, 1, true), M2.planks, 0, 0.7 * k, 0);
-        wall.material = M2.planks;
+        const wall = mesh(new CylinderGeometry(1.5 * k, 1.6 * k, 1.4 * k, 14, 1, true), M3.planks, 0, 0.7 * k, 0);
+        wall.material = M3.planks;
         g.add(wall);
         const roof = mesh(new ConeGeometry(2.1 * k, 2 * k, 14), thatch, 0, 2.3 * k, 0);
         g.add(roof);
-        g.add(boxM(0.8 * k, 1.1 * k, 0.1, M2.dark, 0, 0.55 * k, 1.55 * k));
+        g.add(boxM(0.8 * k, 1.1 * k, 0.1, M3.dark, 0, 0.55 * k, 1.55 * k));
         for (let i = 0; i < 6; i++) {
           const a = i / 6 * 6.28;
-          const p = cylM(0.05, 0.05, 1.6 * k, 5, M2.wood, Math.cos(a) * 1.55 * k, 0.8 * k, Math.sin(a) * 1.55 * k);
+          const p = cylM(0.05, 0.05, 1.6 * k, 5, M3.wood, Math.cos(a) * 1.55 * k, 0.8 * k, Math.sin(a) * 1.55 * k);
           g.add(p);
         }
         place(g, x, z, rand() * 6);
         circ(x, z, 1.75 * k);
       };
-      hut(Z2.x - 6, Z2.z - 4, 1);
-      hut(Z2.x + 5, Z2.z - 7, 0.85);
-      hut(Z2.x - 2, Z2.z + 8, 1.1);
-      hut(Z2.x + 9, Z2.z + 5, 0.9);
+      hut(Z3.x - 6, Z3.z - 4, 1);
+      hut(Z3.x + 5, Z3.z - 7, 0.85);
+      hut(Z3.x - 2, Z3.z + 8, 1.1);
+      hut(Z3.x + 9, Z3.z + 5, 0.9);
       const totem = (x, z) => {
         const g = new Group();
         for (let i = 0; i < 3; i++) {
-          const c = cylM(0.24 - i * 0.02, 0.26 - i * 0.02, 0.8, 8, M2.wood, 0, 0.4 + i * 0.8, 0);
+          const c = cylM(0.24 - i * 0.02, 0.26 - i * 0.02, 0.8, 8, M3.wood, 0, 0.4 + i * 0.8, 0);
           g.add(c);
-          g.add(boxM(0.5, 0.08, 0.1, M2.paint ? M2.beam : M2.beam, 0, 0.55 + i * 0.8, 0.2));
+          g.add(boxM(0.5, 0.08, 0.1, M3.paint ? M3.beam : M3.beam, 0, 0.55 + i * 0.8, 0.2));
         }
         const sk = mesh(new SphereGeometry(0.16, 12, 10), new MeshStandardMaterial({ color: "#ddd3bc", roughness: 0.6 }), 0, 2.6, 0.05);
         sk.scale.set(0.9, 1, 1.1);
@@ -43297,30 +43297,30 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         place(g, x, z, rand() * 6);
         circ(x, z, 0.4);
       };
-      totem(Z2.x + 1, Z2.z - 1);
-      totem(Z2.x - 9, Z2.z + 3);
-      campfire(Z2.x + 1.5, Z2.z + 2.5);
+      totem(Z3.x + 1, Z3.z - 1);
+      totem(Z3.x - 9, Z3.z + 3);
+      campfire(Z3.x + 1.5, Z3.z + 2.5);
       for (let i = 0; i < 26; i++) {
         const a = rand() * 6.28, d = 10 + rand() * 16;
-        const x = Z2.x + Math.cos(a) * d, z = Z2.z + Math.sin(a) * d;
+        const x = Z3.x + Math.cos(a) * d, z = Z3.z + Math.sin(a) * d;
         if (!inWild(x, z, 4)) continue;
         treeSpots.push({ x, z, s: 0.8 + rand() * 0.4, r: rand() * 6, type: [0, 1, 3, 4, 5][i % 5] });
         circ(x, z, 0.55);
       }
       for (let i = 0; i < 8; i++) {
         const a = i / 8 * 6.28 + rand() * 0.4, d = 5 + rand() * 12;
-        spawns.push({ type: i % 4 === 3 ? "goblin_sh" : "goblin", x: Z2.x + Math.cos(a) * d, z: Z2.z + Math.sin(a) * d, wander: 6 });
+        spawns.push({ type: i % 4 === 3 ? "goblin_sh" : "goblin", x: Z3.x + Math.cos(a) * d, z: Z3.z + Math.sin(a) * d, wander: 6 });
       }
-      spawns.push({ type: "goblin_chief", x: Z2.x - 12, z: Z2.z + 12, wander: 3 });
+      spawns.push({ type: "goblin_chief", x: Z3.x - 12, z: Z3.z + 12, wander: 3 });
     }
     {
-      const Z2 = ZONES[2];
-      const logM = M2.wood;
+      const Z3 = ZONES[2];
+      const logM = M3.wood;
       for (let i = 0; i < 44; i++) {
         const a = i / 44 * Math.PI * 2;
-        if (Math.abs(Math.sin((a - Math.atan2(cross[1] - Z2.z, cross[0] - Z2.x)) / 2)) < 0.12) continue;
-        const R2 = Z2.r * 0.92 + (rand() - 0.5) * 0.4;
-        const x = Z2.x + Math.cos(a) * R2, z = Z2.z + Math.sin(a) * R2;
+        if (Math.abs(Math.sin((a - Math.atan2(cross[1] - Z3.z, cross[0] - Z3.x)) / 2)) < 0.12) continue;
+        const R2 = Z3.r * 0.92 + (rand() - 0.5) * 0.4;
+        const x = Z3.x + Math.cos(a) * R2, z = Z3.z + Math.sin(a) * R2;
         const h = 2.6 + rand() * 0.8;
         const g = new Group();
         g.add(cylM(0.17, 0.19, h, 7, logM, 0, h / 2, 0));
@@ -43360,18 +43360,18 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         cg.computeVertexNormals();
         g.add(mesh(cg, hideM, 0, 1.6 * k, 0));
         [0, 1, 2].forEach((i) => {
-          const p = cylM(0.04, 0.04, 1.2 * k, 5, M2.wood, Math.cos(i * 2.1) * 0.22, 3.5 * k, Math.sin(i * 2.1) * 0.22);
+          const p = cylM(0.04, 0.04, 1.2 * k, 5, M3.wood, Math.cos(i * 2.1) * 0.22, 3.5 * k, Math.sin(i * 2.1) * 0.22);
           p.rotation.set((rand() - 0.5) * 0.6, 0, (rand() - 0.5) * 0.6);
           g.add(p);
         });
-        g.add(boxM(1 * k, 1.6 * k, 0.05, M2.dark, 0, 0.8 * k, 2 * k));
+        g.add(boxM(1 * k, 1.6 * k, 0.05, M3.dark, 0, 0.8 * k, 2 * k));
         place(g, x, z, ry);
         circ(x, z, 2.3 * k);
       };
-      tent(Z2.x - 7, Z2.z + 5, 1, 1);
-      tent(Z2.x + 6, Z2.z + 7, 1.1, 2);
-      tent(Z2.x + 8, Z2.z - 6, 0.9, 4);
-      tent(Z2.x - 6, Z2.z - 8, 1.2, 0.5);
+      tent(Z3.x - 7, Z3.z + 5, 1, 1);
+      tent(Z3.x + 6, Z3.z + 7, 1.1, 2);
+      tent(Z3.x + 8, Z3.z - 6, 0.9, 4);
+      tent(Z3.x - 6, Z3.z - 8, 1.2, 0.5);
       const banTex = canvasTexture(128, 256, (c, w, h) => {
         c.fillStyle = "#6a1210";
         c.fillRect(0, 0, w, h);
@@ -43389,10 +43389,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         c.fill();
       });
       [[-4, 0], [4, 0], [0, 10]].forEach(([dx, dz]) => {
-        const x = Z2.x + dx, z = Z2.z + dz;
+        const x = Z3.x + dx, z = Z3.z + dz;
         const g = new Group();
-        g.add(cylM(0.06, 0.07, 4.4, 6, M2.wood, 0, 2.2, 0));
-        g.add(rot(cylM(0.04, 0.04, 1.1, 6, M2.wood, 0, 4.1, 0), "z", Math.PI / 2));
+        g.add(cylM(0.06, 0.07, 4.4, 6, M3.wood, 0, 2.2, 0));
+        g.add(rot(cylM(0.04, 0.04, 1.1, 6, M3.wood, 0, 4.1, 0), "z", Math.PI / 2));
         const geo = new PlaneGeometry(1, 2, 4, 8);
         const b = new Mesh(geo, new MeshStandardMaterial({ map: banTex, side: DoubleSide, roughness: 0.9 }));
         b.position.set(0, 3.05, 0.02);
@@ -43413,12 +43413,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         place(g, x, z, rand());
         circ(x, z, 0.3);
       });
-      campfire(Z2.x, Z2.z + 1.5, true);
+      campfire(Z3.x, Z3.z + 1.5, true);
       for (let i = 0; i < 4; i++) {
         const a = i / 4 * 6.28 + 0.4;
-        const x = Z2.x + Math.cos(a) * 14, z = Z2.z + Math.sin(a) * 14;
+        const x = Z3.x + Math.cos(a) * 14, z = Z3.z + Math.sin(a) * 14;
         const g = new Group();
-        g.add(cylM(0.05, 0.06, 2.2, 6, M2.wood, 0, 1.1, 0));
+        g.add(cylM(0.05, 0.06, 2.2, 6, M3.wood, 0, 1.1, 0));
         const sk = mesh(new SphereGeometry(0.15, 12, 10), new MeshStandardMaterial({ color: "#d8ceb8", roughness: 0.6 }), 0, 2.3, 0);
         sk.scale.set(0.9, 1, 1.1);
         g.add(sk);
@@ -43427,20 +43427,20 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       }
       for (let i = 0; i < 8; i++) {
         const a = i / 8 * 6.28 + rand() * 0.3, d = 4 + rand() * 12;
-        spawns.push({ type: i % 3 === 2 ? "orc_brute" : "orc", x: Z2.x + Math.cos(a) * d, z: Z2.z + Math.sin(a) * d, wander: 5 });
+        spawns.push({ type: i % 3 === 2 ? "orc_brute" : "orc", x: Z3.x + Math.cos(a) * d, z: Z3.z + Math.sin(a) * d, wander: 5 });
       }
-      spawns.push({ type: "orc_chief", x: Z2.x + 2, z: Z2.z + 12, wander: 3 });
+      spawns.push({ type: "orc_chief", x: Z3.x + 2, z: Z3.z + 12, wander: 3 });
     }
     {
-      const Z2 = ZONES[3];
+      const Z3 = ZONES[3];
       const col = (x, z, h, fallen) => {
         const g = new Group();
         const shaft = new CylinderGeometry(0.36, 0.4, h, 16, 4);
         uvCylLathe(shaft);
-        const sm = mesh(shaft, M2.marble, 0, h / 2 + 0.3, 0);
+        const sm = mesh(shaft, M3.marble, 0, h / 2 + 0.3, 0);
         g.add(sm);
-        g.add(boxM(1.1, 0.3, 1.1, M2.marble, 0, 0.15, 0));
-        if (h > 3) g.add(boxM(1.05, 0.28, 1.05, M2.marble, 0, h + 0.44, 0));
+        g.add(boxM(1.1, 0.3, 1.1, M3.marble, 0, 0.15, 0));
+        if (h > 3) g.add(boxM(1.05, 0.28, 1.05, M3.marble, 0, h + 0.44, 0));
         if (fallen) {
           g.rotation.z = Math.PI / 2 * 0.97;
           g.position.y = 0.3;
@@ -43451,7 +43451,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       };
       for (let i = 0; i < 12; i++) {
         const a = i / 12 * Math.PI * 2;
-        const x = Z2.x + Math.cos(a) * 11, z = Z2.z + Math.sin(a) * 11;
+        const x = Z3.x + Math.cos(a) * 11, z = Z3.z + Math.sin(a) * 11;
         const r = rand();
         col(x, z, r < 0.3 ? 1.2 + rand() : r < 0.8 ? 2.5 + rand() * 2 : 5, r < 0.15);
       }
@@ -43460,18 +43460,18 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const n = Math.round(w / 1);
         for (let i = 0; i < n; i++) {
           const hh = h * (0.4 + rand() * 0.6);
-          g.add(boxM(1, hh, 0.7, M2.stone, -w / 2 + 0.5 + i, hh / 2, 0));
+          g.add(boxM(1, hh, 0.7, M3.stone, -w / 2 + 0.5 + i, hh / 2, 0));
         }
         place(g, x, z, ry);
         colliders.push({ type: "rect", x, z, hw: w / 2, hd: 0.45, ang: ry, wild: true });
       };
-      wall(Z2.x - 15, Z2.z - 4, 7, 2.8, 1.2);
-      wall(Z2.x + 15, Z2.z + 2, 8, 3.2, -1.1);
-      wall(Z2.x - 6, Z2.z + 17, 6, 2.2, 0.2);
-      const graveM = M2.stoneDark;
+      wall(Z3.x - 15, Z3.z - 4, 7, 2.8, 1.2);
+      wall(Z3.x + 15, Z3.z + 2, 8, 3.2, -1.1);
+      wall(Z3.x - 6, Z3.z + 17, 6, 2.2, 0.2);
+      const graveM = M3.stoneDark;
       for (let i = 0; i < 16; i++) {
-        const x = Z2.x - 9 + i % 4 * 3.2 + rand() * 0.6, z = Z2.z - 19 + Math.floor(i / 4) * 2.6 + rand() * 0.6;
-        if (Math.hypot(x - Z2.x, z - Z2.z) < 6) continue;
+        const x = Z3.x - 9 + i % 4 * 3.2 + rand() * 0.6, z = Z3.z - 19 + Math.floor(i / 4) * 2.6 + rand() * 0.6;
+        if (Math.hypot(x - Z3.x, z - Z3.z) < 6) continue;
         const g = new Group();
         const top = new Shape();
         top.moveTo(-0.32, 0);
@@ -43485,15 +43485,15 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         st.rotation.x = (rand() - 0.5) * 0.25;
         st.rotation.z = (rand() - 0.5) * 0.2;
         g.add(st);
-        g.add(boxM(0.7, 0.08, 1.6, M2.stone, 0, 0.02, 0.9));
+        g.add(boxM(0.7, 0.08, 1.6, M3.stone, 0, 0.02, 0.9));
         place(g, x, z, Math.PI + (rand() - 0.5) * 0.2);
         circ(x, z, 0.45);
       }
       {
-        const x = Z2.x, z = Z2.z + 20;
+        const x = Z3.x, z = Z3.z + 20;
         const g = new Group();
-        g.add(boxM(7, 4.2, 5, M2.stone, 0, 2.1, -1));
-        g.add(boxM(7.6, 0.5, 5.6, M2.stoneDark, 0, 4.4, -1));
+        g.add(boxM(7, 4.2, 5, M3.stone, 0, 2.1, -1));
+        g.add(boxM(7.6, 0.5, 5.6, M3.stoneDark, 0, 4.4, -1));
         const arch = new Shape();
         arch.moveTo(-1.3, 0);
         arch.lineTo(-1.3, 2);
@@ -43505,11 +43505,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         arch.lineTo(-1.7, 0);
         arch.closePath();
         const ag = new ExtrudeGeometry(arch, { depth: 0.6, bevelEnabled: false, curveSegments: 14 });
-        g.add(mesh(uvBox(ag), M2.stone, 0, 0, 1.4));
-        g.add(boxM(2.6, 3.2, 0.1, M2.dark, 0, 1.6, 1.45));
+        g.add(mesh(uvBox(ag), M3.stone, 0, 0, 1.4));
+        g.add(boxM(2.6, 3.2, 0.1, M3.dark, 0, 1.6, 1.45));
         [-2.6, 2.6].forEach((s) => {
-          g.add(boxM(0.9, 5.2, 0.9, M2.stone, s, 2.6, 1.7));
-          g.add(mesh(new ConeGeometry(0.6, 1.2, 4), M2.stoneDark, s, 5.8, 1.7));
+          g.add(boxM(0.9, 5.2, 0.9, M3.stone, s, 2.6, 1.7));
+          g.add(mesh(new ConeGeometry(0.6, 1.2, 4), M3.stoneDark, s, 5.8, 1.7));
         });
         place(g, x, z, Math.PI);
         colliders.push({ type: "rect", x, z: z + 1, hw: 3.8, hd: 2.9, ang: Math.PI, wild: true, h: 5 });
@@ -43520,8 +43520,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const mist = [];
       for (let i = 0; i < 22; i++) {
         const s = new Sprite(new SpriteMaterial({ map: softSprite(), color: "#9ab8a8", transparent: true, opacity: 0.18, depthWrite: false }));
-        const a = rand() * 6.28, d = rand() * Z2.r;
-        s.position.set(Z2.x + Math.cos(a) * d, Y(Z2.x, Z2.z) + 0.6, Z2.z + Math.sin(a) * d);
+        const a = rand() * 6.28, d = rand() * Z3.r;
+        s.position.set(Z3.x + Math.cos(a) * d, Y(Z3.x, Z3.z) + 0.6, Z3.z + Math.sin(a) * d);
         s.scale.set(7, 2.2, 1);
         world.add(s);
         mist.push({ s, p: rand() * 6, x0: s.position.x });
@@ -43532,16 +43532,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       }));
       for (let i = 0; i < 12; i++) {
         const a = rand() * 6.28, d = 14 + rand() * 12;
-        const x = Z2.x + Math.cos(a) * d, z = Z2.z + Math.sin(a) * d;
+        const x = Z3.x + Math.cos(a) * d, z = Z3.z + Math.sin(a) * d;
         if (!inWild(x, z, 4)) continue;
         deadTrees.push({ x, z, s: 0.9 + rand() * 0.4, r: rand() * 6, type: "dead" });
         circ(x, z, 0.5);
       }
       for (let i = 0; i < 9; i++) {
         const a = i / 9 * 6.28 + rand() * 0.3, d = 5 + rand() * 13;
-        spawns.push({ type: i % 3 === 1 ? "skeleton_ar" : "skeleton", x: Z2.x + Math.cos(a) * d, z: Z2.z + Math.sin(a) * d, wander: 5 });
+        spawns.push({ type: i % 3 === 1 ? "skeleton_ar" : "skeleton", x: Z3.x + Math.cos(a) * d, z: Z3.z + Math.sin(a) * d, wander: 5 });
       }
-      spawns.push({ type: "lich", x: Z2.x, z: Z2.z + 14, wander: 2 });
+      spawns.push({ type: "lich", x: Z3.x, z: Z3.z + 14, wander: 2 });
     }
     const reserve = [];
     const res = (x, z, r) => reserve.push([x, z, r]);
@@ -43570,20 +43570,20 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const cg = new ConeGeometry(2.3 * k, 3 * k, 6, 1, true);
       g.add(mesh(cg, mat2, 0, 1.5 * k, 0));
       [0, 1, 2].forEach((i) => {
-        const pp = cylM(0.04, 0.04, 1.1 * k, 5, M2.wood, Math.cos(i * 2.1) * 0.2, 3.3 * k, Math.sin(i * 2.1) * 0.2);
+        const pp = cylM(0.04, 0.04, 1.1 * k, 5, M3.wood, Math.cos(i * 2.1) * 0.2, 3.3 * k, Math.sin(i * 2.1) * 0.2);
         pp.rotation.set((rand() - 0.5) * 0.6, 0, (rand() - 0.5) * 0.6);
         g.add(pp);
       });
-      g.add(boxM(1 * k, 1.5 * k, 0.05, M2.dark, 0, 0.75 * k, 1.9 * k));
+      g.add(boxM(1 * k, 1.5 * k, 0.05, M3.dark, 0, 0.75 * k, 1.9 * k));
       place(g, x, z, ry);
       circ(x, z, 2.2 * k);
       res(x, z, 3 * k);
     };
     const lanternPost = (x, z, col) => {
       const g = new Group();
-      g.add(cylM(0.07, 0.08, 2.6, 6, M2.wood, 0, 1.3, 0));
-      g.add(boxM(0.6, 0.06, 0.06, M2.wood, 0.28, 2.5, 0));
-      g.add(cylM(0.12, 0.1, 0.25, 6, M2.lampGlass, 0.52, 2.28, 0));
+      g.add(cylM(0.07, 0.08, 2.6, 6, M3.wood, 0, 1.3, 0));
+      g.add(boxM(0.6, 0.06, 0.06, M3.wood, 0.28, 2.5, 0));
+      g.add(cylM(0.12, 0.1, 0.25, 6, M3.lampGlass, 0.52, 2.28, 0));
       place(g, x, z);
       circ(x, z, 0.2);
       const yy = Y(x, z);
@@ -43601,7 +43601,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         pp.setXYZ(i, vx * k + n, vy + (vy > h / 2 - 0.01 ? (fbm2(vx * 3 + z, vz * 3, 2) - 0.5) * 0.5 : 0), vz * k + n * 0.6);
       }
       geo.computeVertexNormals();
-      const m2 = mesh(uvBox(geo), M2.stoneDark, x, Y(x, z) + h / 2 - 0.3, z);
+      const m2 = mesh(uvBox(geo), M3.stoneDark, x, Y(x, z) + h / 2 - 0.3, z);
       m2.rotation.set((rand() - 0.5) * 0.12, ry, (rand() - 0.5) * 0.12);
       world.add(m2);
       circ(x, z, 0.6);
@@ -43616,7 +43616,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const Zn = Z("lake");
       const hx = -146, hz = 24;
       const g = new Group();
-      g.add(boxM(4.2, 2.6, 3.4, M2.planks, 0, 1.3, 0));
+      g.add(boxM(4.2, 2.6, 3.4, M3.planks, 0, 1.3, 0));
       const rg = new Group();
       rg.position.y = 2.6;
       g.add(rg);
@@ -43626,7 +43626,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         r.rotation.z = -sd * 0.62;
         g.add(r);
       });
-      g.add(boxM(1, 1.9, 0.08, M2.dark, 0, 0.95, 1.72));
+      g.add(boxM(1, 1.9, 0.08, M3.dark, 0, 0.95, 1.72));
       place(g, hx, hz, -Math.PI / 2);
       colliders.push({ type: "rect", x: hx, z: hz, hw: 2.4, hd: 2, ang: -Math.PI / 2, wild: true, h: 4 });
       res(hx, hz, 5);
@@ -43634,13 +43634,13 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const pier = new Group();
       pier.position.set(-158, py2, 26);
       for (let i = 0; i < 9; i++) {
-        pier.add(boxM(2, 0.1, 0.9, M2.planks, -i * 1, 0, 0));
-        if (i % 2 === 0) [-1, 1].forEach((sd) => pier.add(cylM(0.09, 0.09, 2.4, 6, M2.wood, -i * 1, -1, sd * 0.9)));
+        pier.add(boxM(2, 0.1, 0.9, M3.planks, -i * 1, 0, 0));
+        if (i % 2 === 0) [-1, 1].forEach((sd) => pier.add(cylM(0.09, 0.09, 2.4, 6, M3.wood, -i * 1, -1, sd * 0.9)));
       }
       world.add(pier);
       const boat = new Group();
       const hullG = new SphereGeometry(1, 16, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2);
-      boat.add(mesh(hullG, M2.wood, 0, 0.25, 0).scale.set(0.8, 0.45, 2) && mesh(hullG, M2.wood, 0, 0.25, 0));
+      boat.add(mesh(hullG, M3.wood, 0, 0.25, 0).scale.set(0.8, 0.45, 2) && mesh(hullG, M3.wood, 0, 0.25, 0));
       boat.children[0].scale.set(0.8, 0.45, 2);
       boat.position.set(-163, LAKE.level + 0.1, 28.6);
       boat.rotation.y = 0.3;
@@ -43660,7 +43660,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g2 = new Group();
         for (let i = 0; i < 6; i++) {
           const a = i / 6 * 6.28;
-          const st = boxM(0.6, 1.4 + rand() * 1.2, 0.5, M2.stoneDark, Math.cos(a) * 5, 0.5, Math.sin(a) * 5);
+          const st = boxM(0.6, 1.4 + rand() * 1.2, 0.5, M3.stoneDark, Math.cos(a) * 5, 0.5, Math.sin(a) * 5);
           st.rotation.set((rand() - 0.5) * 0.3, a, (rand() - 0.5) * 0.3);
           g2.add(st);
         }
@@ -43715,10 +43715,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       res(cx, cz, 13);
       {
         const g = new Group();
-        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b2]) => g.add(cylM(0.12, 0.14, 6.5, 6, M2.wood, a * 1.1, 3.25, b2 * 1.1)));
-        g.add(boxM(3, 0.15, 3, M2.planks, 0, 6.2, 0));
-        [[0, 1.5], [0, -1.5], [1.5, 0], [-1.5, 0]].forEach(([a, b2]) => g.add(boxM(a ? 0.08 : 3, 0.9, a ? 3 : 0.08, M2.planks, a, 6.7, b2)));
-        const rr = mesh(new ConeGeometry(2.4, 1.6, 4), M2.beam, 0, 8, 0);
+        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b2]) => g.add(cylM(0.12, 0.14, 6.5, 6, M3.wood, a * 1.1, 3.25, b2 * 1.1)));
+        g.add(boxM(3, 0.15, 3, M3.planks, 0, 6.2, 0));
+        [[0, 1.5], [0, -1.5], [1.5, 0], [-1.5, 0]].forEach(([a, b2]) => g.add(boxM(a ? 0.08 : 3, 0.9, a ? 3 : 0.08, M3.planks, a, 6.7, b2)));
+        const rr = mesh(new ConeGeometry(2.4, 1.6, 4), M3.beam, 0, 8, 0);
         rr.rotation.y = Math.PI / 4;
         g.add(rr);
         place(g, cx + 11, cz - 1);
@@ -43729,10 +43729,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g = new Group();
         for (let i = 0; i < 10; i++) {
           const a = i / 10 * 6.28;
-          g.add(cylM(0.03, 0.03, 1.8, 4, M2.iron, Math.cos(a) * 0.8, 0.9, Math.sin(a) * 0.8));
+          g.add(cylM(0.03, 0.03, 1.8, 4, M3.iron, Math.cos(a) * 0.8, 0.9, Math.sin(a) * 0.8));
         }
-        g.add(cylM(0.85, 0.85, 0.08, 12, M2.iron, 0, 1.8, 0));
-        g.add(cylM(0.85, 0.85, 0.08, 12, M2.iron, 0, 0.04, 0));
+        g.add(cylM(0.85, 0.85, 0.08, 12, M3.iron, 0, 1.8, 0));
+        g.add(cylM(0.85, 0.85, 0.08, 12, M3.iron, 0, 0.04, 0));
         const x = cx - 2 + k * 4, z = cz + 9;
         place(g, x, z);
         circ(x, z, 0.9);
@@ -43745,18 +43745,18 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const Zn = Z("swamp");
       const hx = Zn.x + 4, hz = Zn.z - 6;
       const g = new Group();
-      [[-1.4, -1.2], [1.4, -1.2], [-1.4, 1.2], [1.4, 1.2]].forEach(([a, b2]) => g.add(cylM(0.12, 0.15, 3.4, 6, M2.beam, a, 1.2, b2)));
-      g.add(boxM(3.4, 2.4, 3, M2.planks, 0, 3.6, 0));
+      [[-1.4, -1.2], [1.4, -1.2], [-1.4, 1.2], [1.4, 1.2]].forEach(([a, b2]) => g.add(cylM(0.12, 0.15, 3.4, 6, M3.beam, a, 1.2, b2)));
+      g.add(boxM(3.4, 2.4, 3, M3.planks, 0, 3.6, 0));
       const rf = mesh(new ConeGeometry(3, 2.6, 5), new MeshStandardMaterial({ color: "#4a4a2a", roughness: 1 }), 0, 6.1, 0);
       rf.rotation.z = 0.12;
       g.add(rf);
-      g.add(boxM(1, 1.7, 0.06, M2.dark, 0, 3.3, 1.52));
-      g.add(rot(boxM(1, 0.1, 3.2, M2.planks, 0, 1.2, 3), "x", 0.65));
+      g.add(boxM(1, 1.7, 0.06, M3.dark, 0, 3.3, 1.52));
+      g.add(rot(boxM(1, 0.1, 3.2, M3.planks, 0, 1.2, 3), "x", 0.65));
       place(g, hx, hz, 0.4);
       circ(hx, hz, 2.2);
       res(hx, hz, 7);
       const cg = new Group();
-      cg.add(mesh(new SphereGeometry(0.7, 16, 10, 0, Math.PI * 2, Math.PI * 0.35, Math.PI * 0.65), M2.iron, 0, 0.7, 0));
+      cg.add(mesh(new SphereGeometry(0.7, 16, 10, 0, Math.PI * 2, Math.PI * 0.35, Math.PI * 0.65), M3.iron, 0, 0.7, 0));
       cg.add(mesh(new CircleGeometry(0.55, 16), new MeshStandardMaterial({ color: "#2a4a10", emissive: "#7aff3a", emissiveIntensity: 0.8 }), 0, 0.9, 0).rotateX(-Math.PI / 2));
       place(cg, hx + 4, hz + 3);
       circ(hx + 4, hz + 3, 0.8);
@@ -43795,12 +43795,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const Zn = Z("mines");
       const mx = Zn.x, mz = Zn.z - 14;
       const g = new Group();
-      g.add(boxM(0.5, 4.2, 0.5, M2.beam, -2.4, 2.1, 0));
-      g.add(boxM(0.5, 4.2, 0.5, M2.beam, 2.4, 2.1, 0));
-      g.add(boxM(5.6, 0.5, 0.6, M2.beam, 0, 4.35, 0));
-      g.add(boxM(4.4, 4, 3, M2.dark, 0, 2, -1.6));
-      for (let i = 0; i < 6; i++) g.add(boxM(0.12, 0.08, 2, M2.iron, i % 2 ? 0.6 : -0.6, 0.05, 1.5 + Math.floor(i / 2) * 2));
-      for (let i = 0; i < 8; i++) g.add(boxM(1.8, 0.1, 0.25, M2.beam, 0, 0.03, 0.6 + i * 0.8));
+      g.add(boxM(0.5, 4.2, 0.5, M3.beam, -2.4, 2.1, 0));
+      g.add(boxM(0.5, 4.2, 0.5, M3.beam, 2.4, 2.1, 0));
+      g.add(boxM(5.6, 0.5, 0.6, M3.beam, 0, 4.35, 0));
+      g.add(boxM(4.4, 4, 3, M3.dark, 0, 2, -1.6));
+      for (let i = 0; i < 6; i++) g.add(boxM(0.12, 0.08, 2, M3.iron, i % 2 ? 0.6 : -0.6, 0.05, 1.5 + Math.floor(i / 2) * 2));
+      for (let i = 0; i < 8; i++) g.add(boxM(1.8, 0.1, 0.25, M3.beam, 0, 0.03, 0.6 + i * 0.8));
       const sign2 = canvasTexture(512, 128, (c, w, h) => {
         c.fillStyle = "#2a1e14";
         c.fillRect(0, 0, w, h);
@@ -43820,8 +43820,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       [[-6, -9, 4.5, 0.8], [6, -9, 4, 0.85], [0, -12, 6, 0.9], [-9, -5, 3, 0.8], [9, -5, 3.2, 0.8]].forEach(([lx, lz, s2, sy], k) => rockSpots.push({ x: mx + lx, z: mz + lz, s: s2, r: k, sy, v: k + 7 }));
       for (let k = 0; k < 3; k++) {
         const cart = new Group();
-        cart.add(boxM(1.1, 0.6, 1.5, M2.iron, 0, 0.55, 0));
-        [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]].forEach(([a, b2]) => cart.add(mesh(new CylinderGeometry(0.18, 0.18, 0.08, 10), M2.iron, a, 0.2, b2).rotateZ(Math.PI / 2)));
+        cart.add(boxM(1.1, 0.6, 1.5, M3.iron, 0, 0.55, 0));
+        [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]].forEach(([a, b2]) => cart.add(mesh(new CylinderGeometry(0.18, 0.18, 0.08, 10), M3.iron, a, 0.2, b2).rotateZ(Math.PI / 2)));
         const ore = mesh(new IcosahedronGeometry(0.45, 0), new MeshStandardMaterial({ color: "#6a5a8a", emissive: "#4a3aaa", emissiveIntensity: 0.25, roughness: 0.5 }), 0, 0.95, 0);
         ore.scale.y = 0.6;
         cart.add(ore);
@@ -43839,17 +43839,17 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const Zn = Z("farm");
       const farmHouse = (x, z, ry, w, d) => {
         const g = new Group();
-        g.add(boxM(w + 0.3, 0.5, d + 0.3, M2.stoneDark, 0, 0.25, 0));
-        g.add(boxM(w, 2.6, d, M2.plaster("#e8dcc0"), 0, 1.8, 0));
-        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => g.add(boxM(0.2, 2.6, 0.2, M2.beam, sd * (w / 2 - 0.05), 1.8, sz * (d / 2 - 0.05)))));
+        g.add(boxM(w + 0.3, 0.5, d + 0.3, M3.stoneDark, 0, 0.25, 0));
+        g.add(boxM(w, 2.6, d, M3.plaster("#e8dcc0"), 0, 1.8, 0));
+        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => g.add(boxM(0.2, 2.6, 0.2, M3.beam, sd * (w / 2 - 0.05), 1.8, sz * (d / 2 - 0.05)))));
         const thatch = new MeshStandardMaterial({ color: "#c8a868", roughness: 1, map: tex("wood_c.jpg", { srgb: true, repeat: 1.2 }) });
         [-1, 1].forEach((sd) => {
           const r = boxM(w * 0.62, 0.3, d + 0.8, thatch, sd * w * 0.26, 3.75, 0);
           r.rotation.z = -sd * 0.72;
           g.add(r);
         });
-        g.add(boxM(1, 1.9, 0.08, M2.planks, 0, 1.45, d / 2 + 0.03));
-        [-1, 1].forEach((sd) => g.add(boxM(0.7, 0.7, 0.06, M2.glass, sd * (w / 2 - 1), 2, d / 2 + 0.03)));
+        g.add(boxM(1, 1.9, 0.08, M3.planks, 0, 1.45, d / 2 + 0.03));
+        [-1, 1].forEach((sd) => g.add(boxM(0.7, 0.7, 0.06, M3.glass, sd * (w / 2 - 1), 2, d / 2 + 0.03)));
         place(g, x, z, ry);
         colliders.push({ type: "rect", x, z, hw: w / 2 + 0.3, hd: d / 2 + 0.3, ang: ry, wild: true, h: 5 });
         res(x, z, Math.max(w, d) * 0.75 + 1.5);
@@ -43861,17 +43861,17 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const wx = Zn.x + 12, wz = Zn.z + 10;
         const g = new Group();
         const tw = new CylinderGeometry(1.6, 2.4, 8, 12);
-        g.add(mesh(uvCylLathe(tw), M2.plaster("#e8e0cc"), 0, 4, 0));
-        g.add(mesh(new ConeGeometry(2, 2.4, 12), M2.roofDark, 0, 9.2, 0));
+        g.add(mesh(uvCylLathe(tw), M3.plaster("#e8e0cc"), 0, 4, 0));
+        g.add(mesh(new ConeGeometry(2, 2.4, 12), M3.roofDark, 0, 9.2, 0));
         const hub = new Group();
         hub.position.set(0, 7.6, 1.9);
         g.add(hub);
-        hub.add(mesh(new CylinderGeometry(0.2, 0.2, 0.6, 8), M2.beam, 0, 0, 0).rotateX(Math.PI / 2));
+        hub.add(mesh(new CylinderGeometry(0.2, 0.2, 0.6, 8), M3.beam, 0, 0, 0).rotateX(Math.PI / 2));
         for (let i = 0; i < 4; i++) {
           const arm = new Group();
           arm.rotation.z = i * Math.PI / 2;
           hub.add(arm);
-          arm.add(boxM(0.14, 5.2, 0.1, M2.beam, 0, 2.7, 0.2));
+          arm.add(boxM(0.14, 5.2, 0.1, M3.beam, 0, 2.7, 0.2));
           arm.add(boxM(0.9, 4.2, 0.04, new MeshStandardMaterial({ color: "#e8e0d0", roughness: 0.9, side: DoubleSide }), 0.55, 3, 0.25));
         }
         hub.userData.keepGroup = true;
@@ -43879,7 +43879,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         anim.push((t) => {
           hub.rotation.z = t * 0.6;
         });
-        g.add(boxM(1, 1.9, 0.1, M2.planks, 0, 0.95, 2.15));
+        g.add(boxM(1, 1.9, 0.1, M3.planks, 0, 0.95, 2.15));
         place(g, wx, wz, -0.6);
         circ(wx, wz, 2.4);
         res(wx, wz, 5);
@@ -43903,11 +43903,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         res(fx, fz, 9);
         const fg = new Group();
         for (let i = 0; i <= 16; i++) {
-          [-5.6, 5.6].forEach((zz) => fg.add(boxM(0.08, 1, 0.08, M2.wood, -7.6 + i * 0.95, 0.5, zz)));
+          [-5.6, 5.6].forEach((zz) => fg.add(boxM(0.08, 1, 0.08, M3.wood, -7.6 + i * 0.95, 0.5, zz)));
         }
         [-5.6, 5.6].forEach((zz) => {
-          fg.add(boxM(15.2, 0.08, 0.05, M2.wood, 0, 0.8, zz));
-          fg.add(boxM(15.2, 0.08, 0.05, M2.wood, 0, 0.45, zz));
+          fg.add(boxM(15.2, 0.08, 0.05, M3.wood, 0, 0.8, zz));
+          fg.add(boxM(15.2, 0.08, 0.05, M3.wood, 0, 0.45, zz));
         });
         place(fg, fx, fz, ry);
       });
@@ -43929,7 +43929,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         standingStone(Zn.x + Math.cos(a) * 8, Zn.z + Math.sin(a) * 8, 3.2 + i % 2 * 0.8, a + Math.PI / 2);
       }
       const g = new Group();
-      g.add(mesh(uvCylLathe(new CylinderGeometry(0.45, 0.55, 4.2, 10)), M2.beam, 0, 2.1, 0));
+      g.add(mesh(uvCylLathe(new CylinderGeometry(0.45, 0.55, 4.2, 10)), M3.beam, 0, 2.1, 0));
       const face = canvasTexture(256, 512, (c, w, h) => {
         c.fillStyle = "#4a3a2c";
         c.fillRect(0, 0, w, h);
@@ -43969,7 +43969,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       {
         const ax = Zn.x + 5, az = Zn.z + 5;
         const ag = new Group();
-        ag.add(boxM(1.6, 0.9, 1, M2.stoneDark, 0, 0.45, 0));
+        ag.add(boxM(1.6, 0.9, 1, M3.stoneDark, 0, 0.45, 0));
         const rt = canvasTexture(256, 128, (c, w, h) => {
           c.fillStyle = "#2a2622";
           c.fillRect(0, 0, w, h);
@@ -43989,7 +43989,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         interactives.push({ id: "runes", name: "\u041A\u043E\u043B\u043E \u0420\u0443\u043D", action: "runes", desc: "", door: { x: ax + 1.6, z: az + 1.2 }, group: ag, labelY: Y(ax, az) + 2.4, pos: new Vector3(ax, Y(ax, az), az) });
       }
       const fb = new Group();
-      fb.add(cylM(0.5, 0.35, 0.5, 12, M2.stone, 0, 0.25, 0));
+      fb.add(cylM(0.5, 0.35, 0.5, 12, M3.stone, 0, 0.25, 0));
       fires.push({ parent: fb, x: 0, y: 0.5, z: 0, s: 0.8, color: "#ff9a3a" });
       place(fb, Zn.x, Zn.z + 2.5);
       circ(Zn.x, Zn.z + 2.5, 0.7);
@@ -44020,7 +44020,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     strawTex.wrapS = strawTex.wrapT = RepeatWrapping;
     strawTex.repeat.set(1.5, 1.5);
     const thatchM = new MeshStandardMaterial({ color: "#ffffff", roughness: 1, map: strawTex });
-    const shingleM = M2.roofDark;
+    const shingleM = M3.roofDark;
     const gableTri = (w, rh, mat2, zz) => {
       const s = new Shape();
       s.moveTo(-w / 2, 0);
@@ -44034,11 +44034,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     const cottage = (x, z, ry, w, d, o) => {
       o = o || {};
       const g = new Group();
-      const h = o.h || 2.8, wall = o.wallM || M2.plaster(o.wall || "#e8dcc0");
-      g.add(boxM(w + 0.5, 2.4, d + 0.5, M2.stoneDark, 0, -0.9, 0));
+      const h = o.h || 2.8, wall = o.wallM || M3.plaster(o.wall || "#e8dcc0");
+      g.add(boxM(w + 0.5, 2.4, d + 0.5, M3.stoneDark, 0, -0.9, 0));
       g.add(boxM(w, h, d, wall, 0, 0.3 + h / 2, 0));
-      if (o.beams !== false) [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => g.add(boxM(0.22, h, 0.22, M2.beam, sd * (w / 2 - 0.05), 0.3 + h / 2, sz * (d / 2 - 0.05)))));
-      const top = 0.3 + h, rh = w * 0.42, roofM = o.roof === "slate" ? M2.slate : o.roof === "tile" ? M2.roof : o.roof === "shingle" ? shingleM : thatchM;
+      if (o.beams !== false) [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => g.add(boxM(0.22, h, 0.22, M3.beam, sd * (w / 2 - 0.05), 0.3 + h / 2, sz * (d / 2 - 0.05)))));
+      const top = 0.3 + h, rh = w * 0.42, roofM = o.roof === "slate" ? M3.slate : o.roof === "tile" ? M3.roof : o.roof === "shingle" ? shingleM : thatchM;
       [-1, 1].forEach((sd) => {
         const L2 = Math.hypot(w / 2 + 0.5, rh + 0.2);
         const r = boxM(L2, o.roof === "thatch" || !o.roof ? 0.32 : 0.16, d + 0.9, roofM, sd * (w / 4 + 0.05), top + rh / 2 + 0.05, 0);
@@ -44046,21 +44046,21 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         g.add(r);
       });
       [-1, 1].forEach((sz) => g.add(gableTri(w, rh, o.gableM || wall, sz * (d / 2 - 0.1))));
-      g.add(boxM(1, 1.95, 0.1, M2.planks, 0, 1.28, d / 2 + 0.03));
-      g.add(boxM(1.25, 0.14, 0.2, M2.beam, 0, 2.3, d / 2 + 0.06));
+      g.add(boxM(1, 1.95, 0.1, M3.planks, 0, 1.28, d / 2 + 0.03));
+      g.add(boxM(1.25, 0.14, 0.2, M3.beam, 0, 2.3, d / 2 + 0.06));
       [-1, 1].forEach((sd) => {
-        g.add(boxM(0.72, 0.72, 0.06, M2.glass, sd * (w / 2 - 1.05), 1.85, d / 2 + 0.03));
-        g.add(boxM(0.9, 0.1, 0.18, M2.beam, sd * (w / 2 - 1.05), 1.44, d / 2 + 0.08));
+        g.add(boxM(0.72, 0.72, 0.06, M3.glass, sd * (w / 2 - 1.05), 1.85, d / 2 + 0.03));
+        g.add(boxM(0.9, 0.1, 0.18, M3.beam, sd * (w / 2 - 1.05), 1.44, d / 2 + 0.08));
       });
-      if (o.side !== false) [-1, 1].forEach((sd) => g.add(boxM(0.06, 0.7, 0.7, M2.glass, sd * (w / 2 + 0.02), 1.85, 0)));
+      if (o.side !== false) [-1, 1].forEach((sd) => g.add(boxM(0.06, 0.7, 0.7, M3.glass, sd * (w / 2 + 0.02), 1.85, 0)));
       if (o.chimney) {
-        g.add(boxM(0.6, rh + 1.4, 0.6, M2.stone, w * 0.28, top + rh / 2 + 0.4, -d * 0.2));
+        g.add(boxM(0.6, rh + 1.4, 0.6, M3.stone, w * 0.28, top + rh / 2 + 0.4, -d * 0.2));
       }
       if (o.lamp) {
         const lg = new Group();
         lg.position.set(0.85, 2.2, d / 2 + 0.25);
         g.add(lg);
-        lg.add(cylM(0.1, 0.08, 0.26, 6, M2.lampGlass, 0, 0, 0));
+        lg.add(cylM(0.1, 0.08, 0.26, 6, M3.lampGlass, 0, 0, 0));
       }
       place(g, x, z, ry);
       colliders.push({ type: "rect", x, z, hw: w / 2 + 0.3, hd: d / 2 + 0.3, ang: ry, wild: true, h: top + rh });
@@ -44081,7 +44081,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       return out;
     };
     const crateAt = (x, z, s) => {
-      const b = boxM(s, s, s, M2.planks, 0, s / 2, 0);
+      const b = boxM(s, s, s, M3.planks, 0, s / 2, 0);
       const g = new Group();
       g.add(b);
       place(g, x, z, rand() * 6);
@@ -44089,8 +44089,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     };
     const barrelAt = (x, z) => {
       const g = new Group();
-      g.add(mesh(uvCylLathe(new CylinderGeometry(0.38, 0.38, 0.95, 12)), M2.planks, 0, 0.48, 0));
-      [0.15, 0.8].forEach((y) => g.add(cylM(0.4, 0.4, 0.06, 12, M2.iron, 0, y, 0)));
+      g.add(mesh(uvCylLathe(new CylinderGeometry(0.38, 0.38, 0.95, 12)), M3.planks, 0, 0.48, 0));
+      [0.15, 0.8].forEach((y) => g.add(cylM(0.4, 0.4, 0.06, 12, M3.iron, 0, y, 0)));
       place(g, x, z);
       circ(x, z, 0.45);
     };
@@ -44098,10 +44098,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const g = new Group();
       for (let i = 0; i < 9; i++) {
         const a = i / 9 * 6.28;
-        g.add(mesh(new DodecahedronGeometry(0.24 * s, 0), M2.stoneDark, Math.cos(a) * 0.75 * s, 0.1, Math.sin(a) * 0.75 * s));
+        g.add(mesh(new DodecahedronGeometry(0.24 * s, 0), M3.stoneDark, Math.cos(a) * 0.75 * s, 0.1, Math.sin(a) * 0.75 * s));
       }
       [0, 1, 2].forEach((i) => {
-        const l = cylM(0.07, 0.07, 1.1 * s, 6, M2.beam, 0, 0.2, 0);
+        const l = cylM(0.07, 0.07, 1.1 * s, 6, M3.beam, 0, 0.2, 0);
         l.rotation.set(Math.PI / 2, 0, i * 1.05);
         g.add(l);
       });
@@ -44126,11 +44126,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const pier = new Group();
       const ry = Math.atan2(ux, uz);
       const len = 16, wl = LAKE.level;
-      pier.add(boxM(2.4, 0.14, len, M2.planks, 0, 0.45, len / 2 - 3));
+      pier.add(boxM(2.4, 0.14, len, M3.planks, 0, 0.45, len / 2 - 3));
       for (let k = 0; k <= 6; k++) {
-        [-1, 1].forEach((sd) => pier.add(cylM(0.12, 0.12, 2.6, 6, M2.beam, sd * 1.1, -0.75, k * len / 6 - 3)));
+        [-1, 1].forEach((sd) => pier.add(cylM(0.12, 0.12, 2.6, 6, M3.beam, sd * 1.1, -0.75, k * len / 6 - 3)));
       }
-      [-1, 1].forEach((sd) => pier.add(boxM(0.08, 0.08, len, M2.beam, sd * 1.15, 1.25, len / 2 - 3)));
+      [-1, 1].forEach((sd) => pier.add(boxM(0.08, 0.08, len, M3.beam, sd * 1.15, 1.25, len / 2 - 3)));
       pier.position.set(sx, wl, sz);
       pier.rotation.y = ry;
       world.add(pier);
@@ -44144,8 +44144,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         hm.material = hm.material.clone();
         hm.material.side = DoubleSide;
         g.add(hm);
-        g.add(boxM(1.6, 0.06, 0.3, M2.planks, 0, 0.35, 0.6));
-        g.add(boxM(1.6, 0.06, 0.3, M2.planks, 0, 0.35, -0.8));
+        g.add(boxM(1.6, 0.06, 0.3, M3.planks, 0, 0.35, 0.6));
+        g.add(boxM(1.6, 0.06, 0.3, M3.planks, 0, 0.35, -0.8));
         g.position.set(bx, by, bz);
         g.rotation.y = rr;
         world.add(g);
@@ -44160,8 +44160,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       for (let k = 0; k < 3; k++) {
         const rx = Zn.x + ux * (4 + k * 2.5) - uz * (7 + k), rz = Zn.z + uz * (4 + k * 2.5) + ux * (7 + k);
         const g = new Group();
-        [-1, 1].forEach((sd) => g.add(cylM(0.06, 0.07, 2, 6, M2.beam, sd * 1.4, 1, 0)));
-        g.add(cylM(0.04, 0.04, 3, 6, M2.beam, 0, 1.9, 0).rotateZ(Math.PI / 2));
+        [-1, 1].forEach((sd) => g.add(cylM(0.06, 0.07, 2, 6, M3.beam, sd * 1.4, 1, 0)));
+        g.add(cylM(0.04, 0.04, 3, 6, M3.beam, 0, 1.9, 0).rotateZ(Math.PI / 2));
         for (let f = 0; f < 7; f++) {
           const fm = mesh(new SphereGeometry(0.09, 8, 6), new MeshStandardMaterial({ color: "#9aa0a0", metalness: 0.4, roughness: 0.4 }), -1.2 + f * 0.4, 1.6, 0);
           fm.scale.set(1, 3.4, 0.5);
@@ -44191,7 +44191,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     }
     {
       const Zn = Z("elves");
-      const elfWhite = M2.marble, elfLeaf = new MeshStandardMaterial({ color: "#3e6a3a", roughness: 0.7, metalness: 0 });
+      const elfWhite = M3.marble, elfLeaf = new MeshStandardMaterial({ color: "#3e6a3a", roughness: 0.7, metalness: 0 });
       const glowM = new MeshStandardMaterial({ color: "#bff5e8", emissive: "#7fffe0", emissiveIntensity: 0.9, roughness: 0.3 });
       const giants = [];
       for (let i = 0; i < 6; i++) {
@@ -44206,18 +44206,18 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       giants.forEach(([x, z], gi2) => {
         const g = new Group();
         const y0 = 7 + gi2 % 3 * 1.5;
-        g.add(mesh(new CylinderGeometry(5.2, 5.2, 0.3, 28, 1, false), M2.planks, 0, y0, 0));
+        g.add(mesh(new CylinderGeometry(5.2, 5.2, 0.3, 28, 1, false), M3.planks, 0, y0, 0));
         for (let k = 0; k < 24; k++) {
           const a = k / 24 * 6.28;
-          g.add(cylM(0.05, 0.05, 1, 5, M2.beam, Math.cos(a) * 5.05, y0 + 0.65, Math.sin(a) * 5.05));
+          g.add(cylM(0.05, 0.05, 1, 5, M3.beam, Math.cos(a) * 5.05, y0 + 0.65, Math.sin(a) * 5.05));
         }
-        const rail = new Mesh(new TorusGeometry(5.05, 0.05, 6, 48), M2.beam);
+        const rail = new Mesh(new TorusGeometry(5.05, 0.05, 6, 48), M3.beam);
         rail.rotation.x = Math.PI / 2;
         rail.position.y = y0 + 1.15;
         g.add(rail);
         for (let k = 0; k < 28; k++) {
           const a = k / 28 * 6.28 * 1.6, y = k / 28 * y0;
-          g.add(boxM(1.4, 0.12, 0.55, M2.planks, Math.cos(a) * 4.2, y, Math.sin(a) * 4.2).rotateY(-a));
+          g.add(boxM(1.4, 0.12, 0.55, M3.planks, Math.cos(a) * 4.2, y, Math.sin(a) * 4.2).rotateY(-a));
         }
         const pv = new Group();
         pv.position.set(2.6, y0, 0);
@@ -44311,16 +44311,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const H = Math.max(Y(fx, fz), Y(fx - 10, fz), Y(fx + 10, fz));
       const g = new Group();
       g.position.set(fx, H - 1, fz);
-      g.add(boxM(46, 26, 16, M2.stoneDark, 0, 12, -6));
-      g.add(boxM(34, 32, 12, M2.stone, 0, 15, -9));
-      g.add(boxM(22, 40, 10, M2.stoneDark, 0, 19, -12));
+      g.add(boxM(46, 26, 16, M3.stoneDark, 0, 12, -6));
+      g.add(boxM(34, 32, 12, M3.stone, 0, 15, -9));
+      g.add(boxM(22, 40, 10, M3.stoneDark, 0, 19, -12));
       const arch = new Shape();
       arch.moveTo(-4.5, 0);
       arch.lineTo(-4.5, 7);
       arch.absarc(0, 7, 4.5, Math.PI, 0, true);
       arch.lineTo(4.5, 0);
       arch.closePath();
-      g.add(mesh(new ShapeGeometry(arch), M2.dark, 0, 1, 2.05));
+      g.add(mesh(new ShapeGeometry(arch), M3.dark, 0, 1, 2.05));
       const door = new Shape();
       door.moveTo(-3.9, 0);
       door.lineTo(-3.9, 7);
@@ -44328,10 +44328,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       door.lineTo(3.9, 0);
       door.closePath();
       const dg = new ExtrudeGeometry(door, { depth: 0.4, bevelEnabled: false });
-      const dm = mesh(uvBox(dg), M2.iron, 0, 1, 1.6);
+      const dm = mesh(uvBox(dg), M3.iron, 0, 1, 1.6);
       g.add(dm);
-      for (let k = -3; k <= 3; k++) g.add(boxM(0.25, 10, 0.2, M2.bronze, k * 1.1, 6, 2.05));
-      g.add(boxM(13, 1.6, 2.6, M2.stone, 0, 13.2, 2.4));
+      for (let k = -3; k <= 3; k++) g.add(boxM(0.25, 10, 0.2, M3.bronze, k * 1.1, 6, 2.05));
+      g.add(boxM(13, 1.6, 2.6, M3.stone, 0, 13.2, 2.4));
       const rune = canvasTexture(1024, 128, (c, w, h) => {
         c.fillStyle = "#2a2622";
         c.fillRect(0, 0, w, h);
@@ -44346,41 +44346,41 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       rp.userData.keep = true;
       g.add(rp);
       [-1, 1].forEach((sd) => {
-        g.add(boxM(4, 18, 4, M2.stone, sd * 9, 9, 2.5));
-        g.add(boxM(5, 1.2, 5, M2.stoneDark, sd * 9, 18.6, 2.5));
-        g.add(cylM(1.2, 0.8, 1.2, 12, M2.iron, sd * 9, 19.8, 2.5));
+        g.add(boxM(4, 18, 4, M3.stone, sd * 9, 9, 2.5));
+        g.add(boxM(5, 1.2, 5, M3.stoneDark, sd * 9, 18.6, 2.5));
+        g.add(cylM(1.2, 0.8, 1.2, 12, M3.iron, sd * 9, 19.8, 2.5));
         fires.push({ parent: g, x: sd * 9, y: 20.6, z: 2.5, s: 2.2, color: "#ff8a3a" });
         nightLight("#ff8a3a", 14, 26, sd * 9, 21.5, 4, g);
         const st = new Group();
         st.position.set(sd * 16, 0, 3.5);
         g.add(st);
-        st.add(boxM(3.2, 1, 3.2, M2.stoneDark, 0, 0.5, 0));
-        st.add(boxM(2.6, 4.2, 1.8, M2.stone, 0, 3.1, 0));
-        st.add(boxM(1.6, 1.5, 1.4, M2.stone, 0, 6, 0));
-        st.add(mesh(new ConeGeometry(0.9, 2.2, 6), M2.stone, 0, 4.6, 0.55).rotateX(Math.PI));
-        st.add(mesh(new SphereGeometry(0.95, 12, 8, 0, 6.283, 0, Math.PI / 2), M2.stoneDark, 0, 6.6, 0));
-        st.add(boxM(0.25, 6.5, 0.25, M2.stoneDark, sd * -1.6, 3.6, 0.4));
-        st.add(boxM(1.6, 1.4, 0.2, M2.stoneDark, sd * -1.6, 6.4, 0.4));
+        st.add(boxM(3.2, 1, 3.2, M3.stoneDark, 0, 0.5, 0));
+        st.add(boxM(2.6, 4.2, 1.8, M3.stone, 0, 3.1, 0));
+        st.add(boxM(1.6, 1.5, 1.4, M3.stone, 0, 6, 0));
+        st.add(mesh(new ConeGeometry(0.9, 2.2, 6), M3.stone, 0, 4.6, 0.55).rotateX(Math.PI));
+        st.add(mesh(new SphereGeometry(0.95, 12, 8, 0, 6.283, 0, Math.PI / 2), M3.stoneDark, 0, 6.6, 0));
+        st.add(boxM(0.25, 6.5, 0.25, M3.stoneDark, sd * -1.6, 3.6, 0.4));
+        st.add(boxM(1.6, 1.4, 0.2, M3.stoneDark, sd * -1.6, 6.4, 0.4));
       });
       world.add(g);
       colliders.push({ type: "rect", x: fx, z: fz - 6, hw: 23.5, hd: 8.4, ang: 0, h: 30, wild: true });
       res(fx, fz, 30);
       interactives.push({ id: "dwarfgate", name: "\u0411\u0440\u0430\u043C\u0430 \u0417\u0430\u043B\u0456\u0437\u043D\u043E\u0433\u043E \u041A\u0440\u044F\u0436\u0443", desc: "\u041A\u043E\u0432\u0430\u043D\u0430 \u0431\u0440\u0430\u043C\u0430 \u043F\u0456\u0434 \u0433\u043E\u0440\u043E\u044E. \u0413\u043D\u043E\u043C\u0438 \u043A\u0430\u0436\u0443\u0442\u044C: \xAB\u0414\u0432\u0435\u0440\u0456 \u0432\u0456\u0434\u0447\u0438\u043D\u044F\u044E\u0442\u044C\u0441\u044F \u0442\u0438\u043C, \u0445\u0442\u043E \u043F\u0440\u0438\u043D\u043E\u0441\u0438\u0442\u044C \u0440\u0443\u0434\u0443, \u0430 \u043D\u0435 \u0431\u0430\u043B\u0430\u0447\u043A\u0438\xBB. \u041A\u043E\u043B\u0438\u0441\u044C \u0442\u0443\u0442 \u0431\u0443\u0434\u0435 \u0432\u0445\u0456\u0434 \u0443 \u043F\u0456\u0434\u0433\u0456\u0440\u043D\u0435 \u0446\u0430\u0440\u0441\u0442\u0432\u043E.", door: { x: fx, z: fz + 5 }, group: dm, labelY: H + 9, pos: new Vector3(fx, H, fz + 2) });
       const spots = ringSpots(Zn, 7, 9, 24, 10, (x, z) => z > fz + 10);
-      spots.forEach(([x, z], i) => cottage(x, z, facing(Zn, x, z), 6.5 + rand(), 5.2 + rand() * 0.6, { wallM: M2.stone, gableM: M2.stone, roof: "slate", h: 2.4, beams: false, chimney: true, lamp: true }));
+      spots.forEach(([x, z], i) => cottage(x, z, facing(Zn, x, z), 6.5 + rand(), 5.2 + rand() * 0.6, { wallM: M3.stone, gableM: M3.stone, roof: "slate", h: 2.4, beams: false, chimney: true, lamp: true }));
       const forge = (x, z, ry) => {
         const f = new Group();
-        f.add(boxM(4.2, 0.4, 3.2, M2.stoneDark, 0, 0.2, 0));
-        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => f.add(boxM(0.3, 3, 0.3, M2.beam, sd * 1.9, 1.7, sz * 1.4))));
-        const rf = boxM(4.8, 0.2, 3.8, M2.slate, 0, 3.3, 0);
+        f.add(boxM(4.2, 0.4, 3.2, M3.stoneDark, 0, 0.2, 0));
+        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => f.add(boxM(0.3, 3, 0.3, M3.beam, sd * 1.9, 1.7, sz * 1.4))));
+        const rf = boxM(4.8, 0.2, 3.8, M3.slate, 0, 3.3, 0);
         rf.rotation.x = 0.12;
         f.add(rf);
-        f.add(boxM(1.6, 1.1, 1.3, M2.stone, -1, 0.95, -0.7));
-        f.add(boxM(0.6, 2.4, 0.6, M2.stone, -1, 2.3, -1));
+        f.add(boxM(1.6, 1.1, 1.3, M3.stone, -1, 0.95, -0.7));
+        f.add(boxM(0.6, 2.4, 0.6, M3.stone, -1, 2.3, -1));
         fires.push({ parent: f, x: -1, y: 1.6, z: -0.6, s: 0.7, color: "#ff7a2a" });
         nightLight("#ff7a2a", 7, 10, -1, 2, -0.2, f);
-        f.add(boxM(0.8, 0.3, 0.35, M2.iron, 1, 0.95, 0.3));
-        f.add(boxM(0.35, 0.55, 0.3, M2.iron, 1, 0.6, 0.3));
+        f.add(boxM(0.8, 0.3, 0.35, M3.iron, 1, 0.95, 0.3));
+        f.add(boxM(0.35, 0.55, 0.3, M3.iron, 1, 0.6, 0.3));
         place(f, x, z, ry);
         colliders.push({ type: "rect", x, z, hw: 2.2, hd: 1.7, ang: ry, wild: true, h: 3.4 });
         res(x, z, 4);
@@ -44390,21 +44390,21 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       for (let k = 0; k < 14; k++) {
         const t = k / 14;
         const x = fx + 1.5, z = fz + 4 + t * 22;
-        const sl = boxM(0.18, 0.08, 1.4, M2.beam, 0, 0.04, 0);
+        const sl = boxM(0.18, 0.08, 1.4, M3.beam, 0, 0.04, 0);
         const gg = new Group();
         gg.add(sl.rotateY(Math.PI / 2));
         place(gg, x, z);
       }
       [-1, 1].forEach((sd) => {
         const r = new Group();
-        r.add(boxM(0.06, 0.06, 22, M2.iron, 0, 0.1, 0));
+        r.add(boxM(0.06, 0.06, 22, M3.iron, 0, 0.1, 0));
         place(r, fx + 1.5 + sd * 0.5, fz + 15);
       });
       {
         const c = new Group();
-        c.add(boxM(1.2, 0.8, 1.6, M2.iron, 0, 0.8, 0));
-        for (let k = 0; k < 5; k++) c.add(mesh(new DodecahedronGeometry(0.28, 0), M2.stoneDark, (rand() - 0.5) * 0.7, 1.25, (rand() - 0.5) * 0.9));
-        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => c.add(cylM(0.22, 0.22, 0.1, 10, M2.iron, sd * 0.62, 0.3, sz * 0.55).rotateZ(Math.PI / 2))));
+        c.add(boxM(1.2, 0.8, 1.6, M3.iron, 0, 0.8, 0));
+        for (let k = 0; k < 5; k++) c.add(mesh(new DodecahedronGeometry(0.28, 0), M3.stoneDark, (rand() - 0.5) * 0.7, 1.25, (rand() - 0.5) * 0.9));
+        [-1, 1].forEach((sd) => [-1, 1].forEach((sz) => c.add(cylM(0.22, 0.22, 0.1, 10, M3.iron, sd * 0.62, 0.3, sz * 0.55).rotateZ(Math.PI / 2))));
         place(c, fx + 1.5, fz + 12);
         circ(fx + 1.5, fz + 12, 1);
       }
@@ -44426,15 +44426,15 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const roundHut = (x, z, r, wallC) => {
         const g = new Group();
         g.add(mesh(uvCylLathe(new CylinderGeometry(r, r + 0.1, 2.2, 18)), hide(wallC), 0, 1.1, 0));
-        g.add(mesh(new CylinderGeometry(r + 0.25, r + 0.35, 0.3, 18), M2.stoneDark, 0, 0.05, 0));
+        g.add(mesh(new CylinderGeometry(r + 0.25, r + 0.35, 0.3, 18), M3.stoneDark, 0, 0.05, 0));
         const roof = mesh(new ConeGeometry(r + 0.9, r * 1.35, 18), thatchM, 0, 2.2 + r * 0.66, 0);
         g.add(roof);
-        g.add(cylM(0.05, 0.05, 0.9, 5, M2.beam, 0, 2.2 + r * 1.4, 0));
-        g.add(boxM(0.95, 1.7, 0.2, M2.planks, 0, 0.85, r));
-        g.add(boxM(1.3, 0.16, 0.3, M2.beam, 0, 1.78, r + 0.02));
+        g.add(cylM(0.05, 0.05, 0.9, 5, M3.beam, 0, 2.2 + r * 1.4, 0));
+        g.add(boxM(0.95, 1.7, 0.2, M3.planks, 0, 0.85, r));
+        g.add(boxM(1.3, 0.16, 0.3, M3.beam, 0, 1.78, r + 0.02));
         for (let k = 0; k < 8; k++) {
           const a = k / 8 * 6.28;
-          g.add(cylM(0.06, 0.06, 2.3, 5, M2.beam, Math.cos(a) * (r + 0.02), 1.15, Math.sin(a) * (r + 0.02)));
+          g.add(cylM(0.06, 0.06, 2.3, 5, M3.beam, Math.cos(a) * (r + 0.02), 1.15, Math.sin(a) * (r + 0.02)));
         }
         place(g, x, z, facing(Zn, x, z));
         circ(x, z, r + 0.3);
@@ -44445,7 +44445,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       spots.forEach(([x, z], i) => roundHut(x, z, 2.2 + rand() * 0.8, wc[i % 4]));
       const totem = (x, z, kind) => {
         const g = new Group();
-        g.add(mesh(uvCylLathe(new CylinderGeometry(0.45, 0.55, 5.5, 10)), M2.beam, 0, 2.75, 0));
+        g.add(mesh(uvCylLathe(new CylinderGeometry(0.45, 0.55, 5.5, 10)), M3.beam, 0, 2.75, 0));
         const cols = { wolf: "#7a7a82", fox: "#c8641e", cat: "#2a2a30", rabbit: "#efe6d8" };
         const head = new Group();
         head.position.y = 5;
@@ -44472,8 +44472,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const x = Zn.x + Math.cos(a) * d, z = Zn.z + Math.sin(a) * d;
         if (!inWild(x, z, 2) || roadDist(x, z) < 4) continue;
         const g = new Group();
-        [-1, 1].forEach((sd) => g.add(cylM(0.06, 0.07, 2.4, 6, M2.beam, sd * 1.1, 1.2, 0)));
-        g.add(cylM(0.05, 0.05, 2.4, 6, M2.beam, 0, 2.3, 0).rotateZ(Math.PI / 2));
+        [-1, 1].forEach((sd) => g.add(cylM(0.06, 0.07, 2.4, 6, M3.beam, sd * 1.1, 1.2, 0)));
+        g.add(cylM(0.05, 0.05, 2.4, 6, M3.beam, 0, 2.3, 0).rotateZ(Math.PI / 2));
         const h2 = new Mesh(new PlaneGeometry(1.6, 1.4), new MeshStandardMaterial({ color: ["#8a6a4a", "#b89a7a", "#6a5a4a", "#a8805a"][k], roughness: 1, side: DoubleSide }));
         h2.position.y = 1.55;
         h2.userData.keep = true;
@@ -44489,8 +44489,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         if (!inWild(x, z, 1) || roadDist(x, z) < 5) continue;
         const g = new Group();
         const h = 2.2 + rand() * 0.6;
-        g.add(cylM(0.18, 0.2, h, 6, M2.beam, 0, h / 2 - 0.2, 0));
-        g.add(mesh(new ConeGeometry(0.2, 0.45, 6), M2.beam, 0, h - 0.05, 0));
+        g.add(cylM(0.18, 0.2, h, 6, M3.beam, 0, h / 2 - 0.2, 0));
+        g.add(mesh(new ConeGeometry(0.2, 0.45, 6), M3.beam, 0, h - 0.05, 0));
         place(g, x, z);
         circ(x, z, 0.3);
       }
@@ -44503,31 +44503,31 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       });
     }
     {
-      const T = Z("titan");
-      spawns.push({ type: "titan", x: T.x, z: T.z, wander: 6, passive: true, horde: "titan", lord: true });
+      const T2 = Z("titan");
+      spawns.push({ type: "titan", x: T2.x, z: T2.z, wander: 6, passive: true, horde: "titan", lord: true });
       for (let i = 0; i < 10; i++) {
         const a = i / 10 * 6.28 + rand() * 0.3, d = 18 + rand() * 55;
-        const x = T.x + Math.cos(a) * d, z = T.z + Math.sin(a) * d;
+        const x = T2.x + Math.cos(a) * d, z = T2.z + Math.sin(a) * d;
         if (!inWild(x, z, 3)) continue;
         spawns.push({ type: i % 3 === 2 ? "stone_giant" : "titan_guard", x, z, wander: 10, passive: true, horde: "titan" });
       }
       for (let i = 0; i < 4; i++) {
         const a = i / 4 * 6.28;
-        spawns.push({ type: "titan_guard", x: T.x + Math.cos(a) * 9, z: T.z + Math.sin(a) * 9, wander: 4, passive: true, horde: "titan", dormant: true });
+        spawns.push({ type: "titan_guard", x: T2.x + Math.cos(a) * 9, z: T2.z + Math.sin(a) * 9, wander: 4, passive: true, horde: "titan", dormant: true });
       }
       const g = new Group();
       for (let k = 0; k < 9; k++) {
         const a = (k / 9 - 0.5) * Math.PI * 1.2 + Math.PI;
-        const b = mesh(new DodecahedronGeometry(2.4 + rand() * 1.4, 1), M2.stoneDark, Math.cos(a) * 14, 1.2 + rand(), Math.sin(a) * 14);
+        const b = mesh(new DodecahedronGeometry(2.4 + rand() * 1.4, 1), M3.stoneDark, Math.cos(a) * 14, 1.2 + rand(), Math.sin(a) * 14);
         b.rotation.set(rand() * 3, rand() * 3, rand() * 3);
         g.add(b);
       }
-      place(g, T.x, T.z);
+      place(g, T2.x, T2.z);
       for (let k = 0; k < 9; k++) {
         const a = (k / 9 - 0.5) * Math.PI * 1.2 + Math.PI;
-        circ(T.x + Math.cos(a) * 14, T.z + Math.sin(a) * 14, 2.6);
+        circ(T2.x + Math.cos(a) * 14, T2.z + Math.sin(a) * 14, 2.6);
       }
-      res(T.x, T.z, 22);
+      res(T2.x, T2.z, 22);
     }
     {
       const F = Z("fenrir");
@@ -44582,8 +44582,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         sx += 1.5;
       }
       const g = new Group();
-      const sm = M2.sand || M2.stone;
-      g.add(boxM(3.2, 0.6, 6.4, M2.stoneDark, 0, 0.3, 0));
+      const sm = M3.sand || M3.stone;
+      g.add(boxM(3.2, 0.6, 6.4, M3.stoneDark, 0, 0.3, 0));
       const body = mesh(new CapsuleGeometry(1, 3.2, 6, 14), sm, 0, 1.5, -0.4);
       body.rotation.x = Math.PI / 2;
       body.scale.set(1.1, 1, 0.85);
@@ -44617,7 +44617,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           z = a[1] - uz * 6 - ux * 6;
         }
         const g = new Group();
-        g.add(cylM(0.09, 0.1, 3, 8, M2.wood, 0, 1.5, 0));
+        g.add(cylM(0.09, 0.1, 3, 8, M3.wood, 0, 1.5, 0));
         const danger = dest[i].startsWith("\u2620");
         const st = canvasTexture(512, 128, (c, w, h) => {
           c.fillStyle = danger ? "#4a1a14" : "#3a2a1c";
@@ -44632,7 +44632,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         bd.position.y = 2.5;
         bd.rotation.y = Math.atan2(-ux, -uz);
         g.add(bd);
-        bd.add(boxM(2.3, 0.5, 0.07, M2.beam, 0, 0, 0));
+        bd.add(boxM(2.3, 0.5, 0.07, M3.beam, 0, 0, 0));
         const pl = new Mesh(new PlaneGeometry(2.2, 0.45), new MeshStandardMaterial({ map: st, roughness: 0.9 }));
         pl.position.z = 0.04;
         pl.userData.keep = true;
@@ -44777,16 +44777,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const k = big2 ? 1.3 : 1;
       for (let i = 0; i < 9; i++) {
         const a = i / 9 * 6.28;
-        const s = mesh(new DodecahedronGeometry(0.16 * k, 0), M2.stoneDark, Math.cos(a) * 0.55 * k, 0.08, Math.sin(a) * 0.55 * k);
+        const s = mesh(new DodecahedronGeometry(0.16 * k, 0), M3.stoneDark, Math.cos(a) * 0.55 * k, 0.08, Math.sin(a) * 0.55 * k);
         s.scale.y = 0.7;
         g.add(s);
       }
       for (let i = 0; i < 4; i++) {
-        const l = cylM(0.06 * k, 0.07 * k, 0.8 * k, 6, M2.beam, 0, 0.2, 0);
+        const l = cylM(0.06 * k, 0.07 * k, 0.8 * k, 6, M3.beam, 0, 0.2, 0);
         l.rotation.set(Math.PI / 2 - 0.5, i * Math.PI / 2, 0);
         g.add(l);
       }
-      g.add(mesh(new CircleGeometry(0.45 * k, 12), M2.dark, 0, 0.02, 0).rotateX(-Math.PI / 2));
+      g.add(mesh(new CircleGeometry(0.45 * k, 12), M3.dark, 0, 0.02, 0).rotateX(-Math.PI / 2));
       place(g, x, z);
       circ(x, z, 0.8 * k);
       fires.push({ parent: g, x: 0, y: 0.25, z: 0, s: 0.75 * k, color: "#ff7a2a" });
@@ -44807,7 +44807,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     if (materials.M) return materials.M;
     const brick = new MeshStandardMaterial({ map: tex("brick_diffuse.jpg", { srgb: true, repeat: 0.5 }), bumpMap: tex("brick_bump.jpg", { repeat: 0.5 }), bumpScale: 2, roughnessMap: tex("brick_roughness.jpg", { repeat: 0.5 }), roughness: 1, color: "#d8c8bc" });
     const planks2 = new MeshStandardMaterial({ map: tex("hardwood2_diffuse.jpg", { srgb: true, repeat: 0.6 }), bumpMap: tex("hardwood2_bump.jpg", { repeat: 0.6 }), bumpScale: 1.5, roughnessMap: tex("hardwood2_roughness.jpg", { repeat: 0.6 }), color: "#8a6a52", roughness: 1 });
-    const M2 = materials.M = {
+    const M3 = materials.M = {
       stone: pbr("stonewall", { scale: 2.4 }),
       stoneDark: pbr("stonewall", { scale: 2.4, color: "#8d877d" }),
       cobble: pbr("cobble", { scale: 2.6 }),
@@ -44829,14 +44829,14 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       dark: new MeshStandardMaterial({ color: "#0c0a08", roughness: 1 }),
       paint: {}
     };
-    M2.glass.userData.nightGlow = 2.2;
-    M2.lampGlass.userData.nightGlow = 6;
-    return M2;
+    M3.glass.userData.nightGlow = 2.2;
+    M3.lampGlass.userData.nightGlow = 6;
+    return M3;
   }
   function painted(c) {
-    const M2 = materials();
-    if (!M2.paint[c]) M2.paint[c] = pbr("wood", { scale: 1.2, color: c });
-    return M2.paint[c];
+    const M3 = materials();
+    if (!M3.paint[c]) M3.paint[c] = pbr("wood", { scale: 1.2, color: c });
+    return M3.paint[c];
   }
   function clothTex(c1, c2) {
     return canvasTexture(256, 256, (g, w, h) => {
@@ -44880,7 +44880,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
   }
   function buildTown(opts) {
     opts = opts || {};
-    const M2 = materials();
+    const M3 = materials();
     const rand = rng(11);
     const world = new Group();
     const colliders = [];
@@ -44917,11 +44917,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       wg.position.set(x, y, z);
       wg.rotation.y = ry;
       g.add(wg);
-      wg.add(boxM(W2, H, 0.06, M2.glass, 0, 0, -0.02));
-      const fr = M2.beam, t = 0.1;
+      wg.add(boxM(W2, H, 0.06, M3.glass, 0, 0, -0.02));
+      const fr = M3.beam, t = 0.1;
       wg.add(boxM(W2 + t * 2, t, 0.14, fr, 0, H / 2 + t / 2, 0), boxM(W2 + t * 2, t, 0.14, fr, 0, -H / 2 - t / 2, 0), boxM(t, H, 0.14, fr, -W2 / 2 - t / 2, 0, 0), boxM(t, H, 0.14, fr, W2 / 2 + t / 2, 0, 0));
       wg.add(boxM(0.05, H, 0.08, fr, 0, 0, 0.01), boxM(W2, 0.05, 0.08, fr, 0, H * 0.12, 0.01));
-      wg.add(boxM(W2 + 0.4, 0.09, 0.26, M2.stone, 0, -H / 2 - 0.15, 0.08));
+      wg.add(boxM(W2 + 0.4, 0.09, 0.26, M3.stone, 0, -H / 2 - 0.15, 0.08));
       if (o.shutters !== false) {
         const sc = painted(o.shutter || "#4a6a5a");
         [-1, 1].forEach((s) => {
@@ -44931,11 +44931,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           wg.add(sh);
           const b = boxM(W2 / 2 + 0.02, H + 0.08, 0.05, sc, s * (W2 / 4 + 0.01), 0, 0);
           sh.add(b);
-          sh.add(boxM(W2 / 2 - 0.05, 0.05, 0.03, M2.iron, s * (W2 / 4), H * 0.3, 0.03), boxM(W2 / 2 - 0.05, 0.05, 0.03, M2.iron, s * (W2 / 4), -H * 0.3, 0.03));
+          sh.add(boxM(W2 / 2 - 0.05, 0.05, 0.03, M3.iron, s * (W2 / 4), H * 0.3, 0.03), boxM(W2 / 2 - 0.05, 0.05, 0.03, M3.iron, s * (W2 / 4), -H * 0.3, 0.03));
         });
       }
       if (o.box) {
-        wg.add(boxM(W2 + 0.1, 0.22, 0.25, M2.wood, 0, -H / 2 - 0.3, 0.2));
+        wg.add(boxM(W2 + 0.1, 0.22, 0.25, M3.wood, 0, -H / 2 - 0.3, 0.2));
         const fc = ["#d8323a", "#f0c030", "#e86aa0", "#ffffff"];
         for (let i = 0; i < 7; i++) {
           const f = mesh(new IcosahedronGeometry(0.07 + rand() * 0.04, 1), new MeshStandardMaterial({ color: fc[i % 4], roughness: 0.7 }), -W2 / 2 + 0.1 + i * (W2 - 0.2) / 6, -H / 2 - 0.12, 0.2 + (rand() - 0.5) * 0.08);
@@ -44952,10 +44952,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       lg.position.set(x, y, z);
       lg.rotation.y = ry;
       g.add(lg);
-      lg.add(boxM(0.05, 0.05, 0.45, M2.iron, 0, 0.32, 0.2));
-      lg.add(cylM(0.02, 0.02, 0.2, 6, M2.iron, 0, 0.22, 0.4));
-      lg.add(cylM(0.13, 0.11, 0.28, 6, M2.lampGlass, 0, 0, 0.4));
-      lg.add(cylM(0.04, 0.17, 0.1, 6, M2.iron, 0, 0.18, 0.4), cylM(0.12, 0.12, 0.04, 6, M2.iron, 0, -0.15, 0.4));
+      lg.add(boxM(0.05, 0.05, 0.45, M3.iron, 0, 0.32, 0.2));
+      lg.add(cylM(0.02, 0.02, 0.2, 6, M3.iron, 0, 0.22, 0.4));
+      lg.add(cylM(0.13, 0.11, 0.28, 6, M3.lampGlass, 0, 0, 0.4));
+      lg.add(cylM(0.04, 0.17, 0.1, 6, M3.iron, 0, 0.18, 0.4), cylM(0.12, 0.12, 0.04, 6, M3.iron, 0, -0.15, 0.4));
       const sp = glowSprite("#ffc27a", 1.4, 0, 0, 0.4, lg);
       if (real) nightLight("#ffb35c", real, 9, 0, 0, 0.55, lg);
       return lg;
@@ -44977,7 +44977,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         m2.position.set(s * cx, yT + Math.tan(ang) * (w / 2 - cx) + 0.08, 0);
         g.add(m2);
       });
-      const ridge = mesh(uvCyl(new CylinderGeometry(0.13, 0.13, L2 + 0.05, 10), 0.13), M2.roofDark, 0, yT + roofH + 0.08, 0);
+      const ridge = mesh(uvCyl(new CylinderGeometry(0.13, 0.13, L2 + 0.05, 10), 0.13), M3.roofDark, 0, yT + roofH + 0.08, 0);
       ridge.rotation.x = Math.PI / 2;
       g.add(ridge);
       return { ang, L: L2 };
@@ -44994,10 +44994,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       g.add(m2);
       if (timber) {
         const zz = z + Math.sign(z) * 0.16;
-        g.add(boxM(0.16, roofH * 0.92, 0.08, M2.beam, 0, yT + roofH * 0.46, zz));
-        g.add(boxM(w * 0.62, 0.16, 0.08, M2.beam, 0, yT + roofH * 0.42, zz));
+        g.add(boxM(0.16, roofH * 0.92, 0.08, M3.beam, 0, yT + roofH * 0.46, zz));
+        g.add(boxM(w * 0.62, 0.16, 0.08, M3.beam, 0, yT + roofH * 0.42, zz));
         [-1, 1].forEach((sg) => {
-          const b = boxM(0.14, Math.hypot(w / 2, roofH) * 0.98, 0.08, M2.beam, sg * w / 4, yT + roofH / 2, zz);
+          const b = boxM(0.14, Math.hypot(w / 2, roofH) * 0.98, 0.08, M3.beam, sg * w / 4, yT + roofH / 2, zz);
           b.rotation.z = sg * Math.atan2(w / 2, roofH);
           g.add(b);
         });
@@ -45009,16 +45009,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       g.position.set(x, 0, z);
       g.rotation.y = yaw;
       const { w, d, h } = o;
-      const wallMat = o.style === "brick" ? M2.brick : o.style === "stone" ? M2.stone : M2.plaster(o.wall);
-      const upperMat = M2.plaster(o.wall);
-      const roofMat = o.roofType === "slate" ? M2.slate : o.roofType === "dark" ? M2.roofDark : M2.roof;
+      const wallMat = o.style === "brick" ? M3.brick : o.style === "stone" ? M3.stone : M3.plaster(o.wall);
+      const upperMat = M3.plaster(o.wall);
+      const roofMat = o.roofType === "slate" ? M3.slate : o.roofType === "dark" ? M3.roofDark : M3.roof;
       const h1 = h * 0.52, h2 = h - h1, jet = 0.28, y0 = 0.55;
-      g.add(boxM(w + 0.34, y0, d + 0.34, M2.stoneDark, 0, y0 / 2, 0));
+      g.add(boxM(w + 0.34, y0, d + 0.34, M3.stoneDark, 0, y0 / 2, 0));
       g.add(boxM(w, h1, d, wallMat, 0, y0 + h1 / 2, 0));
-      g.add(boxM(w + 0.2, 0.22, d + jet * 2 + 0.1, M2.beam, 0, y0 + h1 + 0.11, 0));
+      g.add(boxM(w + 0.2, 0.22, d + jet * 2 + 0.1, M3.beam, 0, y0 + h1 + 0.11, 0));
       for (let i = 0; i < Math.floor(w / 0.7); i++) {
         const xx = -w / 2 + 0.35 + i * 0.7;
-        [1, -1].forEach((s) => g.add(boxM(0.14, 0.14, 0.2, M2.beam, xx, y0 + h1 - 0.02, s * (d / 2 + 0.05))));
+        [1, -1].forEach((s) => g.add(boxM(0.14, 0.14, 0.2, M3.beam, xx, y0 + h1 - 0.02, s * (d / 2 + 0.05))));
       }
       const yU = y0 + h1 + 0.22;
       g.add(boxM(w, h2 - 0.22, d + jet * 2, upperMat, 0, yU + (h2 - 0.22) / 2, 0));
@@ -45026,44 +45026,44 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       [1, -1].forEach((s) => {
         const zf = s * (d / 2 + jet + 0.04), hh = h2 - 0.22;
         const nb = Math.max(2, Math.round(w / 2.2));
-        for (let k = 0; k <= nb; k++) g.add(boxM(0.16, hh, 0.08, M2.beam, -w / 2 + 0.08 + k * (w - 0.16) / nb, yU + hh / 2, zf));
-        g.add(boxM(w, 0.15, 0.08, M2.beam, 0, yT - 0.07, zf));
-        g.add(boxM(w, 0.12, 0.08, M2.beam, 0, yU + 0.3, zf));
+        for (let k = 0; k <= nb; k++) g.add(boxM(0.16, hh, 0.08, M3.beam, -w / 2 + 0.08 + k * (w - 0.16) / nb, yU + hh / 2, zf));
+        g.add(boxM(w, 0.15, 0.08, M3.beam, 0, yT - 0.07, zf));
+        g.add(boxM(w, 0.12, 0.08, M3.beam, 0, yU + 0.3, zf));
         for (let k = 0; k < nb; k++) {
           const cx = -w / 2 + 0.08 + (k + 0.5) * (w - 0.16) / nb, sw = (w - 0.16) / nb;
           const L2 = Math.hypot(sw * 0.8, hh * 0.62);
-          const b = boxM(0.1, L2, 0.07, M2.beam, cx, yU + hh * 0.38, zf);
+          const b = boxM(0.1, L2, 0.07, M3.beam, cx, yU + hh * 0.38, zf);
           b.rotation.z = (k % 2 ? 1 : -1) * Math.atan2(sw * 0.8, hh * 0.62);
           g.add(b);
         }
       });
       [1, -1].forEach((s) => {
         const xf = s * (w / 2 + 0.04);
-        [-1, 0, 1].forEach((k) => g.add(boxM(0.08, h2 - 0.22, 0.16, M2.beam, xf, yU + (h2 - 0.22) / 2, k * (d / 2 + jet - 0.1))));
-        g.add(boxM(0.08, 0.15, d + jet * 2, M2.beam, xf, yT - 0.07, 0));
+        [-1, 0, 1].forEach((k) => g.add(boxM(0.08, h2 - 0.22, 0.16, M3.beam, xf, yU + (h2 - 0.22) / 2, k * (d / 2 + jet - 0.1))));
+        g.add(boxM(0.08, 0.15, d + jet * 2, M3.beam, xf, yT - 0.07, 0));
       });
-      if (o.style !== "brick" && o.style !== "stone") [-1, 1].forEach((sx) => [-1, 1].forEach((sz) => g.add(boxM(0.2, h1, 0.2, M2.beam, sx * (w / 2 - 0.02), y0 + h1 / 2, sz * (d / 2 - 0.02)))));
+      if (o.style !== "brick" && o.style !== "stone") [-1, 1].forEach((sx) => [-1, 1].forEach((sz) => g.add(boxM(0.2, h1, 0.2, M3.beam, sx * (w / 2 - 0.02), y0 + h1 / 2, sz * (d / 2 - 0.02)))));
       const roofH = o.roofH || 2.4;
       gableRoof(g, w, d + jet * 2, yT, roofH, roofMat);
       gableWall(g, w, roofH, yT, d / 2 + jet, upperMat, true);
       gableWall(g, w, roofH, yT, -(d / 2 + jet), upperMat, true);
       const dz = d / 2, dw = o.doubleDoor ? 2 : 1.12;
-      g.add(boxM(dw + 0.4, 2.45 + (o.doubleDoor ? 0.4 : 0), 0.12, M2.stone, 0, y0 + 1.2 + (o.doubleDoor ? 0.2 : 0), dz + 0.02));
-      g.add(boxM(dw, 2.15 + (o.doubleDoor ? 0.4 : 0), 0.1, M2.dark, 0, y0 + 1.07 + (o.doubleDoor ? 0.2 : 0), dz + 0.06));
+      g.add(boxM(dw + 0.4, 2.45 + (o.doubleDoor ? 0.4 : 0), 0.12, M3.stone, 0, y0 + 1.2 + (o.doubleDoor ? 0.2 : 0), dz + 0.02));
+      g.add(boxM(dw, 2.15 + (o.doubleDoor ? 0.4 : 0), 0.1, M3.dark, 0, y0 + 1.07 + (o.doubleDoor ? 0.2 : 0), dz + 0.06));
       if (o.doubleDoor) {
         [-1, 1].forEach((s) => {
-          const dr = boxM(dw / 2 - 0.04, 2.5, 0.08, o.doorMat || M2.planks, s * dw / 4, y0 + 1.25, dz + 0.1);
+          const dr = boxM(dw / 2 - 0.04, 2.5, 0.08, o.doorMat || M3.planks, s * dw / 4, y0 + 1.25, dz + 0.1);
           g.add(dr);
-          [0.5, 1.9].forEach((yy) => g.add(boxM(dw / 2 - 0.14, 0.07, 0.03, M2.iron, s * dw / 4, y0 + yy, dz + 0.155)));
+          [0.5, 1.9].forEach((yy) => g.add(boxM(dw / 2 - 0.14, 0.07, 0.03, M3.iron, s * dw / 4, y0 + yy, dz + 0.155)));
         });
       } else {
-        const door = boxM(1.06, 2.1, 0.08, o.doorMat || M2.planks, 0, y0 + 1.05, dz + 0.1);
+        const door = boxM(1.06, 2.1, 0.08, o.doorMat || M3.planks, 0, y0 + 1.05, dz + 0.1);
         g.add(door);
-        [0.5, 1.6].forEach((yy) => g.add(boxM(0.9, 0.07, 0.03, M2.iron, -0.05, y0 + yy, dz + 0.155)));
-        g.add(mesh(new TorusGeometry(0.07, 0.015, 6, 14), M2.iron, 0.38, y0 + 1.05, dz + 0.17));
+        [0.5, 1.6].forEach((yy) => g.add(boxM(0.9, 0.07, 0.03, M3.iron, -0.05, y0 + yy, dz + 0.155)));
+        g.add(mesh(new TorusGeometry(0.07, 0.015, 6, 14), M3.iron, 0.38, y0 + 1.05, dz + 0.17));
       }
-      g.add(boxM(dw + 0.8, 0.18, 0.9, M2.stone, 0, 0.09, dz + 0.55));
-      g.add(boxM(dw + 0.4, 0.16, 0.5, M2.stone, 0, 0.27, dz + 0.4));
+      g.add(boxM(dw + 0.8, 0.18, 0.9, M3.stone, 0, 0.09, dz + 0.55));
+      g.add(boxM(dw + 0.4, 0.16, 0.5, M3.stone, 0, 0.27, dz + 0.4));
       const sh = o.shutter || "#4a6a5a";
       const wy1 = y0 + h1 * 0.55, wy2 = yU + (h2 - 0.22) * 0.52;
       const nwin = Math.max(1, Math.floor((w - 2.2) / 2.4));
@@ -45081,23 +45081,23 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       });
       windowAt(g, 0, yT + roofH * 0.35, d / 2 + jet + 0.17, 0, { w: 0.5, h: 0.6, shutters: false });
       if (o.chimney) {
-        g.add(boxM(0.75, roofH + 1.6, 0.75, M2.stone, w / 2 - 1, yT + roofH * 0.5 + 0.3, -d / 4));
-        g.add(boxM(0.95, 0.14, 0.95, M2.stoneDark, w / 2 - 1, yT + roofH + 1.15, -d / 4));
+        g.add(boxM(0.75, roofH + 1.6, 0.75, M3.stone, w / 2 - 1, yT + roofH * 0.5 + 0.3, -d / 4));
+        g.add(boxM(0.95, 0.14, 0.95, M3.stoneDark, w / 2 - 1, yT + roofH + 1.15, -d / 4));
       }
       lantern(g, dw / 2 + 0.45, y0 + 2, dz + 0.02, 0, o.light ? 5 : 0);
       if (o.sign) {
         const sgG = new Group();
         sgG.position.set(-w / 2 + 0.2, y0 + h1 + 0.5, dz + 0.1);
         g.add(sgG);
-        sgG.add(boxM(0.06, 0.06, 1.25, M2.iron, 0, 0, 0.6));
-        sgG.add(rot(boxM(0.04, 0.5, 0.04, M2.iron, 0, -0.22, 0.25), "x", 0.8));
+        sgG.add(boxM(0.06, 0.06, 1.25, M3.iron, 0, 0, 0.6));
+        sgG.add(rot(boxM(0.04, 0.5, 0.04, M3.iron, 0, -0.22, 0.25), "x", 0.8));
         const board = new Group();
         board.userData.keepGroup = true;
         board.position.set(0, -0.08, 1.05);
         sgG.add(board);
         const st = signTex(o.sign, o.signFg, o.signBg);
         const bm = new MeshStandardMaterial({ map: st, roughness: 0.8 });
-        board.add(boxM(0.06, 0.55, 1.05, M2.beam, 0, -0.36, 0));
+        board.add(boxM(0.06, 0.55, 1.05, M3.beam, 0, -0.36, 0));
         [-1, 1].forEach((s) => {
           const p = new Mesh(new PlaneGeometry(1, 0.5), bm);
           p.position.set(s * 0.035, -0.36, 0);
@@ -45106,7 +45106,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
           p.userData.keep = true;
           board.add(p);
         });
-        [-0.4, 0.4].forEach((zz) => board.add(boxM(0.02, 0.12, 0.02, M2.iron, 0, -0.04, zz)));
+        [-0.4, 0.4].forEach((zz) => board.add(boxM(0.02, 0.12, 0.02, M3.iron, 0, -0.04, zz)));
         anim.push((t) => {
           board.rotation.x = Math.sin(t * 1.3 + x) * 0.05;
         });
@@ -45133,7 +45133,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         val.userData.keep = true;
         g.add(val);
         [-1, 1].forEach((s) => {
-          g.add(rot(cylM(0.04, 0.04, 1, 6, M2.iron, s * (w / 2 - 0.35), y0 + h1 - 0.55, dz + 0.8), "x", 1.1));
+          g.add(rot(cylM(0.04, 0.04, 1, 6, M3.iron, s * (w / 2 - 0.35), y0 + h1 - 0.55, dz + 0.8), "x", 1.1));
         });
       }
       world.add(g);
@@ -45178,11 +45178,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       tw.position.set(b.w / 2 + 0.6, 0, b.d / 2 - 0.4);
       b.g.add(tw);
       const tg = new CylinderGeometry(2, 2.15, 11.5, 20, 1);
-      tw.add(mesh(uvCyl(tg, 2.1), M2.stone, 0, 5.75, 0));
-      tw.add(mesh(uvCyl(new CylinderGeometry(2.35, 2.35, 0.4, 20), 2.35), M2.stoneDark, 0, 11.6, 0));
-      const cone = mesh(new ConeGeometry(2.7, 5.2, 20), M2.slate, 0, 14.4, 0);
+      tw.add(mesh(uvCyl(tg, 2.1), M3.stone, 0, 5.75, 0));
+      tw.add(mesh(uvCyl(new CylinderGeometry(2.35, 2.35, 0.4, 20), 2.35), M3.stoneDark, 0, 11.6, 0));
+      const cone = mesh(new ConeGeometry(2.7, 5.2, 20), M3.slate, 0, 14.4, 0);
       tw.add(cone);
-      tw.add(cylM(0.05, 0.05, 2.2, 6, M2.iron, 0, 17.6, 0));
+      tw.add(cylM(0.05, 0.05, 2.2, 6, M3.iron, 0, 17.6, 0));
       const flag = new Mesh(new PlaneGeometry(1.4, 0.8, 6, 2), new MeshStandardMaterial({ color: "#7a1a1a", side: DoubleSide, roughness: 0.9 }));
       flag.position.set(0.72, 18.2, 0);
       flag.userData.keep = true;
@@ -45237,12 +45237,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         bn.userData.keep = true;
         bn.castShadow = true;
         b.g.add(bn);
-        b.g.add(boxM(1.3, 0.08, 0.08, M2.iron, s * 2.3, 5.33, b.d / 2 + 0.3));
+        b.g.add(boxM(1.3, 0.08, 0.08, M3.iron, s * 2.3, 5.33, b.d / 2 + 0.3));
       });
-      b.g.add(boxM(4.2, 0.3, 1.6, M2.stone, 0, 0.15, b.d / 2 + 1.6));
+      b.g.add(boxM(4.2, 0.3, 1.6, M3.stone, 0, 0.15, b.d / 2 + 1.6));
       [-1, 1].forEach((s) => {
-        b.g.add(boxM(0.9, 1.1, 0.9, M2.stone, s * 2.6, 0.55, b.d / 2 + 2.2));
-        b.g.add(cylM(0.32, 0.38, 0.5, 12, M2.iron, s * 2.6, 1.35, b.d / 2 + 2.2));
+        b.g.add(boxM(0.9, 1.1, 0.9, M3.stone, s * 2.6, 0.55, b.d / 2 + 2.2));
+        b.g.add(cylM(0.32, 0.38, 0.5, 12, M3.iron, s * 2.6, 1.35, b.d / 2 + 2.2));
         fires.push({ parent: b.g, x: s * 2.6, y: 1.6, z: b.d / 2 + 2.2, s: 0.55, color: "#ff8a3a" });
         nightLight("#ff9a4a", 6, 9, s * 2.6, 2.2, b.d / 2 + 2.5, b.g);
       });
@@ -45266,19 +45266,19 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const bt = new Group();
       bt.position.set(0, 0, b.d / 2 - 1.2);
       b.g.add(bt);
-      bt.add(boxM(3, 13, 3, M2.stone, 0, 6.5, 0));
-      bt.add(boxM(3.4, 0.35, 3.4, M2.stoneDark, 0, 13.1, 0));
+      bt.add(boxM(3, 13, 3, M3.stone, 0, 6.5, 0));
+      bt.add(boxM(3.4, 0.35, 3.4, M3.stoneDark, 0, 13.1, 0));
       [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([sx, sz]) => {
-        const ar = boxM(1.4, 2, 0.2, M2.dark, sx * 1.42, 11.6, sz * 1.42);
+        const ar = boxM(1.4, 2, 0.2, M3.dark, sx * 1.42, 11.6, sz * 1.42);
         if (sx) ar.rotation.y = Math.PI / 2;
         bt.add(ar);
       });
-      bt.add(mesh(new ConeGeometry(2.6, 5.5, 4), M2.slate, 0, 16, 0).rotateY(Math.PI / 4));
-      const bell = mesh(new CylinderGeometry(0.35, 0.6, 0.8, 16, 1, true), M2.bronze, 0, 11.7, 0);
-      bell.material = M2.bronze;
+      bt.add(mesh(new ConeGeometry(2.6, 5.5, 4), M3.slate, 0, 16, 0).rotateY(Math.PI / 4));
+      const bell = mesh(new CylinderGeometry(0.35, 0.6, 0.8, 16, 1, true), M3.bronze, 0, 11.7, 0);
+      bell.material = M3.bronze;
       bt.add(bell);
-      bt.add(boxM(0.1, 1.4, 0.1, M2.gold, 0, 19.4, 0));
-      bt.add(boxM(0.8, 0.1, 0.1, M2.gold, 0, 19.6, 0));
+      bt.add(boxM(0.1, 1.4, 0.1, M3.gold, 0, 19.4, 0));
+      bt.add(boxM(0.8, 0.1, 0.1, M3.gold, 0, 19.6, 0));
       const rose = canvasTexture(256, 256, (c, w2, h2) => {
         c.translate(w2 / 2, h2 / 2);
         const cols = ["#c0392b", "#2e5aa8", "#e6b422", "#3a8a4a"];
@@ -45341,10 +45341,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g = new Group();
         g.position.set(x, 0, z);
         g.rotation.y = -am + Math.PI / 2;
-        g.add(boxM(L2, WH, WT, M2.stone, 0, WH / 2 - 0.6, 0));
-        g.add(boxM(L2, 0.3, WT + 0.3, M2.stoneDark, 0, WH - 0.45, 0));
-        g.add(boxM(L2 * 0.42, 0.9, 0.5, M2.stone, -L2 * 0.25, WH + 0.15, -WT / 2 + 0.25));
-        g.add(boxM(L2 * 0.42, 0.9, 0.5, M2.stone, -L2 * 0.25, WH + 0.15, WT / 2 - 0.25));
+        g.add(boxM(L2, WH, WT, M3.stone, 0, WH / 2 - 0.6, 0));
+        g.add(boxM(L2, 0.3, WT + 0.3, M3.stoneDark, 0, WH - 0.45, 0));
+        g.add(boxM(L2 * 0.42, 0.9, 0.5, M3.stone, -L2 * 0.25, WH + 0.15, -WT / 2 + 0.25));
+        g.add(boxM(L2 * 0.42, 0.9, 0.5, M3.stone, -L2 * 0.25, WH + 0.15, WT / 2 - 0.25));
         world.add(g);
       }
       for (let k = 0; k < 8; k++) {
@@ -45352,13 +45352,13 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const [x, z] = at(a, WALL_R);
         const t = new Group();
         t.position.set(x, 0, z);
-        t.add(mesh(uvCyl(new CylinderGeometry(2.6, 2.9, 9.5, 18), 2.8), M2.stone, 0, 4.15, 0));
-        t.add(mesh(uvCyl(new CylinderGeometry(3, 3, 0.4, 18), 3), M2.stoneDark, 0, 9, 0));
+        t.add(mesh(uvCyl(new CylinderGeometry(2.6, 2.9, 9.5, 18), 2.8), M3.stone, 0, 4.15, 0));
+        t.add(mesh(uvCyl(new CylinderGeometry(3, 3, 0.4, 18), 3), M3.stoneDark, 0, 9, 0));
         for (let m2 = 0; m2 < 8; m2++) {
           const b2 = m2 / 8 * Math.PI * 2;
-          t.add(boxM(0.8, 0.9, 0.5, M2.stone, Math.cos(b2) * 2.7, 9.6, Math.sin(b2) * 2.7).rotateY(-b2));
+          t.add(boxM(0.8, 0.9, 0.5, M3.stone, Math.cos(b2) * 2.7, 9.6, Math.sin(b2) * 2.7).rotateY(-b2));
         }
-        t.add(mesh(new ConeGeometry(3.2, 4.2, 18), M2.roofDark, 0, 12, 0));
+        t.add(mesh(new ConeGeometry(3.2, 4.2, 18), M3.roofDark, 0, 12, 0));
         world.add(t);
         colliders.push({ type: "circle", x, z, r: 3, h: 13 });
       }
@@ -45368,14 +45368,14 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         g.position.set(x, 0, z);
         g.rotation.y = -G2.a + Math.PI / 2;
         [-1, 1].forEach((s) => {
-          g.add(boxM(2.6, 9, 3.4, M2.stone, s * 3.9, 3.9, 0));
-          g.add(boxM(3, 0.35, 3.8, M2.stoneDark, s * 3.9, 8.55, 0));
-          for (let q = 0; q < 4; q++) g.add(boxM(0.6, 0.7, 0.6, M2.stone, s * 3.9 + (q % 2 ? 0.95 : -0.95), 9.05, q < 2 ? 1.35 : -1.35));
+          g.add(boxM(2.6, 9, 3.4, M3.stone, s * 3.9, 3.9, 0));
+          g.add(boxM(3, 0.35, 3.8, M3.stoneDark, s * 3.9, 8.55, 0));
+          for (let q = 0; q < 4; q++) g.add(boxM(0.6, 0.7, 0.6, M3.stone, s * 3.9 + (q % 2 ? 0.95 : -0.95), 9.05, q < 2 ? 1.35 : -1.35));
           const tg = new Group();
           tg.position.set(s * 2.5, 4.4, 1.85);
           g.add(tg);
-          tg.add(rot(cylM(0.05, 0.04, 0.7, 6, M2.wood, 0, 0, 0.15), "x", 0.5));
-          tg.add(cylM(0.1, 0.07, 0.18, 8, M2.iron, 0, 0.3, 0.32));
+          tg.add(rot(cylM(0.05, 0.04, 0.7, 6, M3.wood, 0, 0, 0.15), "x", 0.5));
+          tg.add(cylM(0.1, 0.07, 0.18, 8, M3.iron, 0, 0.3, 0.32));
           fires.push({ parent: tg, x: 0, y: 0.48, z: 0.32, s: 0.5, color: "#ff8a3a" });
           nightLight("#ff8a3a", 8, 11, s * 2.5, 4.9, 2.6, g);
         });
@@ -45391,19 +45391,19 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         arch.closePath();
         const ag = new ExtrudeGeometry(arch, { depth: 3, bevelEnabled: false, curveSegments: 16 });
         ag.translate(0, 0, -1.5);
-        g.add(mesh(uvBox(ag), M2.stone));
+        g.add(mesh(uvBox(ag), M3.stone));
         const pc = new Group();
         pc.position.set(0, 5.6, 0.9);
         g.add(pc);
-        for (let i = -5; i <= 5; i++) pc.add(boxM(0.08, 2.2, 0.08, M2.iron, i * 0.47, 1, 0));
-        for (let j = 0; j < 3; j++) pc.add(boxM(4.9, 0.07, 0.07, M2.iron, 0, 0.1 + j * 0.8, 0.04));
+        for (let i = -5; i <= 5; i++) pc.add(boxM(0.08, 2.2, 0.08, M3.iron, i * 0.47, 1, 0));
+        for (let j = 0; j < 3; j++) pc.add(boxM(4.9, 0.07, 0.07, M3.iron, 0, 0.1 + j * 0.8, 0.04));
         [-1, 1].forEach((s) => {
           const dr = new Group();
           dr.position.set(s * 2.55, 0, -1.4);
           dr.rotation.y = s * 1.25;
           g.add(dr);
-          dr.add(boxM(2.5, 5.2, 0.16, M2.planks, -s * 1.25, 2.6, 0));
-          [1, 2.6, 4.2].forEach((yy) => dr.add(boxM(2.4, 0.12, 0.05, M2.iron, -s * 1.25, yy, 0.1)));
+          dr.add(boxM(2.5, 5.2, 0.16, M3.planks, -s * 1.25, 2.6, 0));
+          [1, 2.6, 4.2].forEach((yy) => dr.add(boxM(2.4, 0.12, 0.05, M3.iron, -s * 1.25, yy, 0.1)));
         });
         const ca = new Mesh(new CircleGeometry(0.7, 24), new MeshStandardMaterial({ color: "#7a1a1a", roughness: 0.6 }));
         ca.position.set(0, 6.4, 1.52);
@@ -45426,18 +45426,18 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const f = new Group();
       const prof = (pts2) => new LatheGeometry(pts2.map((p) => new Vector2(p[0], p[1])), 48);
       const basin = prof([[0, 0], [3.4, 0], [3.55, 0.08], [3.55, 0.62], [3.4, 0.72], [3.15, 0.72], [3.05, 0.55], [0, 0.5]]);
-      const bm = mesh(basin, M2.stone);
+      const bm = mesh(basin, M3.stone);
       uvCylLathe(basin);
       f.add(bm);
       const col = prof([[0, 0], [0.75, 0], [0.6, 0.2], [0.42, 0.4], [0.36, 1.4], [0.5, 1.6], [0, 1.65]]);
       uvCylLathe(col);
-      f.add(mesh(col, M2.stone, 0, 0.5, 0));
+      f.add(mesh(col, M3.stone, 0, 0.5, 0));
       const bowl = prof([[0, 0], [0.3, 0], [1.2, 0.15], [1.62, 0.35], [1.66, 0.52], [1.5, 0.55], [1.4, 0.42], [0, 0.3]]);
       uvCylLathe(bowl);
-      f.add(mesh(bowl, M2.stone, 0, 2.1, 0));
+      f.add(mesh(bowl, M3.stone, 0, 2.1, 0));
       const top = prof([[0, 0], [0.22, 0], [0.16, 0.3], [0.12, 0.9], [0.22, 1], [0.1, 1.12], [0, 1.15]]);
       uvCylLathe(top);
-      f.add(mesh(top, M2.stone, 0, 2.55, 0));
+      f.add(mesh(top, M3.stone, 0, 2.55, 0));
       const wn = tex("water_n.jpg", { repeat: 1 });
       const wn2 = tex("water_n.jpg", { repeat: 0.7 });
       const water = new MeshStandardMaterial({ color: "#0d1d22", roughness: 0.14, metalness: 0.1, normalMap: wn, normalScale: new Vector2(0.22, 0.22), envMapIntensity: 1.6, transparent: true, opacity: 0.96 });
@@ -45507,11 +45507,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const g = new Group();
       g.position.set(x, 0, z);
       g.rotation.y = yaw;
-      for (let i = 0; i < 3; i++) g.add(boxM(1.9, 0.05, 0.14, M2.wood, 0, 0.46, -0.17 + i * 0.17));
-      for (let i = 0; i < 3; i++) g.add(rot(boxM(1.9, 0.1, 0.04, M2.wood, 0, 0.65 + i * 0.13, -0.3), "x", -0.1));
+      for (let i = 0; i < 3; i++) g.add(boxM(1.9, 0.05, 0.14, M3.wood, 0, 0.46, -0.17 + i * 0.17));
+      for (let i = 0; i < 3; i++) g.add(rot(boxM(1.9, 0.1, 0.04, M3.wood, 0, 0.65 + i * 0.13, -0.3), "x", -0.1));
       [-0.78, 0.78].forEach((s) => {
-        g.add(boxM(0.05, 0.46, 0.5, M2.iron, s, 0.23, -0.05));
-        g.add(boxM(0.05, 0.5, 0.05, M2.iron, s, 0.7, -0.29));
+        g.add(boxM(0.05, 0.46, 0.5, M3.iron, s, 0.23, -0.05));
+        g.add(boxM(0.05, 0.5, 0.05, M3.iron, s, 0.7, -0.29));
       });
       world.add(g);
       colliders.push({ type: "rect", x, z, hw: 1, hd: 0.4, ang: yaw });
@@ -45524,14 +45524,14 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     function lamp(x, z, real) {
       const g = new Group();
       g.position.set(x, 0, z);
-      g.add(cylM(0.18, 0.22, 0.3, 8, M2.stoneDark, 0, 0.15, 0));
-      g.add(cylM(0.06, 0.08, 3.2, 8, M2.iron, 0, 1.9, 0));
-      g.add(cylM(0.1, 0.1, 0.12, 8, M2.iron, 0, 0.4, 0), cylM(0.09, 0.09, 0.1, 8, M2.iron, 0, 3.45, 0));
-      g.add(cylM(0.17, 0.13, 0.4, 6, M2.lampGlass, 0, 3.72, 0));
-      g.add(cylM(0.05, 0.25, 0.18, 6, M2.iron, 0, 4, 0), cylM(0.02, 0.02, 0.2, 6, M2.iron, 0, 4.18, 0));
+      g.add(cylM(0.18, 0.22, 0.3, 8, M3.stoneDark, 0, 0.15, 0));
+      g.add(cylM(0.06, 0.08, 3.2, 8, M3.iron, 0, 1.9, 0));
+      g.add(cylM(0.1, 0.1, 0.12, 8, M3.iron, 0, 0.4, 0), cylM(0.09, 0.09, 0.1, 8, M3.iron, 0, 3.45, 0));
+      g.add(cylM(0.17, 0.13, 0.4, 6, M3.lampGlass, 0, 3.72, 0));
+      g.add(cylM(0.05, 0.25, 0.18, 6, M3.iron, 0, 4, 0), cylM(0.02, 0.02, 0.2, 6, M3.iron, 0, 4.18, 0));
       for (let k = 0; k < 6; k++) {
         const ang = k / 6 * Math.PI * 2;
-        g.add(boxM(0.02, 0.42, 0.02, M2.iron, Math.cos(ang) * 0.16, 3.72, Math.sin(ang) * 0.16));
+        g.add(boxM(0.02, 0.42, 0.02, M3.iron, Math.cos(ang) * 0.16, 3.72, Math.sin(ang) * 0.16));
       }
       glowSprite("#ffc27a", 2.2, 0, 3.72, 0, g);
       if (real) nightLight("#ffb35c", 10, 14, 0, 3.6, 0, g);
@@ -45551,7 +45551,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const g = new Group();
       g.position.set(x, 0, z);
       g.rotation.y = yaw;
-      [[-1.1, -0.75], [1.1, -0.75], [-1.1, 0.75], [1.1, 0.75]].forEach(([a, b]) => g.add(boxM(0.1, 2.5, 0.1, M2.wood, a, 1.25, b)));
+      [[-1.1, -0.75], [1.1, -0.75], [-1.1, 0.75], [1.1, 0.75]].forEach(([a, b]) => g.add(boxM(0.1, 2.5, 0.1, M3.wood, a, 1.25, b)));
       const ct = clothTex(c1, c2);
       const geo = new PlaneGeometry(2.7, 2.1, 10, 6);
       const p = geo.attributes.position;
@@ -45563,16 +45563,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       roof.castShadow = true;
       roof.userData.keep = true;
       g.add(roof);
-      g.add(boxM(2.2, 0.08, 1, M2.wood, 0, 0.9, -0.05));
-      g.add(boxM(2.2, 0.85, 0.06, M2.planks, 0, 0.45, 0.44));
-      g.add(boxM(0.06, 0.85, 1, M2.planks, -1.08, 0.45, -0.05));
-      g.add(boxM(0.06, 0.85, 1, M2.planks, 1.08, 0.45, -0.05));
+      g.add(boxM(2.2, 0.08, 1, M3.wood, 0, 0.9, -0.05));
+      g.add(boxM(2.2, 0.85, 0.06, M3.planks, 0, 0.45, 0.44));
+      g.add(boxM(0.06, 0.85, 1, M3.planks, -1.08, 0.45, -0.05));
+      g.add(boxM(0.06, 0.85, 1, M3.planks, 1.08, 0.45, -0.05));
       for (let i = 0; i < 40; i++) {
         const f = goods[i % goods.length];
         const s = mesh(new IcosahedronGeometry(f[1], 1), new MeshStandardMaterial({ color: f[0], roughness: 0.5 }), -0.95 + i % 12 * 0.17 + rand() * 0.04, 0.98 + (i / 12 | 0) * 0.05, -0.35 + (i / 12 | 0) % 4 * 0.18);
         g.add(s);
       }
-      [-0.6, 0.6].forEach((xx) => g.add(boxM(0.6, 0.3, 0.45, M2.planks, xx, 0.2, -0.9)));
+      [-0.6, 0.6].forEach((xx) => g.add(boxM(0.6, 0.3, 0.45, M3.planks, xx, 0.2, -0.9)));
       world.add(g);
       colliders.push({ type: "rect", x, z, hw: 1.3, hd: 1, ang: yaw });
     };
@@ -45585,8 +45585,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       sh.position.set(sx, 0, sz);
       sh.rotation.y = b.yaw;
       world.add(sh);
-      [[-3, -1.4], [3, -1.4], [-3, 1.6], [3, 1.6]].forEach(([a, c]) => sh.add(boxM(0.22, 3, 0.22, M2.beam, a, 1.5, c)));
-      sh.add(rot(boxM(6.8, 0.14, 3.9, M2.slate, 0, 3.1, 0.1), "x", -0.18));
+      [[-3, -1.4], [3, -1.4], [-3, 1.6], [3, 1.6]].forEach(([a, c]) => sh.add(boxM(0.22, 3, 0.22, M3.beam, a, 1.5, c)));
+      sh.add(rot(boxM(6.8, 0.14, 3.9, M3.slate, 0, 3.1, 0.1), "x", -0.18));
       const an = new Shape();
       an.moveTo(-0.45, 0);
       an.lineTo(0.3, 0);
@@ -45596,11 +45596,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       an.closePath();
       const ag = new ExtrudeGeometry(an, { depth: 0.22, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02, bevelSegments: 2 });
       ag.translate(0, 0, -0.11);
-      sh.add(cylM(0.3, 0.38, 0.55, 10, M2.wood, -1.2, 0.27, 0.6));
-      sh.add(mesh(uvBox(ag), M2.iron, -1.2, 0.72, 0.6));
-      sh.add(boxM(0.3, 0.17, 0.16, M2.iron, -1.25, 0.62, 0.6));
-      sh.add(boxM(1.6, 1, 1.2, M2.stone, 1.6, 0.5, -0.6));
-      sh.add(boxM(1.2, 0.1, 0.8, M2.dark, 1.6, 1.01, -0.6));
+      sh.add(cylM(0.3, 0.38, 0.55, 10, M3.wood, -1.2, 0.27, 0.6));
+      sh.add(mesh(uvBox(ag), M3.iron, -1.2, 0.72, 0.6));
+      sh.add(boxM(0.3, 0.17, 0.16, M3.iron, -1.25, 0.62, 0.6));
+      sh.add(boxM(1.6, 1, 1.2, M3.stone, 1.6, 0.5, -0.6));
+      sh.add(boxM(1.2, 0.1, 0.8, M3.dark, 1.6, 1.01, -0.6));
       fires.push({ parent: sh, x: 1.6, y: 1.1, z: -0.6, s: 0.75, color: "#ff6a2a", coals: true });
       const [fx, fz] = W(b, 1.6, b.d / 2 + 2);
       const fl = nightLight("#ff6a2a", 10, 9, fx, 1.7, fz);
@@ -45615,16 +45615,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       }
       const bg = new LatheGeometry(pts, 18);
       uvCylLathe(bg);
-      sh.add(mesh(bg, M2.wood, 2.7, 0, 0.9));
+      sh.add(mesh(bg, M3.wood, 2.7, 0, 0.9));
       const rack = new Group();
       rack.position.set(-2.6, 0, -1);
       sh.add(rack);
-      rack.add(boxM(0.1, 1.8, 0.1, M2.beam, -0.8, 0.9, 0), boxM(0.1, 1.8, 0.1, M2.beam, 0.8, 0.9, 0), boxM(1.8, 0.08, 0.1, M2.beam, 0, 1.6, 0), boxM(1.8, 0.08, 0.1, M2.beam, 0, 0.4, 0));
+      rack.add(boxM(0.1, 1.8, 0.1, M3.beam, -0.8, 0.9, 0), boxM(0.1, 1.8, 0.1, M3.beam, 0.8, 0.9, 0), boxM(1.8, 0.08, 0.1, M3.beam, 0, 1.6, 0), boxM(1.8, 0.08, 0.1, M3.beam, 0, 0.4, 0));
       for (let i = 0; i < 4; i++) {
-        const sw = boxM(0.06, 1.2, 0.02, M2.iron, -0.6 + i * 0.4, 1, 0.08);
+        const sw = boxM(0.06, 1.2, 0.02, M3.iron, -0.6 + i * 0.4, 1, 0.08);
         sw.rotation.z = 0.08;
         rack.add(sw);
-        rack.add(boxM(0.22, 0.04, 0.06, M2.bronze, -0.6 + i * 0.4, 1.5, 0.08));
+        rack.add(boxM(0.22, 0.04, 0.06, M3.bronze, -0.6 + i * 0.4, 1.5, 0.08));
       }
       colliders.push({ type: "rect", x: sx, z: sz, hw: 3.3, hd: 1.9, ang: b.yaw });
       B.forge.info.door.set(...(() => {
@@ -45640,10 +45640,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         g.position.set(tx, 0, tz);
         g.rotation.y = b.yaw;
         world.add(g);
-        g.add(cylM(0.5, 0.5, 0.08, 14, M2.wood, 0, 0.78, 0));
-        g.add(cylM(0.06, 0.1, 0.74, 8, M2.beam, 0, 0.37, 0));
-        [-1, 1].forEach((s) => g.add(boxM(1.1, 0.06, 0.32, M2.wood, 0, 0.45, s * 0.85)));
-        g.add(cylM(0.06, 0.05, 0.16, 8, M2.iron, 0.15, 0.9, 0.1));
+        g.add(cylM(0.5, 0.5, 0.08, 14, M3.wood, 0, 0.78, 0));
+        g.add(cylM(0.06, 0.1, 0.74, 8, M3.beam, 0, 0.37, 0));
+        [-1, 1].forEach((s) => g.add(boxM(1.1, 0.06, 0.32, M3.wood, 0, 0.45, s * 0.85)));
+        g.add(cylM(0.06, 0.05, 0.16, 8, M3.iron, 0.15, 0.9, 0.1));
         colliders.push({ type: "circle", x: tx, z: tz, r: 1 });
       }
       [[-4.6, 2.6], [-4.6, 3.6], [4.7, 2.8]].forEach(([lx, lz]) => {
@@ -45655,8 +45655,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         }
         const bg = new LatheGeometry(pts, 18);
         uvCylLathe(bg);
-        world.add(mesh(bg, M2.wood, x, 0, z));
-        [0.12, 0.88].forEach((y) => world.add(mesh(new TorusGeometry(0.39, 0.018, 6, 24), M2.iron, x, y, z).rotateX(Math.PI / 2)));
+        world.add(mesh(bg, M3.wood, x, 0, z));
+        [0.12, 0.88].forEach((y) => world.add(mesh(new TorusGeometry(0.39, 0.018, 6, 24), M3.iron, x, y, z).rotateX(Math.PI / 2)));
         colliders.push({ type: "circle", x, z, r: 0.55 });
       });
     }
@@ -45666,8 +45666,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const g = new Group();
       g.position.set(x, 0, z);
       g.rotation.y = b.yaw;
-      [-0.9, 0.9].forEach((s) => g.add(boxM(0.14, 2.8, 0.14, M2.wood, s, 1.4, 0)));
-      g.add(boxM(2, 1.4, 0.08, M2.planks, 0, 1.95, 0));
+      [-0.9, 0.9].forEach((s) => g.add(boxM(0.14, 2.8, 0.14, M3.wood, s, 1.4, 0)));
+      g.add(boxM(2, 1.4, 0.08, M3.planks, 0, 1.95, 0));
       const paper = canvasTexture(128, 160, (c, w2, h2) => {
         c.fillStyle = "#efe4c8";
         c.fillRect(0, 0, w2, h2);
@@ -45696,7 +45696,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const rg = new Group();
       rg.position.y = 2.85;
       g.add(rg);
-      gableRoof(rg, 2.2, 0.6, 0, 0.45, M2.roof, 0.15);
+      gableRoof(rg, 2.2, 0.6, 0, 0.45, M3.roof, 0.15);
       world.add(g);
       colliders.push({ type: "rect", x, z, hw: 1.1, hd: 0.35, ang: b.yaw });
       const [dx, dz] = W(b, -5.2, b.d / 2 + 5.4);
@@ -45721,10 +45721,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       });
     }
     function crate(x, z, s, ry) {
-      const c = boxM(s, s, s, M2.planks, x, s / 2, z);
+      const c = boxM(s, s, s, M3.planks, x, s / 2, z);
       c.rotation.y = ry || 0;
       world.add(c);
-      const e = boxM(s + 0.02, 0.08, s + 0.02, M2.beam, x, s - 0.04, z);
+      const e = boxM(s + 0.02, 0.08, s + 0.02, M3.beam, x, s - 0.04, z);
       e.rotation.y = ry || 0;
       world.add(e);
       colliders.push({ type: "circle", x, z, r: s * 0.8 });
@@ -45737,9 +45737,9 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       }
       const geo = new LatheGeometry(pts, 20);
       uvCylLathe(geo);
-      world.add(mesh(geo, M2.wood, x, 0, z));
-      [0.12, 0.4, 0.6, 0.88].forEach((y) => world.add(mesh(new TorusGeometry(0.39 + Math.sin(y * Math.PI) * 0.08, 0.018, 6, 24), M2.iron, x, y, z).rotateX(Math.PI / 2)));
-      world.add(mesh(new CircleGeometry(0.37, 20), M2.wood, x, 0.99, z).rotateX(-Math.PI / 2));
+      world.add(mesh(geo, M3.wood, x, 0, z));
+      [0.12, 0.4, 0.6, 0.88].forEach((y) => world.add(mesh(new TorusGeometry(0.39 + Math.sin(y * Math.PI) * 0.08, 0.018, 6, 24), M3.iron, x, y, z).rotateX(Math.PI / 2)));
+      world.add(mesh(new CircleGeometry(0.37, 20), M3.wood, x, 0.99, z).rotateX(-Math.PI / 2));
       colliders.push({ type: "circle", x, z, r: 0.55 });
     }
     function well(x, z) {
@@ -45753,16 +45753,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const rg = new ExtrudeGeometry(ring, { depth: 1, bevelEnabled: false, curveSegments: 32 });
       rg.rotateX(-Math.PI / 2);
       uvCylLathe(rg);
-      g.add(mesh(rg, M2.stone));
-      g.add(mesh(new CircleGeometry(0.9, 24), M2.dark, 0, 0.5, 0).rotateX(-Math.PI / 2));
-      [-1, 1].forEach((s) => g.add(boxM(0.16, 2.4, 0.16, M2.wood, s, 2, 0)));
-      g.add(rot(cylM(0.08, 0.08, 2.3, 8, M2.wood, 0, 2.6, 0), "z", Math.PI / 2));
-      g.add(cylM(0.012, 0.012, 1.4, 4, M2.wood, 0, 1.9, 0));
-      g.add(cylM(0.17, 0.14, 0.28, 10, M2.planks, 0, 1.1, 0));
+      g.add(mesh(rg, M3.stone));
+      g.add(mesh(new CircleGeometry(0.9, 24), M3.dark, 0, 0.5, 0).rotateX(-Math.PI / 2));
+      [-1, 1].forEach((s) => g.add(boxM(0.16, 2.4, 0.16, M3.wood, s, 2, 0)));
+      g.add(rot(cylM(0.08, 0.08, 2.3, 8, M3.wood, 0, 2.6, 0), "z", Math.PI / 2));
+      g.add(cylM(0.012, 0.012, 1.4, 4, M3.wood, 0, 1.9, 0));
+      g.add(cylM(0.17, 0.14, 0.28, 10, M3.planks, 0, 1.1, 0));
       const roofG = new Group();
       roofG.position.y = 3.15;
       g.add(roofG);
-      gableRoof(roofG, 2.4, 1.6, 0, 0.9, M2.roof, 0.2);
+      gableRoof(roofG, 2.4, 1.6, 0, 0.9, M3.roof, 0.2);
       world.add(g);
       colliders.push({ type: "circle", x, z, r: 1.45 });
     }
@@ -45789,22 +45789,22 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const g = new Group();
       g.position.set(x, 0, z);
       g.rotation.y = 1.1;
-      g.add(boxM(1.5, 0.1, 2.4, M2.planks, 0, 0.75, 0));
+      g.add(boxM(1.5, 0.1, 2.4, M3.planks, 0, 0.75, 0));
       [-1, 1].forEach((s) => {
-        g.add(boxM(0.06, 0.4, 2.4, M2.planks, s * 0.75, 0.98, 0));
+        g.add(boxM(0.06, 0.4, 2.4, M3.planks, s * 0.75, 0.98, 0));
       });
       [-1, 1].forEach((s) => {
-        const wh = mesh(new TorusGeometry(0.5, 0.06, 8, 20), M2.wood, s * 0.85, 0.55, -0.4);
+        const wh = mesh(new TorusGeometry(0.5, 0.06, 8, 20), M3.wood, s * 0.85, 0.55, -0.4);
         wh.rotation.y = Math.PI / 2;
         g.add(wh);
         for (let k = 0; k < 6; k++) {
-          const sp = boxM(0.04, 0.95, 0.04, M2.wood, s * 0.85, 0.55, -0.4);
+          const sp = boxM(0.04, 0.95, 0.04, M3.wood, s * 0.85, 0.55, -0.4);
           sp.rotation.x = k / 6 * Math.PI;
           g.add(sp);
         }
       });
-      g.add(rot(boxM(0.08, 0.08, 1.8, M2.wood, -0.3, 0.55, 1.9), "x", 0.3));
-      g.add(rot(boxM(0.08, 0.08, 1.8, M2.wood, 0.3, 0.55, 1.9), "x", 0.3));
+      g.add(rot(boxM(0.08, 0.08, 1.8, M3.wood, -0.3, 0.55, 1.9), "x", 0.3));
+      g.add(rot(boxM(0.08, 0.08, 1.8, M3.wood, 0.3, 0.55, 1.9), "x", 0.3));
       const hay = new MeshStandardMaterial({ color: "#c8a85a", roughness: 1, map: tex("grass2.jpg", { srgb: true, repeat: 1 }) });
       const hm = mesh(new IcosahedronGeometry(0.9, 3), hay, 0, 1.15, 0);
       hm.scale.set(0.82, 0.48, 1.3);
@@ -45865,26 +45865,26 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       const kx = C2.x, kz = C2.z - 50;
       const g = new Group();
       g.position.set(kx, 0, kz);
-      g.add(boxM(30, 11, 22, M2.stone, 0, 5.5, 0));
+      g.add(boxM(30, 11, 22, M3.stone, 0, 5.5, 0));
       for (let i = 0; i < 15; i++) {
-        g.add(boxM(1.1, 1.3, 1.1, M2.stone, -14 + i * 2, 11.6, 11));
-        g.add(boxM(1.1, 1.3, 1.1, M2.stone, -14 + i * 2, 11.6, -11));
+        g.add(boxM(1.1, 1.3, 1.1, M3.stone, -14 + i * 2, 11.6, 11));
+        g.add(boxM(1.1, 1.3, 1.1, M3.stone, -14 + i * 2, 11.6, -11));
       }
       [[-15, -11], [15, -11], [-15, 11], [15, 11]].forEach(([tx, tz]) => {
-        g.add(mesh(uvCyl(new CylinderGeometry(3.2, 3.6, 18, 20), 3.4), M2.stone, tx, 9, tz));
-        g.add(mesh(new ConeGeometry(4, 7, 20), M2.slate, tx, 21.5, tz));
+        g.add(mesh(uvCyl(new CylinderGeometry(3.2, 3.6, 18, 20), 3.4), M3.stone, tx, 9, tz));
+        g.add(mesh(new ConeGeometry(4, 7, 20), M3.slate, tx, 21.5, tz));
         const fl = new Mesh(new PlaneGeometry(1.8, 1), new MeshStandardMaterial({ color: "#d9a24a", side: DoubleSide, roughness: 0.8 }));
         fl.position.set(tx + 0.9, 26.5, tz);
         fl.userData.keep = true;
         g.add(fl);
-        g.add(cylM(0.05, 0.05, 3, 6, M2.iron, tx, 26, tz));
+        g.add(cylM(0.05, 0.05, 3, 6, M3.iron, tx, 26, tz));
       });
-      g.add(boxM(12, 26, 12, M2.stone, 0, 13, -2));
-      g.add(boxM(13, 0.5, 13, M2.stoneDark, 0, 26.2, -2));
+      g.add(boxM(12, 26, 12, M3.stone, 0, 13, -2));
+      g.add(boxM(13, 0.5, 13, M3.stoneDark, 0, 26.2, -2));
       for (let i = 0; i < 6; i++) {
-        [-6, 6].forEach((zz) => g.add(boxM(1, 1.2, 0.8, M2.stone, -5 + i * 2, 27, -2 + zz)));
+        [-6, 6].forEach((zz) => g.add(boxM(1, 1.2, 0.8, M3.stone, -5 + i * 2, 27, -2 + zz)));
       }
-      g.add(mesh(new ConeGeometry(7.5, 9, 4), M2.slate, 0, 31, -2).rotateY(Math.PI / 4));
+      g.add(mesh(new ConeGeometry(7.5, 9, 4), M3.slate, 0, 31, -2).rotateY(Math.PI / 4));
       for (let k = 0; k < 4; k++) for (let q = 0; q < 3; q++) windowAt(g, -9 + k * 6, 4 + q * 2.6, 11.05, 0, { w: 0.7, h: 1.2, shutters: false });
       const arch = new Shape();
       arch.moveTo(-2.8, 0);
@@ -45892,7 +45892,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
       arch.absarc(0, 4, 2.8, Math.PI, 0, true);
       arch.lineTo(2.8, 0);
       arch.closePath();
-      g.add(mesh(new ShapeGeometry(arch), M2.dark, 0, 0, 11.06));
+      g.add(mesh(new ShapeGeometry(arch), M3.dark, 0, 0, 11.06));
       const ban = canvasTexture(256, 512, (c, w2, h2) => {
         c.fillStyle = "#1e2a6a";
         c.fillRect(0, 0, w2, h2);
@@ -45927,11 +45927,11 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const tw = new Group();
         tw.position.set(sd * 5.2, 0, b.d / 2 - 1.6);
         b.g.add(tw);
-        tw.add(boxM(3.6, 22, 3.6, M2.stone, 0, 11, 0));
-        tw.add(boxM(4, 0.4, 4, M2.stoneDark, 0, 22.2, 0));
-        tw.add(mesh(new ConeGeometry(2.9, 9, 4), M2.slate, 0, 27, 0).rotateY(Math.PI / 4));
-        tw.add(boxM(0.15, 1.6, 0.15, M2.gold, 0, 32.2, 0));
-        tw.add(boxM(1, 0.15, 0.15, M2.gold, 0, 32.5, 0));
+        tw.add(boxM(3.6, 22, 3.6, M3.stone, 0, 11, 0));
+        tw.add(boxM(4, 0.4, 4, M3.stoneDark, 0, 22.2, 0));
+        tw.add(mesh(new ConeGeometry(2.9, 9, 4), M3.slate, 0, 27, 0).rotateY(Math.PI / 4));
+        tw.add(boxM(0.15, 1.6, 0.15, M3.gold, 0, 32.2, 0));
+        tw.add(boxM(1, 0.15, 0.15, M3.gold, 0, 32.5, 0));
         for (let q = 0; q < 3; q++) windowAt(tw, 0, 5 + q * 5, 1.82, 0, { w: 0.6, h: 1.6, shutters: false });
       });
       const rose = canvasTexture(256, 256, (c, w2, h2) => {
@@ -45968,16 +45968,16 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     {
       const g = new Group();
       g.position.set(C2.x, 0, C2.z);
-      g.add(mesh(uvCyl(new CylinderGeometry(4.5, 5, 1, 32), 5), M2.marble, 0, 0.5, 0));
-      g.add(mesh(uvCyl(new CylinderGeometry(3.6, 3.9, 0.9, 32), 3.8), M2.marble, 0, 1.4, 0));
-      g.add(mesh(uvCyl(new CylinderGeometry(0.75, 0.9, 12, 20), 0.9), M2.marble, 0, 7.8, 0));
-      g.add(boxM(2.2, 0.7, 2.2, M2.marble, 0, 14.1, 0));
+      g.add(mesh(uvCyl(new CylinderGeometry(4.5, 5, 1, 32), 5), M3.marble, 0, 0.5, 0));
+      g.add(mesh(uvCyl(new CylinderGeometry(3.6, 3.9, 0.9, 32), 3.8), M3.marble, 0, 1.4, 0));
+      g.add(mesh(uvCyl(new CylinderGeometry(0.75, 0.9, 12, 20), 0.9), M3.marble, 0, 7.8, 0));
+      g.add(boxM(2.2, 0.7, 2.2, M3.marble, 0, 14.1, 0));
       const sun = new Group();
       sun.position.y = 16.2;
       g.add(sun);
-      sun.add(mesh(new SphereGeometry(1, 24, 16), M2.gold));
+      sun.add(mesh(new SphereGeometry(1, 24, 16), M3.gold));
       for (let i = 0; i < 12; i++) {
-        const ray = mesh(new ConeGeometry(0.22, 1.3, 6), M2.gold, Math.cos(i / 12 * 6.283) * 1.6, Math.sin(i / 12 * 6.283) * 1.6, 0);
+        const ray = mesh(new ConeGeometry(0.22, 1.3, 6), M3.gold, Math.cos(i / 12 * 6.283) * 1.6, Math.sin(i / 12 * 6.283) * 1.6, 0);
         ray.rotation.z = i / 12 * 6.283 - Math.PI / 2;
         sun.add(ray);
       }
@@ -46033,10 +46033,10 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g = new Group();
         g.position.set(x, 0, z);
         g.rotation.y = -am + Math.PI / 2;
-        g.add(boxM(L2, WH, WT, M2.stone, 0, WH / 2 - 0.6, 0));
-        g.add(boxM(L2, 0.3, WT + 0.3, M2.stoneDark, 0, WH - 0.45, 0));
-        g.add(boxM(L2 * 0.42, 1, 0.5, M2.stone, -L2 * 0.25, WH + 0.2, -WT / 2 + 0.25));
-        g.add(boxM(L2 * 0.42, 1, 0.5, M2.stone, -L2 * 0.25, WH + 0.2, WT / 2 - 0.25));
+        g.add(boxM(L2, WH, WT, M3.stone, 0, WH / 2 - 0.6, 0));
+        g.add(boxM(L2, 0.3, WT + 0.3, M3.stoneDark, 0, WH - 0.45, 0));
+        g.add(boxM(L2 * 0.42, 1, 0.5, M3.stone, -L2 * 0.25, WH + 0.2, -WT / 2 + 0.25));
+        g.add(boxM(L2 * 0.42, 1, 0.5, M3.stone, -L2 * 0.25, WH + 0.2, WT / 2 - 0.25));
         world.add(g);
         colliders.push({ type: "rect", x, z, hw: L2 / 2 + 0.05, hd: WT / 2, ang: -am + Math.PI / 2, h: WH });
       }
@@ -46046,8 +46046,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const x = C2.x + Math.cos(a) * R2, z = C2.z + Math.sin(a) * R2;
         const t = new Group();
         t.position.set(x, 0, z);
-        t.add(mesh(uvCyl(new CylinderGeometry(3.2, 3.5, 12, 18), 3.4), M2.stone, 0, 5.4, 0));
-        t.add(mesh(new ConeGeometry(3.8, 5, 18), M2.slate, 0, 13.9, 0));
+        t.add(mesh(uvCyl(new CylinderGeometry(3.2, 3.5, 12, 18), 3.4), M3.stone, 0, 5.4, 0));
+        t.add(mesh(new ConeGeometry(3.8, 5, 18), M3.slate, 0, 13.9, 0));
         world.add(t);
         colliders.push({ type: "circle", x, z, r: 3.6, h: 15 });
       }
@@ -46057,12 +46057,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         g.position.set(x, 0, z);
         g.rotation.y = -G2.a + Math.PI / 2;
         [-1, 1].forEach((sd) => {
-          g.add(boxM(3.2, 11, 4, M2.stone, sd * 4.8, 4.9, 0));
-          g.add(mesh(new ConeGeometry(2.6, 3.6, 4), M2.slate, sd * 4.8, 12.2, 0).rotateY(Math.PI / 4));
+          g.add(boxM(3.2, 11, 4, M3.stone, sd * 4.8, 4.9, 0));
+          g.add(mesh(new ConeGeometry(2.6, 3.6, 4), M3.slate, sd * 4.8, 12.2, 0).rotateY(Math.PI / 4));
           const tg = new Group();
           tg.position.set(sd * 3.1, 4.6, 2.2);
           g.add(tg);
-          tg.add(cylM(0.1, 0.07, 0.18, 8, M2.iron, 0, 0.3, 0.32));
+          tg.add(cylM(0.1, 0.07, 0.18, 8, M3.iron, 0, 0.3, 0.32));
           fires.push({ parent: tg, x: 0, y: 0.48, z: 0.32, s: 0.5, color: "#ff8a3a" });
           nightLight("#ff8a3a", 8, 11, sd * 3.1, 5, 3, g);
         });
@@ -46078,7 +46078,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         arch.closePath();
         const ag = new ExtrudeGeometry(arch, { depth: 3.6, bevelEnabled: false, curveSegments: 16 });
         ag.translate(0, 0, -1.8);
-        g.add(mesh(uvBox(ag), M2.stone));
+        g.add(mesh(uvBox(ag), M3.stone));
         const sg = canvasTexture(512, 128, (c, w2, h2) => {
           c.fillStyle = "#1e2a6a";
           c.fillRect(0, 0, w2, h2);
@@ -46092,7 +46092,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         sp.position.set(0, 9.9, 1.85);
         sp.userData.keep = true;
         g.add(sp);
-        g.add(boxM(5.4, 1.5, 0.2, M2.beam, 0, 9.9, 1.7));
+        g.add(boxM(5.4, 1.5, 0.2, M3.beam, 0, 9.9, 1.7));
         world.add(g);
         [-1, 1].forEach((sd) => colliders.push({ type: "rect", x: x - Math.sin(G2.a) * sd * 4.8, z: z + Math.cos(G2.a) * sd * 4.8, hw: 1.7, hd: 2.1, ang: -G2.a + Math.PI / 2, h: 11 }));
       });
@@ -46592,8 +46592,8 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         c.stroke();
       });
     }));
-    const wild = buildWild({ world, colliders, anim, M: M2, rand, fires, nightLight, glowSprite, paint, interactives });
-    dungeon = buildDungeon({ world, colliders, anim, M: M2, rand, fires, nightLight, glowSprite, paint, interactives });
+    const wild = buildWild({ world, colliders, anim, M: M3, rand, fires, nightLight, glowSprite, paint, interactives });
+    dungeon = buildDungeon({ world, colliders, anim, M: M3, rand, fires, nightLight, glowSprite, paint, interactives });
     dungeon.spawns.forEach((sp) => wild.spawns.push(sp));
     dungeon.surfaceRocks.forEach((r) => wild.rockSpots.push(r));
     const maskData = cx2.getImageData(0, 0, MP, MP).data, wmaskData = wcx.getImageData(0, 0, WMP, WMP).data;
@@ -46654,12 +46654,12 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
         const g = new Group();
         const y = heightAt(x, z);
         g.position.set(x, y, z);
-        g.add(mesh(uvCyl(new CylinderGeometry(1.6, 1.9, 0.5, 8), 1.8), M2.stoneDark, 0, 0.1, 0));
-        g.add(mesh(uvCyl(new CylinderGeometry(1.15, 1.3, 0.3, 8), 1.2), M2.stone, 0, 0.5, 0));
-        const ob = mesh(uvCyl(new CylinderGeometry(0.42, 0.62, 3.4, 4), 0.6), M2.stone, 0, 2.3, 0);
+        g.add(mesh(uvCyl(new CylinderGeometry(1.6, 1.9, 0.5, 8), 1.8), M3.stoneDark, 0, 0.1, 0));
+        g.add(mesh(uvCyl(new CylinderGeometry(1.15, 1.3, 0.3, 8), 1.2), M3.stone, 0, 0.5, 0));
+        const ob = mesh(uvCyl(new CylinderGeometry(0.42, 0.62, 3.4, 4), 0.6), M3.stone, 0, 2.3, 0);
         ob.rotation.y = Math.PI / 4;
         g.add(ob);
-        g.add(mesh(new ConeGeometry(0.45, 0.7, 4), M2.stoneDark, 0, 4.35, 0).rotateY(Math.PI / 4));
+        g.add(mesh(new ConeGeometry(0.45, 0.7, 4), M3.stoneDark, 0, 4.35, 0).rotateY(Math.PI / 4));
         [1.4, 2.3, 3.2].forEach((yy) => {
           const ring = new Mesh(new TorusGeometry(0.56 - (yy - 1.4) * 0.05, 0.045, 6, 4), runeM);
           ring.rotation.x = Math.PI / 2;
@@ -46709,7 +46709,7 @@ float gFbm(vec2 p){ float v = 0.0, a = .5; for(int i=0;i<4;i++){ v += a*gNoise(p
     }
     dungeon.interactives.forEach((i) => interactives.push(i));
     dungeon.pickables.forEach((p) => pickables.push(p));
-    return { group: world, colliders, pickables, interactives, anim, lights, glows, fires, blocked, resolve, findPath, findPathWild, randomFree, walkable, where, nearestGate, wild, dungeon, buildings: B, homes, treeSpots, rimRocks, mask: { canvas: cv, size: MASK, at: maskAt }, wmask: { canvas: wcv, size: WMS }, mask2: { canvas: cv2, size: M2S, x: C2.x, z: C2.z }, city2: B2, cull, waystones, M: M2 };
+    return { group: world, colliders, pickables, interactives, anim, lights, glows, fires, blocked, resolve, findPath, findPathWild, randomFree, walkable, where, nearestGate, wild, dungeon, buildings: B, homes, treeSpots, rimRocks, mask: { canvas: cv, size: MASK, at: maskAt }, wmask: { canvas: wcv, size: WMS }, mask2: { canvas: cv2, size: M2S, x: C2.x, z: C2.z }, city2: B2, cull, waystones, M: M3 };
   }
   function uvCylLathe(geo) {
     const p = geo.attributes.position;
@@ -47314,13 +47314,13 @@ void main(){
     return new Point(x, isEven(r) ? r : M(-r), /* @__PURE__ */ BigInt("1"));
   };
   var _Point = class _Point {
-    constructor(X, Y, Z2) {
+    constructor(X, Y, Z3) {
       __publicField(this, "X");
       __publicField(this, "Y");
       __publicField(this, "Z");
       this.X = FpIsValid(X);
       this.Y = FpIsValidNot0(Y);
-      this.Z = FpIsValid(Z2);
+      this.Z = FpIsValid(Z3);
       freeze(this);
     }
     /** Returns the shared curve metadata object by reference.
@@ -47364,8 +47364,8 @@ void main(){
     /** Equality check: compare points P&Q. */
     equals(other) {
       const { X: X1, Y: Y1, Z: Z1 } = this;
-      const { X: X2, Y: Y2, Z: Z2 } = apoint(other);
-      return M(X1 * Z2) === M(X2 * Z1) && M(Y1 * Z2) === M(Y2 * Z1);
+      const { X: X2, Y: Y2, Z: Z22 } = apoint(other);
+      return M(X1 * Z22) === M(X2 * Z1) && M(Y1 * Z22) === M(Y2 * Z1);
     }
     is0() {
       return this.Z === /* @__PURE__ */ BigInt("0");
@@ -47386,23 +47386,23 @@ void main(){
     // prettier-ignore
     add(other) {
       const { X: X1, Y: Y1, Z: Z1 } = this;
-      const { X: X2, Y: Y2, Z: Z2 } = apoint(other);
+      const { X: X2, Y: Y2, Z: Z22 } = apoint(other);
       const a = /* @__PURE__ */ BigInt("0");
       const b = /* @__PURE__ */ BigInt("7");
       let X3 = /* @__PURE__ */ BigInt("0"), Y3 = /* @__PURE__ */ BigInt("0"), Z3 = /* @__PURE__ */ BigInt("0");
       const b3 = M(b * /* @__PURE__ */ BigInt("3"));
-      let t0 = M(X1 * X2), t1 = M(Y1 * Y2), t2 = M(Z1 * Z2), t3 = M(X1 + Y1);
+      let t0 = M(X1 * X2), t1 = M(Y1 * Y2), t2 = M(Z1 * Z22), t3 = M(X1 + Y1);
       let t4 = M(X2 + Y2);
       t3 = M(t3 * t4);
       t4 = M(t0 + t1);
       t3 = M(t3 - t4);
       t4 = M(X1 + Z1);
-      let t5 = M(X2 + Z2);
+      let t5 = M(X2 + Z22);
       t4 = M(t4 * t5);
       t5 = M(t0 + t2);
       t4 = M(t4 - t5);
       t5 = M(Y1 + Z1);
-      X3 = M(Y2 + Z2);
+      X3 = M(Y2 + Z22);
       t5 = M(t5 * X3);
       X3 = M(t1 + t2);
       t5 = M(t5 - X3);
@@ -52023,7 +52023,7 @@ ${candidateLine}`;
     }
   ];
   function createAdventurers(o) {
-    const { npcs, net, town, heightAt: heightAt2, step, say } = o;
+    const { npcs, net, town: town2, heightAt: heightAt2, step, say } = o;
     const list = ADV_DEFS.map((d, i) => {
       const n = npcs.find((q) => q.def.id === d.id);
       if (!n) return null;
@@ -52042,7 +52042,7 @@ ${candidateLine}`;
     };
     list.forEach((a) => {
       const Zn = Z(PARTIES[a.p].zones[a.p % PARTIES[a.p].zones.length]);
-      const [x, z] = town.randomFree(Zn.x, Zn.z, Zn.r * 0.4);
+      const [x, z] = town2.randomFree(Zn.x, Zn.z, Zn.r * 0.4);
       a.n.a.x = x + a.i % 2 * 1.5;
       a.n.a.z = z;
       parties[a.p].zi = a.p % PARTIES[a.p].zones.length;
@@ -52054,7 +52054,7 @@ ${candidateLine}`;
       for (let t = 0; t < 20; t++) {
         const a = Math.random() * 6.28, r = Math.random() * Zn.r * 0.55;
         const x = Zn.x + Math.cos(a) * r, z = Zn.z + Math.sin(a) * r;
-        if (inWild(x, z, 2) && !town.blocked(x, z, 0.6)) return [x, z];
+        if (inWild(x, z, 2) && !town2.blocked(x, z, 0.6)) return [x, z];
       }
       return [Zn.x, Zn.z];
     }
@@ -52114,7 +52114,7 @@ ${candidateLine}`;
       a.n.a.path = [[x, z]];
       a.run = !!run2;
     }
-    function hostTick(dt, T) {
+    function hostTick(dt, T2) {
       parties.forEach((pt) => {
         const mem = alive(pt.k);
         if (!mem.length) return;
@@ -52172,8 +52172,8 @@ ${candidateLine}`;
           } else if (idx === 0) {
             if (pt.follow) {
               let fp = posOf(pt.follow);
-              if (fp && town.where(fp.x, fp.z) !== "wild") {
-                const G2 = town.nearestGate(fp.x, fp.z);
+              if (fp && town2.where(fp.x, fp.z) !== "wild") {
+                const G2 = town2.nearestGate(fp.x, fp.z);
                 fp = { x: G2.out[0], z: G2.out[1] };
               }
               if (fp) {
@@ -52182,7 +52182,7 @@ ${candidateLine}`;
                   pt.repT = 1;
                   const k = (d - 3) / d;
                   const gx = A.x + (fp.x - A.x) * k, gz = A.z + (fp.z - A.z) * k;
-                  A.path = d < 40 ? [[gx, gz]] : town.findPathWild(A.x, A.z, gx, gz);
+                  A.path = d < 40 ? [[gx, gz]] : town2.findPathWild(A.x, A.z, gx, gz);
                   a.run = d > 9;
                 }
               }
@@ -52192,7 +52192,7 @@ ${candidateLine}`;
                 if (!pt.goal || Math.hypot(pt.goal[0] - A.x, pt.goal[1] - A.z) < 3 || Math.random() < 0.25) pt.goal = pickGoal(pt);
                 const [gx, gz] = pt.goal;
                 const d = Math.hypot(gx - A.x, gz - A.z);
-                A.path = d > 400 ? [[A.x + (gx - A.x) * 0.5, A.z + (gz - A.z) * 0.5]] : town.findPathWild(A.x, A.z, gx, gz);
+                A.path = d > 400 ? [[A.x + (gx - A.x) * 0.5, A.z + (gz - A.z) * 0.5]] : town2.findPathWild(A.x, A.z, gx, gz);
                 if (!A.path.length) A.path = [[gx, gz]];
                 a.run = false;
                 pt.idleT = 6 + Math.random() * 10;
@@ -52223,11 +52223,11 @@ ${candidateLine}`;
             x = L2.n.a.x + 1.5;
             z = L2.n.a.z + 1.5;
           } else {
-            const G2 = town.nearestGate(a.n.a.x, a.n.a.z);
+            const G2 = town2.nearestGate(a.n.a.x, a.n.a.z);
             x = G2.out[0];
             z = G2.out[1];
           }
-          [x, z] = town.resolve(x, z, 0.5);
+          [x, z] = town2.resolve(x, z, 0.5);
           a.n.a.x = x;
           a.n.a.z = z;
           a.n.a.path = [];
@@ -52898,12 +52898,12 @@ ${candidateLine}`;
     const R2 = RARITY[rarity];
     if (WEAPONS[kind]) {
       const W = WEAPONS[kind];
-      const base2 = [10, 18, 30, 46, 68][tier];
-      return { uid: ++uid, k: "weapon", w: kind, n: W.tiers[tier], i: W.i, tier, rar: rarity, plus: 0, atk: Math.round(base2 * R2.m), bonus: rollBonus(rarity, tier) };
+      const base3 = [10, 18, 30, 46, 68][tier];
+      return { uid: ++uid, k: "weapon", w: kind, n: W.tiers[tier], i: W.i, tier, rar: rarity, plus: 0, atk: Math.round(base3 * R2.m), bonus: rollBonus(rarity, tier) };
     }
     const A = ARMORS[kind];
-    const base = { armor: [5, 10, 17, 26, 38], helm: [2, 5, 8, 12, 18], shield: [3, 7, 12, 18, 26], ring: [0, 0, 0, 0, 0], amulet: [0, 0, 0, 0, 0] }[kind][tier];
-    const it = { uid: ++uid, k: kind, n: A.tiers[tier], i: A.i, tier, rar: rarity, plus: 0, def: Math.round(base * R2.m), bonus: rollBonus(rarity + (kind === "ring" || kind === "amulet" ? 1 : 0), tier) };
+    const base2 = { armor: [5, 10, 17, 26, 38], helm: [2, 5, 8, 12, 18], shield: [3, 7, 12, 18, 26], ring: [0, 0, 0, 0, 0], amulet: [0, 0, 0, 0, 0] }[kind][tier];
+    const it = { uid: ++uid, k: kind, n: A.tiers[tier], i: A.i, tier, rar: rarity, plus: 0, def: Math.round(base2 * R2.m), bonus: rollBonus(rarity + (kind === "ring" || kind === "amulet" ? 1 : 0), tier) };
     return it;
   }
   function rollBonus(r, tier) {
@@ -53410,12 +53410,12 @@ ${candidateLine}`;
 `;
   var EXT = 600;
   function createNav(o) {
-    const { root, P: P2, town, agent } = o;
+    const { root, P: P2, town: town2, agent } = o;
     P2.disc = P2.disc || { town: 1 };
     P2.ways = P2.ways || {};
     P2.fog = P2.fog || [];
     const fogSet = new Set(P2.fog);
-    const ways = town.waystones || [];
+    const ways = town2.waystones || [];
     let tracked = P2.track || null;
     const track = document.createElement("div");
     track.className = "nv-track";
@@ -53477,8 +53477,8 @@ ${candidateLine}`;
     const SAFE = { town: "\u{1F3F0}", sun: "\u{1F3F0}", fishing: "\u{1F3D8}", elves: "\u{1F3D8}", dwarves: "\u{1F3D8}", beasts: "\u{1F3D8}", farm: "\u{1F3D8}", shrine: "\u26E9" };
     function pois() {
       const out = [{ id: "town", n: "\u041C\u0456\u0441\u0442\u043E \u0428\u043B\u044F\u0445\u0443", x: 0, z: 0, ic: "\u{1F3F0}", always: true }, { id: "dun", n: "\u041F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u044F \u0410\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432", x: ENTRY.x, z: ENTRY.z, ic: "\u{1F573}" }];
-      ZONES.forEach((Z2) => {
-        out.push({ id: Z2.id, n: Z2.n, x: Z2.x, z: Z2.z, r: Z2.r, ic: Z2.calamity ? "\u2620" : SAFE[Z2.id] || "\u2694", rank: Z2.rank, zone: Z2 });
+      ZONES.forEach((Z3) => {
+        out.push({ id: Z3.id, n: Z3.n, x: Z3.x, z: Z3.z, r: Z3.r, ic: Z3.calamity ? "\u2620" : SAFE[Z3.id] || "\u2694", rank: Z3.rank, zone: Z3 });
       });
       ways.forEach((w) => out.push({ id: "way:" + w.id, n: "\u041A\u0430\u043C\u0456\u043D\u044C \u0448\u043B\u044F\u0445\u0443 \xB7 " + w.n, x: w.x, z: w.z, ic: "\u{1F4A0}", way: w }));
       return out;
@@ -53514,7 +53514,7 @@ ${candidateLine}`;
           const p = npcPos(Q.giver);
           return p && { ...p, label: "\u0437\u0434\u0430\u0442\u0438" };
         }
-        const gs = town.interactives.filter((b) => b.id === "guild" || b.id === "guild2");
+        const gs = town2.interactives.filter((b) => b.id === "guild" || b.id === "guild2");
         let best = null, bd = 1e9;
         gs.forEach((b) => {
           const d = Math.hypot(b.door.x - agent.x, b.door.z - agent.z);
@@ -53526,8 +53526,8 @@ ${candidateLine}`;
         return best && { x: best.door.x, z: best.door.z, label: "\u0437\u0434\u0430\u0442\u0438 \u0432 \u0413\u0456\u043B\u044C\u0434\u0456\u0457" };
       }
       if (Q.type === "visit") {
-        const Z2 = ZONES.find((z) => z.id === Q.zone);
-        return Z2 && { x: Z2.x, z: Z2.z, label: Z2.n };
+        const Z3 = ZONES.find((z) => z.id === Q.zone);
+        return Z3 && { x: Z3.x, z: Z3.z, label: Z3.n };
       }
       if (Q.type === "talk") {
         const p = npcPos(Q.to);
@@ -53590,11 +53590,11 @@ ${candidateLine}`;
     let discT = 0;
     function discover() {
       if (isDun(agent.x)) return;
-      const Z2 = zoneAt(agent.x, agent.z);
-      if (Z2 && !P2.disc[Z2.id]) {
-        P2.disc[Z2.id] = 1;
-        const xp = Z2.calamity ? 300 : Z2.safe ? 120 : 80;
-        o.toast("\u{1F5FA} \u041D\u043E\u0432\u0435 \u043C\u0456\u0441\u0446\u0435: " + Z2.n + "  (+" + xp + " \u0434\u043E\u0441\u0432\u0456\u0434\u0443)", "big");
+      const Z3 = zoneAt(agent.x, agent.z);
+      if (Z3 && !P2.disc[Z3.id]) {
+        P2.disc[Z3.id] = 1;
+        const xp = Z3.calamity ? 300 : Z3.safe ? 120 : 80;
+        o.toast("\u{1F5FA} \u041D\u043E\u0432\u0435 \u043C\u0456\u0441\u0446\u0435: " + Z3.n + "  (+" + xp + " \u0434\u043E\u0441\u0432\u0456\u0434\u0443)", "big");
         o.gainXp && o.gainXp(xp);
         save();
       }
@@ -53658,13 +53658,13 @@ ${candidateLine}`;
       cx.beginPath();
       cx.arc(CITY2.x, CITY2.z, CITY2.R - 10, 0, 7);
       cx.fill();
-      ZONES.forEach((Z2) => {
-        if (Z2.id === "sun") return;
-        cx.strokeStyle = Z2.calamity ? "rgba(255,60,40,.85)" : Z2.safe ? "rgba(140,220,255,.6)" : "rgba(255,200,120,.55)";
-        cx.setLineDash(Z2.calamity ? [] : [6, 5]);
-        cx.lineWidth = Z2.calamity ? 2.5 : 1.6;
+      ZONES.forEach((Z3) => {
+        if (Z3.id === "sun") return;
+        cx.strokeStyle = Z3.calamity ? "rgba(255,60,40,.85)" : Z3.safe ? "rgba(140,220,255,.6)" : "rgba(255,200,120,.55)";
+        cx.setLineDash(Z3.calamity ? [] : [6, 5]);
+        cx.lineWidth = Z3.calamity ? 2.5 : 1.6;
         cx.beginPath();
-        cx.arc(Z2.x, Z2.z, Z2.r, 0, 7);
+        cx.arc(Z3.x, Z3.z, Z3.r, 0, 7);
         cx.stroke();
       });
       cx.setLineDash([]);
@@ -54544,7 +54544,7 @@ ${candidateLine}`;
     RightToeBase: "toesr"
   };
   var GEN = (() => {
-    const T = {
+    const T2 = {
       Hips: ["defspine", "pelvis", "hips", "hip", "base"],
       Spine: ["defspine001", "waist", "spine", "body", "spine1"],
       Spine1: ["defspine002", "spine01", "spine1", "spine2"],
@@ -54564,9 +54564,9 @@ ${candidateLine}`;
     });
     [["l", "Left", "left"], ["r", "Right", "right"]].forEach(([s, S, W]) => {
       const o = side(s, S, W);
-      for (const k in o) T[S + k] = o[k];
+      for (const k in o) T2[S + k] = o[k];
     });
-    return T;
+    return T2;
   })();
   function normName(n) {
     if (/scaleCompensation$/i.test(n)) return "";
@@ -54634,8 +54634,8 @@ ${candidateLine}`;
   function bakeRetarget(clip, sourceRoot, targetRoot, opts) {
     opts = opts || {};
     const fps = opts.fps || 30;
-    const S = restInfo(sourceRoot), T = restInfo(targetRoot);
-    const keys2 = [...T.keys()].filter((k) => S.has(k));
+    const S = restInfo(sourceRoot), T2 = restInfo(targetRoot);
+    const keys2 = [...T2.keys()].filter((k) => S.has(k));
     const tT = /* @__PURE__ */ new Map();
     if (opts.srcRef && opts.tgtRef) {
       const poseWorld = (root, clipR, time, info) => {
@@ -54653,7 +54653,7 @@ ${candidateLine}`;
       const restS = snapshotRest(sourceRoot), restT = snapshotRest(targetRoot);
       const sr = poseWorld(sourceRoot, opts.srcRef.clip, opts.srcRef.time, S);
       restS();
-      const tr = poseWorld(targetRoot, opts.tgtRef.clip, opts.tgtRef.time, T);
+      const tr = poseWorld(targetRoot, opts.tgtRef.clip, opts.tgtRef.time, T2);
       restT();
       targetRoot.updateMatrixWorld(true);
       sourceRoot.updateMatrixWorld(true);
@@ -54662,9 +54662,9 @@ ${candidateLine}`;
         tT.set(k, tr.get(k).wq);
       });
       S.get("Hips").wp = sr.get("Hips").wp;
-      T.get("Hips").wpRef = tr.get("Hips").wp;
+      T2.get("Hips").wpRef = tr.get("Hips").wp;
     } else keys2.forEach((k) => {
-      const s = S.get(k), t = T.get(k);
+      const s = S.get(k), t = T2.get(k);
       let q = t.wq.clone();
       if (s.dir && t.dir) {
         q = new Quaternion().setFromUnitVectors(t.dir, s.dir).multiply(q);
@@ -54672,11 +54672,11 @@ ${candidateLine}`;
       tT.set(k, q);
     });
     const order = [];
-    const isT = new Set([...T.values()].map((t) => t.o));
-    const keyOf = new Map([...T.entries()].map(([k, t]) => [t.o, k]));
-    const tHips = T.get("Hips").o;
+    const isT = new Set([...T2.values()].map((t) => t.o));
+    const keyOf = new Map([...T2.entries()].map(([k, t]) => [t.o, k]));
+    const tHips = T2.get("Hips").o;
     tHips.traverse((o) => order.push(o));
-    const sH = S.get("Hips"), tH = T.get("Hips");
+    const sH = S.get("Hips"), tH = T2.get("Hips");
     const ratio = tH.wp.y / Math.max(1e-6, sH.wp.y);
     const mixer = new AnimationMixer(sourceRoot);
     const action = mixer.clipAction(clip);
@@ -54722,12 +54722,12 @@ ${candidateLine}`;
     for (let i = 0; i < n; i++) {
       const k = i / (n - 1);
       const dx = opts.keepRoot ? hp[i * 3] : hp[i * 3] - (x0 + (xN - x0) * k), dz = opts.keepRoot ? hp[i * 3 + 2] : hp[i * 3 + 2] - (z0 + (zN - z0) * k);
-      const base = tH.wpRef || tH.wp;
-      _v22.set(base.x + dx, base.y + hp[i * 3 + 1] * (opts.ySquash || 1), base.z + dz).applyMatrix4(inv);
+      const base2 = tH.wpRef || tH.wp;
+      _v22.set(base2.x + dx, base2.y + hp[i * 3 + 1] * (opts.ySquash || 1), base2.z + dz).applyMatrix4(inv);
       _v22.toArray(pos, i * 3);
     }
     const tracks = [];
-    qv.forEach((arr, k) => tracks.push(new QuaternionKeyframeTrack(T.get(k).o.name + ".quaternion", times, arr)));
+    qv.forEach((arr, k) => tracks.push(new QuaternionKeyframeTrack(T2.get(k).o.name + ".quaternion", times, arr)));
     tracks.push(new VectorKeyframeTrack(tHips.name + ".position", times, pos));
     return new AnimationClip(opts.name || clip.name, clip.duration, tracks);
   }
@@ -54789,12 +54789,12 @@ ${candidateLine}`;
   }
   var builders = {
     sword(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
-      g.add(m(new CylinderGeometry(0.018, 0.02, 0.2, 8), M2.leather, 0, 0, 0));
-      g.add(m(new SphereGeometry(0.032, 10, 8), o.gold ? M2.gold : M2.dsteel, 0, -0.12, 0));
-      g.add(m(new BoxGeometry(0.2, 0.03, 0.04), o.gold ? M2.gold : M2.dsteel, 0, 0.11, 0));
-      const b = blade(o.len || 0.82, 0.055, o.mat || M2.steel);
+      g.add(m(new CylinderGeometry(0.018, 0.02, 0.2, 8), M3.leather, 0, 0, 0));
+      g.add(m(new SphereGeometry(0.032, 10, 8), o.gold ? M3.gold : M3.dsteel, 0, -0.12, 0));
+      g.add(m(new BoxGeometry(0.2, 0.03, 0.04), o.gold ? M3.gold : M3.dsteel, 0, 0.11, 0));
+      const b = blade(o.len || 0.82, 0.055, o.mat || M3.steel);
       b.position.y = 0.12;
       g.add(b);
       return g;
@@ -54803,20 +54803,20 @@ ${candidateLine}`;
       return builders.sword(Object.assign({ len: 1.25 }, o));
     },
     dagger(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
-      g.add(m(new CylinderGeometry(0.015, 0.017, 0.12, 8), M2.leather));
-      g.add(m(new BoxGeometry(0.1, 0.02, 0.03), M2.dsteel, 0, 0.07, 0));
-      const b = blade(0.28, 0.04, M2.steel, { taper: 0.7 });
+      g.add(m(new CylinderGeometry(0.015, 0.017, 0.12, 8), M3.leather));
+      g.add(m(new BoxGeometry(0.1, 0.02, 0.03), M3.dsteel, 0, 0.07, 0));
+      const b = blade(0.28, 0.04, M3.steel, { taper: 0.7 });
       b.position.y = 0.08;
       g.add(b);
       return g;
     },
     axe(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
       const L2 = o.two ? 1.25 : 0.75;
-      g.add(m(new CylinderGeometry(0.022, 0.026, L2, 8), M2.wood, 0, L2 / 2 - 0.15, 0));
+      g.add(m(new CylinderGeometry(0.022, 0.026, L2, 8), M3.wood, 0, L2 / 2 - 0.15, 0));
       const s = new Shape();
       s.moveTo(0, -0.09);
       s.quadraticCurveTo(0.12, -0.12, 0.2, -0.2);
@@ -54826,12 +54826,12 @@ ${candidateLine}`;
       const hg = new ExtrudeGeometry(s, { depth: 0.02, bevelEnabled: true, bevelThickness: 8e-3, bevelSize: 6e-3, bevelSegments: 1 });
       hg.translate(0, 0, -0.01);
       const k = o.two ? 1.6 : 1;
-      const h = m(hg, o.mat || M2.steel, 0.02, L2 - 0.3, 0);
+      const h = m(hg, o.mat || M3.steel, 0.02, L2 - 0.3, 0);
       h.scale.setScalar(k);
       h.rotation.y = Math.PI / 2;
       g.add(h);
       if (o.two) {
-        const h2 = m(hg, o.mat || M2.steel, -0.02, L2 - 0.3, 0);
+        const h2 = m(hg, o.mat || M3.steel, -0.02, L2 - 0.3, 0);
         h2.scale.setScalar(k);
         h2.rotation.y = -Math.PI / 2;
         g.add(h2);
@@ -54839,12 +54839,12 @@ ${candidateLine}`;
       return g;
     },
     mace(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
-      g.add(m(new CylinderGeometry(0.02, 0.022, 0.6, 8), M2.leather, 0, 0.15, 0));
-      g.add(m(new SphereGeometry(0.06, 12, 10), o.gold ? M2.gold : M2.dsteel, 0, 0.5, 0));
+      g.add(m(new CylinderGeometry(0.02, 0.022, 0.6, 8), M3.leather, 0, 0.15, 0));
+      g.add(m(new SphereGeometry(0.06, 12, 10), o.gold ? M3.gold : M3.dsteel, 0, 0.5, 0));
       for (let i = 0; i < 6; i++) {
-        const f = m(new BoxGeometry(0.018, 0.14, 0.08), o.gold ? M2.gold : M2.steel, 0, 0.5, 0);
+        const f = m(new BoxGeometry(0.018, 0.14, 0.08), o.gold ? M3.gold : M3.steel, 0, 0.5, 0);
         f.rotation.y = i / 6 * Math.PI;
         f.translateZ(0.05);
         g.add(f);
@@ -54852,12 +54852,12 @@ ${candidateLine}`;
       return g;
     },
     club() {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
       const c = new CylinderGeometry(0.06, 0.025, 0.6, 8);
-      g.add(m(c, M2.darkwood, 0, 0.22, 0));
+      g.add(m(c, M3.darkwood, 0, 0.22, 0));
       for (let i = 0; i < 5; i++) {
-        const sp = m(new ConeGeometry(0.012, 0.06, 5), M2.rust, 0, 0.35 + i * 0.04, 0);
+        const sp = m(new ConeGeometry(0.012, 0.06, 5), M3.rust, 0, 0.35 + i * 0.04, 0);
         sp.rotation.z = Math.PI / 2;
         sp.rotation.y = i * 1.3;
         sp.translateY(0.05);
@@ -54866,7 +54866,7 @@ ${candidateLine}`;
       return g;
     },
     staff(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
       const L2 = 1.7;
       const pts = [];
@@ -54874,15 +54874,15 @@ ${candidateLine}`;
         const t = i / 10;
         pts.push(new Vector3(Math.sin(t * 5) * 0.012, -0.55 + t * L2, Math.cos(t * 4) * 0.01));
       }
-      g.add(m(new TubeGeometry(new CatmullRomCurve3(pts), 24, 0.022, 7), M2.darkwood));
+      g.add(m(new TubeGeometry(new CatmullRomCurve3(pts), 24, 0.022, 7), M3.darkwood));
       if (o.skull) {
-        const sk = m(new SphereGeometry(0.07, 12, 10), M2.bone, 0, L2 - 0.5, 0);
+        const sk = m(new SphereGeometry(0.07, 12, 10), M3.bone, 0, L2 - 0.5, 0);
         sk.scale.set(1, 1.1, 1.05);
         g.add(sk);
         [-1, 1].forEach((s) => g.add(m(new SphereGeometry(0.016, 8, 6), new MeshStandardMaterial({ color: "#000", emissive: o.color || "#8a3aff", emissiveIntensity: 3 }), s * 0.026, L2 - 0.49, 0.06)));
       } else {
         for (let i = 0; i < 4; i++) {
-          const pr = m(new ConeGeometry(0.012, 0.2, 5), M2.darkwood, 0, L2 - 0.58, 0);
+          const pr = m(new ConeGeometry(0.012, 0.2, 5), M3.darkwood, 0, L2 - 0.58, 0);
           pr.rotation.z = 0.5;
           pr.rotation.y = i * Math.PI / 2;
           pr.translateY(0.08);
@@ -54899,10 +54899,10 @@ ${candidateLine}`;
       return g;
     },
     scepter(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
-      g.add(m(new CylinderGeometry(0.016, 0.02, 0.55, 8), M2.gold, 0, 0.12, 0));
-      g.add(m(new TorusGeometry(0.07, 0.012, 8, 20), M2.gold, 0, 0.47, 0));
+      g.add(m(new CylinderGeometry(0.016, 0.02, 0.55, 8), M3.gold, 0, 0.12, 0));
+      g.add(m(new TorusGeometry(0.07, 0.012, 8, 20), M3.gold, 0, 0.47, 0));
       const gm = gem(o.color || "#ffe9a0", 0.045);
       gm.position.y = 0.47;
       g.add(gm);
@@ -54912,7 +54912,7 @@ ${candidateLine}`;
       return g;
     },
     bow() {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
       const pts = [];
       for (let i = 0; i <= 16; i++) {
@@ -54922,15 +54922,15 @@ ${candidateLine}`;
       const c = new CatmullRomCurve3(pts);
       const tg = new TubeGeometry(c, 40, 0.016, 6);
       const pp = tg.attributes.position;
-      g.add(m(tg, M2.darkwood));
-      g.add(m(new CylinderGeometry(0.022, 0.022, 0.14, 8), M2.leather));
+      g.add(m(tg, M3.darkwood));
+      g.add(m(new CylinderGeometry(0.022, 0.022, 0.14, 8), M3.leather));
       const sg = new BufferGeometry().setFromPoints([pts[0], pts[16]]);
       const str = new Line(sg, new LineBasicMaterial({ color: "#ddd5c4" }));
       g.add(str);
       return g;
     },
     shield(o) {
-      const M2 = mats();
+      const M3 = mats();
       const g = new Group();
       if (o.kite) {
         const s = new Shape();
@@ -54946,9 +54946,9 @@ ${candidateLine}`;
         const disc = m(new CylinderGeometry(0.33, 0.33, 0.035, 28), pbr("wood", { scale: 0.4, color: o.color || "#8a6a4a" }));
         disc.rotation.x = Math.PI / 2;
         g.add(disc);
-        const rim = m(new TorusGeometry(0.33, 0.02, 8, 32), M2.dsteel);
+        const rim = m(new TorusGeometry(0.33, 0.02, 8, 32), M3.dsteel);
         g.add(rim);
-        g.add(m(new SphereGeometry(0.07, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2), M2.steel, 0, 0, 0.02)).children;
+        g.add(m(new SphereGeometry(0.07, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2), M3.steel, 0, 0, 0.02)).children;
         g.children[g.children.length - 1].rotation.x = Math.PI / 2;
       }
       return g;
@@ -55544,9 +55544,9 @@ ${candidateLine}`;
       attach("Head", fin, [0, 0.2, 0.02]);
     }
     if (gear.tabard) {
-      const T = gear.tabard, k = H / 1.8;
-      const tm = new MeshStandardMaterial({ color: T.color || "#7a1a14", roughness: 0.85, side: DoubleSide });
-      const gm = new MeshStandardMaterial({ color: T.trim || "#c9a040", metalness: 0.8, roughness: 0.35 });
+      const T2 = gear.tabard, k = H / 1.8;
+      const tm = new MeshStandardMaterial({ color: T2.color || "#7a1a14", roughness: 0.85, side: DoubleSide });
+      const gm = new MeshStandardMaterial({ color: T2.trim || "#c9a040", metalness: 0.8, roughness: 0.35 });
       [1, -1].forEach((sd) => {
         const g2 = new Group();
         const cloth = new Mesh(new PlaneGeometry(0.26 * k, 0.62 * k, 1, 6), tm);
@@ -55572,25 +55572,25 @@ ${candidateLine}`;
       if (hs !== "model") obj.traverse((m2) => {
         if (m2.isMesh && /Hair/.test((m2.name || "") + " " + (m2.material && m2.material.name || ""))) m2.visible = false;
       });
-      const cap = () => {
+      const cap2 = () => {
         const c = new Mesh(new SphereGeometry(0.105, 20, 14, 0, Math.PI * 2, 0, Math.PI * 0.55), hm);
         c.scale.set(1, 1.05, 1.12);
         return c;
       };
       if (hs === "long") {
-        attach("Head", cap(), [0, 0.095, -5e-3]);
+        attach("Head", cap2(), [0, 0.095, -5e-3]);
         const b = new Mesh(new CapsuleGeometry(0.075, 0.2, 6, 14), hm);
         b.scale.set(1.25, 1, 0.45);
         attach("Head", b, [0, -0.02, -0.075]);
       }
       if (hs === "ponytail") {
-        attach("Head", cap(), [0, 0.095, -5e-3]);
+        attach("Head", cap2(), [0, 0.095, -5e-3]);
         attach("Head", new Mesh(new SphereGeometry(0.035, 12, 10), hm), [0, 0.12, -0.1]);
         const t = new Mesh(new CapsuleGeometry(0.03, 0.2, 5, 10), hm);
         attach("Head", t, [0, 0, -0.135], [0.25, 0, 0]);
       }
       if (hs === "bun") {
-        attach("Head", cap(), [0, 0.095, -5e-3]);
+        attach("Head", cap2(), [0, 0.095, -5e-3]);
         attach("Head", new Mesh(new SphereGeometry(0.055, 16, 12), hm), [0, 0.19, -0.06]);
       }
       if (hs === "mohawk") {
@@ -55598,7 +55598,7 @@ ${candidateLine}`;
         attach("Head", m2, [0, 0.135, -0.01]);
       }
       if (hs === "short") {
-        attach("Head", cap(), [0, 0.097, -4e-3]);
+        attach("Head", cap2(), [0, 0.097, -4e-3]);
       }
     }
     if (gear.ears) {
@@ -55936,7 +55936,7 @@ ${candidateLine}`;
 
   // src/combat.js
   function createCombat(o) {
-    const { scene, town, ui, hero, P: P2 } = o;
+    const { scene, town: town2, ui, hero, P: P2 } = o;
     const monsters = [], projectiles = [], bags = [], allies = [];
     const tmpV = new Vector3();
     let D = derived(P2, o.appStats);
@@ -56090,7 +56090,7 @@ ${candidateLine}`;
         }
       }
     }
-    const spawnDefs = town.wild.spawns;
+    const spawnDefs = town2.wild.spawns;
     spawnDefs.forEach((s, i) => {
       const def2 = MONSTERS[s.type];
       const sr = (i * 2654435761 >>> 0) / 4294967296;
@@ -56808,7 +56808,7 @@ ${candidateLine}`;
       H.regenT += dt;
       if (H.regenT > 1 && !H.dead) {
         H.regenT = 0;
-        const inTown = town.where(p.x, p.z) === "town";
+        const inTown = town2.where(p.x, p.z) === "town";
         const k = (H.combatT > 0 ? 4e-3 : inTown ? 0.05 : 0.012) + D.mods.regen + buffVal("regen");
         H.hp = Math.min(D.maxHp, H.hp + D.maxHp * k);
         H.mp = Math.min(D.maxMp, H.mp + D.maxMp * (k + 6e-3));
@@ -56850,7 +56850,7 @@ ${candidateLine}`;
         }
       }
       const host = isHost();
-      const T = host ? targets() : null;
+      const T2 = host ? targets() : null;
       monsters.forEach((m2) => {
         const f = m2.fig;
         const dme = Math.hypot(m2.x - p.x, m2.z - p.z);
@@ -56862,7 +56862,7 @@ ${candidateLine}`;
           return;
         }
         let tg2 = null, dh = 1e9, dAny = 1e9;
-        for (const t2 of T) {
+        for (const t2 of T2) {
           const d = Math.hypot(m2.x - t2.x, m2.z - t2.z);
           if (d < dAny) dAny = d;
           if (t2.dead || inTownSafe(t2.x, t2.z)) continue;
@@ -56872,7 +56872,7 @@ ${candidateLine}`;
           }
         }
         if (m2.tgtKey && (m2.state === "chase" || m2.state === "attack")) {
-          const keep = T.find((t2) => (t2.me ? "me" : t2.peer) === m2.tgtKey && !t2.dead && !inTownSafe(t2.x, t2.z));
+          const keep = T2.find((t2) => (t2.me ? "me" : t2.peer) === m2.tgtKey && !t2.dead && !inTownSafe(t2.x, t2.z));
           if (keep) {
             const d = Math.hypot(m2.x - keep.x, m2.z - keep.z);
             if (d < dh + 4) {
@@ -57033,7 +57033,7 @@ ${candidateLine}`;
           }
         }
         if (moving) {
-          const [rx, rz] = town.resolve(m2.x, m2.z, Math.max(0.3, m2.rad * 0.8));
+          const [rx, rz] = town2.resolve(m2.x, m2.z, Math.max(0.3, m2.rad * 0.8));
           m2.x = rx;
           m2.z = rz;
           if (inTownSafe(m2.x, m2.z)) {
@@ -57106,7 +57106,7 @@ ${candidateLine}`;
             moving = true;
           }
         }
-        const [rx, rz] = town.resolve(a.x, a.z, 0.35);
+        const [rx, rz] = town2.resolve(a.x, a.z, 0.35);
         a.x = rx;
         a.z = rz;
         f.obj.position.set(a.x, heightAt(a.x, a.z), a.z);
@@ -57154,9 +57154,9 @@ ${candidateLine}`;
       const edge = new Mesh(new RingGeometry(r - 0.14, r, 56), dMat(0.9));
       edge.rotation.x = -Math.PI / 2;
       g.add(edge);
-      const base = new Mesh(new CircleGeometry(r, 56), dMat(0.1));
-      base.rotation.x = -Math.PI / 2;
-      g.add(base);
+      const base2 = new Mesh(new CircleGeometry(r, 56), dMat(0.1));
+      base2.rotation.x = -Math.PI / 2;
+      g.add(base2);
       const fill2 = new Mesh(new CircleGeometry(r, 56), dMat(0.3));
       fill2.rotation.x = -Math.PI / 2;
       fill2.scale.setScalar(0.01);
@@ -57183,8 +57183,8 @@ ${candidateLine}`;
         g.add(m2);
         return m2;
       };
-      const base = mk(0.12, w, len);
-      void base;
+      const base2 = mk(0.12, w, len);
+      void base2;
       const fill2 = mk(0.32, w, 0.01);
       [-1, 1].forEach((sd) => {
         const e = mk(0.85, 0.12, len);
@@ -57205,7 +57205,7 @@ ${candidateLine}`;
         const c = def2.charge, ang = Math.atan2(pT.x - m2.x, pT.z - m2.z);
         let len = 0;
         for (let d = 0.5; d <= c.len; d += 0.5) {
-          if (town.blocked(m2.x + Math.sin(ang) * d, m2.z + Math.cos(ang) * d, Math.max(0.4, m2.rad * 0.7))) break;
+          if (town2.blocked(m2.x + Math.sin(ang) * d, m2.z + Math.cos(ang) * d, Math.max(0.4, m2.rad * 0.7))) break;
           len = d;
         }
         if (len < 5) return false;
@@ -57243,7 +57243,7 @@ ${candidateLine}`;
       damageHero(m2.atk * (m2.enraged ? 1.35 : 1) * mult, m2.def.n);
       shake = 0.7;
       const kx = p.x + Math.sin(ang) * 2.6, kz = p.z + Math.cos(ang) * 2.6;
-      const [hx, hz] = town.resolve(kx, kz, 0.38);
+      const [hx, hz] = town2.resolve(kx, kz, 0.38);
       hero.agent.x = hx;
       hero.agent.z = hz;
       hero.agent.path = [];
@@ -57280,7 +57280,7 @@ ${candidateLine}`;
       m2.x += Math.sin(sp.ang) * step;
       m2.z += Math.cos(sp.ang) * step;
       sp.done += step;
-      const [rx, rz] = town.resolve(m2.x, m2.z, Math.max(0.4, m2.rad * 0.7));
+      const [rx, rz] = town2.resolve(m2.x, m2.z, Math.max(0.4, m2.rad * 0.7));
       const stuck = Math.hypot(rx - m2.x, rz - m2.z) > 0.2;
       m2.x = rx;
       m2.z = rz;
@@ -57313,7 +57313,7 @@ ${candidateLine}`;
           for (let k = 0; k < 2; k++) {
             const s = monsters.find((x) => x.type === "skeleton" && x.dead && Math.hypot(x.sx - m2.sx, x.sz - m2.sz) < 60);
             if (s) {
-              const [rx, rz] = town.resolve(m2.x + (k ? 2 : -2), m2.z - 2, 0.5);
+              const [rx, rz] = town2.resolve(m2.x + (k ? 2 : -2), m2.z - 2, 0.5);
               revive(s, rx, rz);
             }
           }
@@ -57381,10 +57381,10 @@ ${candidateLine}`;
         }
         return i;
       };
-      const T = targets();
+      const T2 = targets();
       list.forEach((m2) => {
         let d = 1e9;
-        T.forEach((t) => {
+        T2.forEach((t) => {
           d = Math.min(d, Math.hypot(m2.x - t.x, m2.z - t.z));
         });
         m2.snapD = d + (m2.dead ? 30 : 0) + (m2.state === "idle" ? 10 : 0);
@@ -57920,10 +57920,10 @@ ${candidateLine}`;
         Rd.forEach((q, i) => i ? mc.lineTo(q[0], q[1]) : mc.moveTo(q[0], q[1]));
         mc.stroke();
       });
-      ZONES.forEach((Z2) => {
-        mc.fillStyle = { meadow: "rgba(120,200,110,.25)", grove: "rgba(160,140,60,.3)", camp: "rgba(200,90,60,.3)", ruins: "rgba(160,160,200,.3)", darkwood: "rgba(20,40,20,.45)", farm: "rgba(220,200,120,.25)", mines: "rgba(120,110,100,.35)", shrine: "rgba(200,220,255,.25)", heath: "rgba(150,130,90,.3)", lake: "rgba(0,0,0,0)", swamp: "rgba(0,0,0,0)", sun: "rgba(0,0,0,0)", elves: "rgba(120,220,180,.25)", dwarves: "rgba(160,150,140,.35)", beasts: "rgba(220,170,90,.28)", fishing: "rgba(120,180,220,.25)", titan: "rgba(255,40,40,.22)", fenrir: "rgba(255,40,40,.22)", slimes: "rgba(255,40,40,.22)" }[Z2.id] || "rgba(255,255,255,.1)";
+      ZONES.forEach((Z3) => {
+        mc.fillStyle = { meadow: "rgba(120,200,110,.25)", grove: "rgba(160,140,60,.3)", camp: "rgba(200,90,60,.3)", ruins: "rgba(160,160,200,.3)", darkwood: "rgba(20,40,20,.45)", farm: "rgba(220,200,120,.25)", mines: "rgba(120,110,100,.35)", shrine: "rgba(200,220,255,.25)", heath: "rgba(150,130,90,.3)", lake: "rgba(0,0,0,0)", swamp: "rgba(0,0,0,0)", sun: "rgba(0,0,0,0)", elves: "rgba(120,220,180,.25)", dwarves: "rgba(160,150,140,.35)", beasts: "rgba(220,170,90,.28)", fishing: "rgba(120,180,220,.25)", titan: "rgba(255,40,40,.22)", fenrir: "rgba(255,40,40,.22)", slimes: "rgba(255,40,40,.22)" }[Z3.id] || "rgba(255,255,255,.1)";
         mc.beginPath();
-        mc.arc(Z2.x, Z2.z, Z2.r, 0, 7);
+        mc.arc(Z3.x, Z3.z, Z3.r, 0, 7);
         mc.fill();
       });
       mc.fillStyle = "#6a6052";
@@ -58523,7 +58523,7 @@ ${candidateLine}`;
         fenrir: "\u2620 \u0424\u0435\u043D\u0440\u0456\u0440, \u041F\u043E\u0436\u0438\u0440\u0430\u0447 \u041C\u0456\u0441\u044F\u0446\u044F, \u0456 \u0437\u0433\u0440\u0430\u044F \u043C\u0456\u0441\u044F\u0447\u043D\u0438\u0445 \u0432\u043E\u0432\u043A\u0443\u043B\u0430\u043A. \u0421\u043F\u043E\u043A\u0456\u0439\u043D\u0456, \u043F\u043E\u043A\u0438 \u0432\u0438 \u0441\u043F\u043E\u043A\u0456\u0439\u043D\u0456.",
         slimes: "\u2620 \u041F\u0440\u0430\u043C\u0430\u0442\u0456\u0440 \u0421\u043B\u0438\u0437\u0456\u0432 \u0456\u0437 \u043A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0438\u043C\u0438 \u0441\u043B\u0438\u0437\u0430\u043C\u0438. \u0421\u043F\u043B\u044F\u0442\u044C \u0443 \u0434\u0440\u0430\u0433\u043E\u0432\u0438\u043D\u0456 \u2014 \u043A\u0440\u0430\u0449\u0435 \u043D\u0435 \u0431\u0443\u0434\u0438\u0442\u0438."
       };
-      const list = ZONES.map((Z2) => '<div class="rp-q"><b>' + Z2.n + '</b> <span style="opacity:.6;font-size:11px">' + (Z2.safe ? "\u0431\u0435\u0437\u043F\u0435\u0447\u043D\u043E" : Z2.calamity ? Z2.rank : "\u0440\u0430\u043D\u0433 " + Z2.rank) + '</span><div style="font-size:12px">' + (D[Z2.id] || "") + "</div></div>").join("");
+      const list = ZONES.map((Z3) => '<div class="rp-q"><b>' + Z3.n + '</b> <span style="opacity:.6;font-size:11px">' + (Z3.safe ? "\u0431\u0435\u0437\u043F\u0435\u0447\u043D\u043E" : Z3.calamity ? Z3.rank : "\u0440\u0430\u043D\u0433 " + Z3.rank) + '</span><div style="font-size:12px">' + (D[Z3.id] || "") + "</div></div>").join("");
       const dl = '<div class="rp-q"><b>\u041F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u044F \u0410\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432</b> <span style="opacity:.6;font-size:11px">\u0440\u0430\u043D\u0433 D\u2013A</span><div style="font-size:12px">\u0412\u0445\u0456\u0434 \u2014 \u043D\u0430 \u0437\u0430\u0445\u0456\u0434 \u0432\u0456\u0434 \u041B\u0443\u0433\u0443 \u0441\u043B\u0438\u0437\u0456\u0432. \u0422\u0440\u0438 \u044F\u0440\u0443\u0441\u0438: \u043F\u0435\u0447\u0435\u0440\u0438, \u0441\u043A\u043B\u0435\u043F\u0438 \u0439 \u043B\u0456\u0433\u0432\u043E \u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440\u0430.</div></div>';
       sheet({ title: "\u0411\u0440\u0430\u043C\u0430 \u0412\u0438\u043F\u0440\u043E\u0431\u0443\u0432\u0430\u043D\u044C", html: "<p>\u0427\u043E\u0442\u0438\u0440\u0438 \u0431\u0440\u0430\u043C\u0438 \u0432\u0435\u0434\u0443\u0442\u044C \u0443 \u0432\u0435\u043B\u0438\u043A\u0438\u0439 \u0441\u0432\u0456\u0442, \u0430 \u0437\u0430 \u0433\u0456\u0440\u0441\u044C\u043A\u0438\u043C\u0438 \u043F\u0435\u0440\u0435\u0432\u0430\u043B\u0430\u043C\u0438 \u2014 \u0441\u0442\u043E\u043B\u0438\u0446\u044F, \u043F\u043E\u0441\u0435\u043B\u0435\u043D\u043D\u044F \u0435\u043B\u044C\u0444\u0456\u0432, \u0433\u043D\u043E\u043C\u0456\u0432 \u0456 \u0437\u0432\u0456\u0440\u043E\u043B\u044E\u0434\u0435\u0439 \u0442\u0430 \u0437\u0435\u043C\u043B\u0456 \u0442\u0440\u044C\u043E\u0445 \u041A\u0430\u0442\u0430\u0441\u0442\u0440\u043E\u0444. \u0412\u0430\u0440\u0442\u043E\u0432\u0456 \u043F\u0440\u043E\u043F\u0443\u0441\u043A\u0430\u044E\u0442\u044C \u0437\u0430\u0440\u0435\u0454\u0441\u0442\u0440\u043E\u0432\u0430\u043D\u0438\u0445 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432. \u041C\u043E\u043D\u0441\u0442\u0440\u0438 \u043D\u0435 \u0437\u0430\u0445\u043E\u0434\u044F\u0442\u044C \u0437\u0430 \u043C\u0443\u0440\u0438, \u0430 \u0432 \u043C\u0456\u0441\u0442\u0456 \u0437\u0434\u043E\u0440\u043E\u0432'\u044F \u0432\u0456\u0434\u043D\u043E\u0432\u043B\u044E\u0454\u0442\u044C\u0441\u044F \u0448\u0432\u0438\u0434\u043A\u043E.</p>" + list + dl, buttons: [
         P2.reg ? { label: "\u2694\uFE0F \u0412\u0438\u0439\u0442\u0438 \u0432 \u0414\u0438\u043A\u0456 \u0437\u0435\u043C\u043B\u0456", primary: true, fn: () => {
@@ -58873,11 +58873,11 @@ ${candidateLine}`;
     a = a * 16807 % 2147483647;
     return (a - 1) / 2147483646;
   })(12345);
-  function planks(base) {
+  function planks(base2) {
     return (g, w, h) => {
       const n = 8;
       for (let i = 0; i < n; i++) {
-        const c = new Color(base).offsetHSL(0, 0, (rnd() - 0.5) * 0.08);
+        const c = new Color(base2).offsetHSL(0, 0, (rnd() - 0.5) * 0.08);
         g.fillStyle = "#" + c.getHexString();
         g.fillRect(0, i * h / n, w, h / n);
         g.fillStyle = "rgba(0,0,0,.35)";
@@ -58892,16 +58892,16 @@ ${candidateLine}`;
       }
     };
   }
-  function stones(base) {
+  function stones(base2) {
     return (g, w, h) => {
-      g.fillStyle = base;
+      g.fillStyle = base2;
       g.fillRect(0, 0, w, h);
       const rows = 8;
       for (let r = 0; r < rows; r++) {
         let x = r % 2 * 20 - 20;
         while (x < w) {
           const bw = 40 + rnd() * 30;
-          const c = new Color(base).offsetHSL(0, 0, (rnd() - 0.5) * 0.12);
+          const c = new Color(base2).offsetHSL(0, 0, (rnd() - 0.5) * 0.12);
           g.fillStyle = "#" + c.getHexString();
           g.fillRect(x + 2, r * h / rows + 2, bw - 4, h / rows - 4);
           x += bw;
@@ -59247,12 +59247,158 @@ ${candidateLine}`;
   }
 
   // src/newmodels.js
-  var NEW_MODELS = [{ "id": "nm_mx_akai", "n": "\u0410\u043A\u0430\u0439 (\u0432\u043E\u0457\u043D \u0443 \u043C\u0430\u0441\u0446\u0456)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_arissa", "n": "\u0410\u0440\u0456\u0441\u0441\u0430 (\u043D\u0430\u0439\u043C\u0430\u043D\u043A\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_brute", "n": "\u0413\u0440\u043E\u043C\u0438\u043B\u043E", "g": "hero", "h": 2, "yaw": 0, "note": "\u041A\u0440\u0435\u043C\u0435\u0437\u043D\u0438\u0439 \u0433\u043E\u043B\u0438\u0439 \u043F\u043E \u043F\u043E\u044F\u0441 \u0431\u043E\u0454\u0446\u044C." }, { "id": "nm_mx_ch05", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch05", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u0414\u0443\u0436\u0435 \u0441\u0445\u043E\u0436\u0438\u0439 \u043D\u0430 \u041A\u0440\u0430\u0442\u043E\u0441\u0430 \u0437 God of War \u2014 \u0442\u0438 \u043F\u0440\u043E\u0441\u0438\u0432 \u043D\u0435 \u0431\u0440\u0430\u0442\u0438 \u0432\u0456\u0434\u043E\u043C\u0438\u0445 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0456\u0432; \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_dreyar", "n": "\u0414\u0440\u0435\u044F\u0440 (\u0441\u0442\u0430\u0440\u0438\u0439 \u0432\u043E\u0457\u043D)", "g": "hero", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_erika", "n": "\u0415\u0440\u0456\u043A\u0430 (\u043B\u0443\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_eve", "n": "\u0404\u0432\u0430", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_ganfaul", "n": "\u0413\u0430\u043D\u0444\u0430\u0443\u043B (\u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A)", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_heraklios", "n": "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439 (\u043B\u0438\u0446\u0430\u0440)", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A \u0443 \u0448\u043A\u0456\u0440\u044F\u043D\u043E\u043C\u0443 \u043F\u043B\u0430\u0449\u0456 \u0439 \u043C\u0430\u0441\u0446\u0456." }, { "id": "nm_mx_kachujin", "n": "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D (\u043C\u0435\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_maria", "n": "\u041C\u0430\u0440\u0456\u044F (\u0432\u043E\u0457\u0442\u0435\u043B\u044C\u043A\u0430)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_maria_w", "n": "\u041C\u0430\u0440\u0456\u044F \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0422\u0430 \u0441\u0430\u043C\u0430 \u041C\u0430\u0440\u0456\u044F, \u0430\u043B\u0435 \u0437 \u043C\u0435\u0447\u0435\u043C \u0443 \u0440\u0443\u0446\u0456." }, { "id": "nm_mx_medea", "n": "\u041C\u0435\u0434\u0435\u044F (\u0432\u0456\u0434\u044C\u043C\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "\u041E\u0434\u044F\u0433 \u0442\u0440\u043E\u0445\u0438 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043D\u0430 \u0432\u0438\u0433\u043B\u044F\u0434." }, { "id": "nm_mx_nightshade", "n": "\u041D\u0430\u0439\u0442\u0448\u0435\u0439\u0434 (\u0432\u0431\u0438\u0432\u0446\u044F)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin_w", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.9, "yaw": 0, "note": "\u0422\u043E\u0439 \u0441\u0430\u043C\u0438\u0439 \u043F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0449\u0438\u0442\u043E\u043C \u0456 \u043C\u0435\u0447\u0435\u043C." }, { "id": "nm_mx_pirate", "n": "\u041F\u0456\u0440\u0430\u0442", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0421\u0442\u0438\u043B\u044C \u0442\u0440\u043E\u0445\u0438 \xAB\u043D\u0430\u0443\u043A\u043E\u0432\u043E-\u0444\u0430\u043D\u0442\u0430\u0441\u0442\u0438\u0447\u043D\u0438\u0439\xBB." }, { "id": "nm_mx_uriel", "n": "\u0423\u0440\u0456\u0435\u043B\u044C (\u0430\u043D\u0433\u0435\u043B-\u0432\u043E\u0457\u0442\u0435\u043B\u044C)", "g": "hero", "h": 1.95, "yaw": 0, "note": "" }, { "id": "nm_priest", "n": "\u0416\u0440\u0435\u0446\u044C", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041F\u043E\u0440\u0443\u0447 \u0441\u0442\u043E\u044F\u0442\u044C \u043C\u0435\u0447 \u0456 \u043A\u043D\u0438\u0433\u0430 \u2014 \u0432\u043E\u043D\u0438 \u043F\u0440\u0438\u0432'\u044F\u0437\u0430\u043D\u0456 \u0434\u043E \u043C\u043E\u0434\u0435\u043B\u0456." }, { "id": "nm_druid", "n": "\u0414\u0440\u0443\u0457\u0434", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_kyra", "n": "\u041A\u0430\u0439\u0440\u0430", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0434\u043E\u0432\u0433\u0438\u0439 \u043E\u0434\u044F\u0433 \u043C\u043E\u0436\u0435 \u0433\u043D\u0443\u0442\u0438\u0441\u044F \u043D\u0435\u043F\u0440\u0438\u0440\u043E\u0434\u043D\u043E." }, { "id": "nm_monk", "n": "\u041C\u043E\u043D\u0430\u0445", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0448\u0438\u0440\u043E\u043A\u0456 \u0440\u0443\u043A\u0430\u0432\u0438." }, { "id": "nm_oldwizard", "n": "\u0421\u0442\u0430\u0440\u0438\u0439 \u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_anime_girl", "n": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.6, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430 \u0437 \u0440\u0456\u0436\u043A\u0430\u043C\u0438; \u0433\u043E\u043B\u043E\u0432\u0430 \u0437\u0430\u0432\u0435\u043B\u0438\u043A\u0430 \u2014 \u043C\u043E\u0436\u043B\u0438\u0432\u043E, \u0437\u0430\u043D\u0430\u0434\u0442\u043E \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0430." }, { "id": "nm_dwarf_adv", "n": "\u0413\u043D\u043E\u043C-\u0448\u0443\u043A\u0430\u0447 \u043F\u0440\u0438\u0433\u043E\u0434", "g": "race", "h": 1.35, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0441\u0442\u0438\u043B\u044C.", "own": true }, { "id": "nm_kobold2", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434 2", "g": "race", "h": 1.4, "yaw": 0, "note": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u043E\u0431\u043E\u043B\u044C\u0434 (\u044F\u0449\u0456\u0440\u043A\u0430).", "own": true }, { "id": "nm_rabbitman", "n": "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0456 \u043F\u0440\u043E\u043F\u043E\u0440\u0446\u0456\u0457 \u2014 \u0432\u0435\u043B\u0438\u043A\u0430 \u0433\u043E\u043B\u043E\u0432\u0430." }, { "id": "nm_mermaid", "n": "\u0420\u0443\u0441\u0430\u043B\u043A\u0430", "g": "race", "h": 2, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u043B\u0430\u043C\u0430\u0454 \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "static": true }, { "id": "nm_bunnygirl", "n": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u0440\u043E\u043B\u0438\u0446\u044F", "g": "race", "h": 1.6, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u043F\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0456 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u043E." }, { "id": "nm_catboy", "n": "\u041A\u043E\u0442\u043E\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041F\u0443\u0445\u043D\u0430\u0441\u0442\u0438\u0439 \u0441\u0442\u0438\u043B\u044C, \u0442\u0440\u043E\u0445\u0438 \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_chiya", "n": "\u0427\u0456\u044F", "g": "race", "h": 1.65, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_dwarf", "n": "\u0413\u043D\u043E\u043C", "g": "race", "h": 1.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_foxgirl", "n": "\u041B\u0438\u0441\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.65, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u043B\u0438\u0441\u0438\u0446\u044F \u0437 \u0434\u0435\u0432'\u044F\u0442\u044C\u043C\u0430 \u0445\u0432\u043E\u0441\u0442\u0430\u043C\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_wolfgirl", "n": "\u0412\u043E\u0432\u0447\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.7, "yaw": 0, "note": "\u0423\u0432\u0430\u0433\u0430: \u043A\u0430\u0448\u043A\u0435\u0442 \u0456 \u0447\u0435\u0440\u0432\u043E\u043D\u0430 \u043F\u043E\u0432'\u044F\u0437\u043A\u0430 \u043D\u0430 \u0440\u0443\u043A\u0430\u0432\u0456 \u0441\u0445\u043E\u0436\u0456 \u043D\u0430 \u043D\u0430\u0446\u0438\u0441\u0442\u0441\u044C\u043A\u0443 \u0444\u043E\u0440\u043C\u0443 \u2014 \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_ch09", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch09", "g": "npc", "h": 1.15, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0445\u043B\u043E\u043F\u0447\u0438\u043A \u2014 \u0433\u043E\u0434\u0438\u0442\u044C\u0441\u044F \u043B\u0438\u0448\u0435 \u0434\u043B\u044F \u0434\u0438\u0442\u0438\u043D\u0438-NPC (\u044F\u043A \u0422\u0456\u043C\u043C\u0456)." }, { "id": "nm_mx_peasant_f", "n": "\u0421\u0435\u043B\u044F\u043D\u043A\u0430", "g": "npc", "h": 1.68, "yaw": 0, "note": "" }, { "id": "nm_mx_peasant_m", "n": "\u0421\u0435\u043B\u044F\u043D\u0438\u043D", "g": "npc", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_prisoner", "n": "\u0412'\u044F\u0437\u0435\u043D\u044C", "g": "npc", "h": 1.8, "yaw": 0, "note": "\u0421\u043C\u0443\u0433\u0430\u0441\u0442\u0430 \u0442\u044E\u0440\u0435\u043C\u043D\u0430 \u0440\u043E\u0431\u0430 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0430." }, { "id": "nm_bishop", "n": "\u0404\u043F\u0438\u0441\u043A\u043E\u043F", "g": "npc", "h": 2.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0442\u0430\u0442\u0443\u044F \u043D\u0430 \u043F\u043E\u0441\u0442\u0430\u043C\u0435\u043D\u0442\u0456 \u2014 \u0434\u043B\u044F \u043C\u0456\u0441\u0442\u0430 \u044F\u043A \u043F\u0440\u0438\u043A\u0440\u0430\u0441\u0430, \u043D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_ch30", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch30", "g": "monster", "h": 2, "yaw": 0, "note": "\u0411\u0435\u0437\u0448\u043A\u0456\u0440\u0438\u0439 \u2014 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E \u0437 \u043E\u0433\u043E\u043B\u0435\u043D\u0438\u043C\u0438 \u043C'\u044F\u0437\u0430\u043C\u0438." }, { "id": "nm_mx_demon", "n": "\u0414\u0435\u043C\u043E\u043D", "g": "monster", "h": 2.2, "yaw": 0, "note": "" }, { "id": "nm_mx_goblin", "n": "\u0413\u043E\u0431\u043B\u0456\u043D", "g": "monster", "h": 1.15, "yaw": 0, "note": "" }, { "id": "nm_mx_maw", "n": "\u041C\u0430\u0443 (\u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E)", "g": "monster", "h": 2.6, "yaw": 0, "note": "" }, { "id": "nm_mx_mutant", "n": "\u041C\u0443\u0442\u0430\u043D\u0442", "g": "monster", "h": 2.3, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u0430\u0445 \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u0432\u0438\u0433\u043B\u044F\u0434\u0430\u0454 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_parasite", "n": "\u041F\u0430\u0440\u0430\u0437\u0438\u0442", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u043E\u0432\u0438\u0445 \u0448\u043E\u0440\u0442\u0430\u0445 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043E\u0434\u044F\u0433." }, { "id": "nm_wraith", "n": "\u041F\u0440\u0438\u0432\u0438\u0434", "g": "monster", "h": 2.4, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u043F\u043E\u043B\u044C\u043E\u0442\u0443.", "own": true }, { "id": "nm_kobold", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434", "g": "monster", "h": 1.3, "yaw": 0, "note": "\u0413\u0440\u0430\u0454 \u0432\u043B\u0430\u0441\u043D\u0443 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044E \u0441\u043F\u043E\u043A\u043E\u044E.", "own": true }, { "id": "nm_golem", "n": "\u0413\u043E\u043B\u0435\u043C", "g": "monster", "h": 2.8, "yaw": 0, "note": "\u041D\u0430\u0448\u0456 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u0439\u043E\u0433\u043E \u043B\u0430\u043C\u0430\u044E\u0442\u044C \u2014 \u043F\u043E\u043A\u0438 \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "own": true }, { "id": "nm_lizardman", "n": "\u042F\u0449\u0435\u0440\u043E\u043B\u044E\u0434", "g": "monster", "h": 2, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F + \u043D\u0430\u0448\u0456." }, { "id": "nm_werewolf", "n": "\u041F\u0435\u0440\u0435\u0432\u0435\u0440\u0442\u0435\u043D\u044C", "g": "monster", "h": 2.4, "yaw": 0, "note": "29 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439 \u0430\u0442\u0430\u043A.", "own": true }, { "id": "nm_dark_orc", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043E\u0440\u043A", "g": "monster", "h": 1.95, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_shaman", "n": "\u041E\u0440\u043A-\u0448\u0430\u043C\u0430\u043D", "g": "monster", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_warrior", "n": "\u041E\u0440\u043A-\u0432\u043E\u0457\u043D", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_urukhai", "n": "\u0423\u0440\u0443\u043A-\u0445\u0430\u0439", "g": "monster", "h": 2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0434\u0432\u043E\u0454 \u0431\u0456\u0439\u0446\u0456\u0432 \u043D\u0430 \u043F\u0456\u0434\u0441\u0442\u0430\u0432\u0446\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_skelzombie", "n": "\u0421\u043A\u0435\u043B\u0435\u0442-\u0437\u043E\u043C\u0431\u0456", "g": "undead", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_survivor", "n": "\u0412\u0438\u0436\u0438\u0432\u0430\u043B\u044C\u043D\u0438\u0446\u044F", "g": "undead", "h": 1.8, "yaw": 0, "note": "" }, { "id": "nm_mx_warzombie", "n": "\u0417\u043E\u043C\u0431\u0456-\u0432\u043E\u0457\u043D", "g": "undead", "h": 1.85, "yaw": 0, "note": "\u0421\u043E\u043B\u0434\u0430\u0442\u0441\u044C\u043A\u0430 \u0444\u043E\u0440\u043C\u0430 XX \u0441\u0442\u043E\u043B\u0456\u0442\u0442\u044F \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_zombiegirl", "n": "\u0417\u043E\u043C\u0431\u0456-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "undead", "h": 1.7, "yaw": 0, "note": "" }, { "id": "nm_lich", "n": "\u041B\u0456\u0447", "g": "undead", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_demon_dragon", "n": "\u0414\u0435\u043C\u043E\u043D\u0456\u0447\u043D\u0438\u0439 \u0434\u0440\u0430\u043A\u043E\u043D", "g": "boss", "h": 6, "yaw": 0, "note": "\u041C\u0430\u0454 \u0441\u0432\u043E\u0457 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u043F\u043E\u043B\u044C\u043E\u0442\u0443, \u0430\u043B\u0435 \u0432\u043E\u043D\u0438 \u0437\u0441\u0443\u0432\u0430\u044E\u0442\u044C \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0438 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u043D\u0435\u0440\u0443\u0445\u043E\u043C\u043E.", "static": true }, { "id": "nm_dark_wraith", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043F\u0440\u0438\u0432\u0438\u0434 (\u0431\u043E\u0441)", "g": "boss", "h": 3.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0432\u0435\u0440\u0448\u043D\u0438\u043A \u043D\u0430 \u043A\u043E\u043D\u0456 \u0440\u0430\u0437\u043E\u043C \u0437\u0456 \u0448\u043C\u0430\u0442\u043A\u043E\u043C \u0437\u0435\u043C\u043B\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_gravok", "n": "\u0413\u0440\u0430\u0432\u043E\u043A (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_lich_king", "n": "\u041A\u043E\u0440\u043E\u043B\u044C-\u043B\u0456\u0447 (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u0411\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 (\u0442\u0430\u043A \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456). \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_magma_golem", "n": "\u041C\u0430\u0433\u043C\u043E\u0432\u0438\u0439 \u0433\u043E\u043B\u0435\u043C (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_minotaur_boss", "n": "\u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440-\u0431\u043E\u0441", "g": "boss", "h": 3, "yaw": 0, "note": "\u0412 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u0431\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 \u2014 \u044F \u043F\u0435\u0440\u0435\u0431\u0443\u0434\u0443\u0432\u0430\u0432 \u043F\u043E\u0432\u0435\u0440\u0445\u043D\u044E \u0439 \u0434\u0430\u0432 \u043A\u043E\u043B\u0456\u0440 \u0448\u043A\u0456\u0440\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_stone_monster", "n": "\u041A\u0430\u043C'\u044F\u043D\u0435 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_alpha_wolf", "n": "\u0412\u043E\u0432\u043A-\u0432\u043E\u0436\u0430\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_bear", "n": "\u0412\u0435\u0434\u043C\u0456\u0434\u044C", "g": "animal", "h": 2.2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }, { "id": "nm_cat", "n": "\u041A\u0456\u0442", "g": "animal", "h": 0.7, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_crow", "n": "\u0412\u043E\u0440\u043E\u043D\u0430", "g": "animal", "h": 0.55, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_dire_wolf", "n": "\u041B\u044E\u0442\u043E\u0432\u043E\u0432\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "13 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439.", "own": true, "fit": "max" }, { "id": "nm_fox", "n": "\u041B\u0438\u0441", "g": "animal", "h": 0.9, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \xAB\u043F\u0440\u043E\u043A\u0438\u0434\u0430\u0454\u0442\u044C\u0441\u044F\xBB.", "own": true, "fit": "max" }, { "id": "nm_horse", "n": "\u041A\u0456\u043D\u044C", "g": "animal", "h": 2.4, "yaw": 0, "note": "\u0414\u043B\u044F \u043A\u0456\u043D\u043D\u043E\u0457 \u0457\u0437\u0434\u0438.", "own": true, "fit": "max" }, { "id": "nm_rabbit", "n": "\u041A\u0440\u043E\u043B\u0438\u043A", "g": "animal", "h": 0.45, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_wolf", "n": "\u0412\u043E\u0432\u043A", "g": "animal", "h": 1.6, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_deer", "n": "\u041E\u043B\u0435\u043D\u044C", "g": "animal", "h": 2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }];
+  var NEW_MODELS = [{ "id": "nm_mx_akai", "n": "\u0410\u043A\u0430\u0439 (\u0432\u043E\u0457\u043D \u0443 \u043C\u0430\u0441\u0446\u0456)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_arissa", "n": "\u0410\u0440\u0456\u0441\u0441\u0430 (\u043D\u0430\u0439\u043C\u0430\u043D\u043A\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_brute", "n": "\u0413\u0440\u043E\u043C\u0438\u043B\u043E", "g": "hero", "h": 2, "yaw": 0, "note": "\u041A\u0440\u0435\u043C\u0435\u0437\u043D\u0438\u0439 \u0433\u043E\u043B\u0438\u0439 \u043F\u043E \u043F\u043E\u044F\u0441 \u0431\u043E\u0454\u0446\u044C." }, { "id": "nm_mx_ch05", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch05", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u0414\u0443\u0436\u0435 \u0441\u0445\u043E\u0436\u0438\u0439 \u043D\u0430 \u041A\u0440\u0430\u0442\u043E\u0441\u0430 \u0437 God of War \u2014 \u0442\u0438 \u043F\u0440\u043E\u0441\u0438\u0432 \u043D\u0435 \u0431\u0440\u0430\u0442\u0438 \u0432\u0456\u0434\u043E\u043C\u0438\u0445 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0456\u0432; \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_dreyar", "n": "\u0414\u0440\u0435\u044F\u0440 (\u0441\u0442\u0430\u0440\u0438\u0439 \u0432\u043E\u0457\u043D)", "g": "hero", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_erika", "n": "\u0415\u0440\u0456\u043A\u0430 (\u043B\u0443\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_eve", "n": "\u0404\u0432\u0430", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_ganfaul", "n": "\u0413\u0430\u043D\u0444\u0430\u0443\u043B (\u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A)", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_heraklios", "n": "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439 (\u043B\u0438\u0446\u0430\u0440)", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A \u0443 \u0448\u043A\u0456\u0440\u044F\u043D\u043E\u043C\u0443 \u043F\u043B\u0430\u0449\u0456 \u0439 \u043C\u0430\u0441\u0446\u0456." }, { "id": "nm_mx_kachujin", "n": "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D (\u043C\u0435\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_maria", "n": "\u041C\u0430\u0440\u0456\u044F (\u0432\u043E\u0457\u0442\u0435\u043B\u044C\u043A\u0430)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_maria_w", "n": "\u041C\u0430\u0440\u0456\u044F \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0422\u0430 \u0441\u0430\u043C\u0430 \u041C\u0430\u0440\u0456\u044F, \u0430\u043B\u0435 \u0437 \u043C\u0435\u0447\u0435\u043C \u0443 \u0440\u0443\u0446\u0456." }, { "id": "nm_mx_medea", "n": "\u041C\u0435\u0434\u0435\u044F (\u0432\u0456\u0434\u044C\u043C\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "\u041E\u0434\u044F\u0433 \u0442\u0440\u043E\u0445\u0438 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043D\u0430 \u0432\u0438\u0433\u043B\u044F\u0434." }, { "id": "nm_mx_nightshade", "n": "\u041D\u0430\u0439\u0442\u0448\u0435\u0439\u0434 (\u0432\u0431\u0438\u0432\u0446\u044F)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin_w", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.9, "yaw": 0, "note": "\u0422\u043E\u0439 \u0441\u0430\u043C\u0438\u0439 \u043F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0449\u0438\u0442\u043E\u043C \u0456 \u043C\u0435\u0447\u0435\u043C." }, { "id": "nm_mx_pirate", "n": "\u041F\u0456\u0440\u0430\u0442", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0421\u0442\u0438\u043B\u044C \u0442\u0440\u043E\u0445\u0438 \xAB\u043D\u0430\u0443\u043A\u043E\u0432\u043E-\u0444\u0430\u043D\u0442\u0430\u0441\u0442\u0438\u0447\u043D\u0438\u0439\xBB." }, { "id": "nm_mx_uriel", "n": "\u0423\u0440\u0456\u0435\u043B\u044C (\u0430\u043D\u0433\u0435\u043B-\u0432\u043E\u0457\u0442\u0435\u043B\u044C)", "g": "hero", "h": 1.95, "yaw": 0, "note": "" }, { "id": "nm_priest", "n": "\u0416\u0440\u0435\u0446\u044C", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041F\u043E\u0440\u0443\u0447 \u0441\u0442\u043E\u044F\u0442\u044C \u043C\u0435\u0447 \u0456 \u043A\u043D\u0438\u0433\u0430 \u2014 \u0432\u043E\u043D\u0438 \u043F\u0440\u0438\u0432'\u044F\u0437\u0430\u043D\u0456 \u0434\u043E \u043C\u043E\u0434\u0435\u043B\u0456." }, { "id": "nm_druid", "n": "\u0414\u0440\u0443\u0457\u0434", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_kyra", "n": "\u041A\u0430\u0439\u0440\u0430", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0434\u043E\u0432\u0433\u0438\u0439 \u043E\u0434\u044F\u0433 \u043C\u043E\u0436\u0435 \u0433\u043D\u0443\u0442\u0438\u0441\u044F \u043D\u0435\u043F\u0440\u0438\u0440\u043E\u0434\u043D\u043E." }, { "id": "nm_monk", "n": "\u041C\u043E\u043D\u0430\u0445", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0448\u0438\u0440\u043E\u043A\u0456 \u0440\u0443\u043A\u0430\u0432\u0438." }, { "id": "nm_oldwizard", "n": "\u0421\u0442\u0430\u0440\u0438\u0439 \u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_catfig", "n": "\u0424\u0456\u0433\u0443\u0440\u043A\u0430 \u0432 \u043A\u043E\u0442\u044F\u0447\u0456\u0439 \u0448\u0430\u043F\u0446\u0456", "g": "hero", "h": 1.6, "yaw": 0, "note": "\u0422\u0432\u043E\u044F \u0444\u0456\u0433\u0443\u0440\u043A\u0430 \u0437 \u0430\u0440\u0442\u0435\u0444\u0430\u043A\u0442\u0443 \u2014 \u0442\u0435\u043F\u0435\u0440 \u0437 \u043A\u0456\u0441\u0442\u043A\u0430\u043C\u0438, \u043C\u043E\u0436\u043D\u0430 \u0433\u0440\u0430\u0442\u0438 \u043D\u0435\u044E." }, { "id": "nm_anime_girl", "n": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.6, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430 \u0437 \u0440\u0456\u0436\u043A\u0430\u043C\u0438; \u0433\u043E\u043B\u043E\u0432\u0430 \u0437\u0430\u0432\u0435\u043B\u0438\u043A\u0430 \u2014 \u043C\u043E\u0436\u043B\u0438\u0432\u043E, \u0437\u0430\u043D\u0430\u0434\u0442\u043E \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0430." }, { "id": "nm_dwarf_adv", "n": "\u0413\u043D\u043E\u043C-\u0448\u0443\u043A\u0430\u0447 \u043F\u0440\u0438\u0433\u043E\u0434", "g": "race", "h": 1.35, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0441\u0442\u0438\u043B\u044C.", "own": true }, { "id": "nm_kobold2", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434 2", "g": "race", "h": 1.4, "yaw": 0, "note": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u043E\u0431\u043E\u043B\u044C\u0434 (\u044F\u0449\u0456\u0440\u043A\u0430).", "own": true }, { "id": "nm_rabbitman", "n": "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0456 \u043F\u0440\u043E\u043F\u043E\u0440\u0446\u0456\u0457 \u2014 \u0432\u0435\u043B\u0438\u043A\u0430 \u0433\u043E\u043B\u043E\u0432\u0430." }, { "id": "nm_mermaid", "n": "\u0420\u0443\u0441\u0430\u043B\u043A\u0430", "g": "race", "h": 2, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u043B\u0430\u043C\u0430\u0454 \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "static": true }, { "id": "nm_bunnygirl", "n": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u0440\u043E\u043B\u0438\u0446\u044F", "g": "race", "h": 1.6, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u043F\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0456 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u043E." }, { "id": "nm_catboy", "n": "\u041A\u043E\u0442\u043E\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041F\u0443\u0445\u043D\u0430\u0441\u0442\u0438\u0439 \u0441\u0442\u0438\u043B\u044C, \u0442\u0440\u043E\u0445\u0438 \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_chiya", "n": "\u0427\u0456\u044F", "g": "race", "h": 1.65, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_dwarf", "n": "\u0413\u043D\u043E\u043C", "g": "race", "h": 1.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_foxgirl", "n": "\u041B\u0438\u0441\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.65, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u043B\u0438\u0441\u0438\u0446\u044F \u0437 \u0434\u0435\u0432'\u044F\u0442\u044C\u043C\u0430 \u0445\u0432\u043E\u0441\u0442\u0430\u043C\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_wolfgirl", "n": "\u0412\u043E\u0432\u0447\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.7, "yaw": 0, "note": "\u0423\u0432\u0430\u0433\u0430: \u043A\u0430\u0448\u043A\u0435\u0442 \u0456 \u0447\u0435\u0440\u0432\u043E\u043D\u0430 \u043F\u043E\u0432'\u044F\u0437\u043A\u0430 \u043D\u0430 \u0440\u0443\u043A\u0430\u0432\u0456 \u0441\u0445\u043E\u0436\u0456 \u043D\u0430 \u043D\u0430\u0446\u0438\u0441\u0442\u0441\u044C\u043A\u0443 \u0444\u043E\u0440\u043C\u0443 \u2014 \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_ch09", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch09", "g": "npc", "h": 1.15, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0445\u043B\u043E\u043F\u0447\u0438\u043A \u2014 \u0433\u043E\u0434\u0438\u0442\u044C\u0441\u044F \u043B\u0438\u0448\u0435 \u0434\u043B\u044F \u0434\u0438\u0442\u0438\u043D\u0438-NPC (\u044F\u043A \u0422\u0456\u043C\u043C\u0456)." }, { "id": "nm_mx_peasant_f", "n": "\u0421\u0435\u043B\u044F\u043D\u043A\u0430", "g": "npc", "h": 1.68, "yaw": 0, "note": "" }, { "id": "nm_mx_peasant_m", "n": "\u0421\u0435\u043B\u044F\u043D\u0438\u043D", "g": "npc", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_prisoner", "n": "\u0412'\u044F\u0437\u0435\u043D\u044C", "g": "npc", "h": 1.8, "yaw": 0, "note": "\u0421\u043C\u0443\u0433\u0430\u0441\u0442\u0430 \u0442\u044E\u0440\u0435\u043C\u043D\u0430 \u0440\u043E\u0431\u0430 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0430." }, { "id": "nm_bishop", "n": "\u0404\u043F\u0438\u0441\u043A\u043E\u043F", "g": "npc", "h": 2.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0442\u0430\u0442\u0443\u044F \u043D\u0430 \u043F\u043E\u0441\u0442\u0430\u043C\u0435\u043D\u0442\u0456 \u2014 \u0434\u043B\u044F \u043C\u0456\u0441\u0442\u0430 \u044F\u043A \u043F\u0440\u0438\u043A\u0440\u0430\u0441\u0430, \u043D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_ch30", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch30", "g": "monster", "h": 2, "yaw": 0, "note": "\u0411\u0435\u0437\u0448\u043A\u0456\u0440\u0438\u0439 \u2014 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E \u0437 \u043E\u0433\u043E\u043B\u0435\u043D\u0438\u043C\u0438 \u043C'\u044F\u0437\u0430\u043C\u0438." }, { "id": "nm_mx_demon", "n": "\u0414\u0435\u043C\u043E\u043D", "g": "monster", "h": 2.2, "yaw": 0, "note": "" }, { "id": "nm_mx_goblin", "n": "\u0413\u043E\u0431\u043B\u0456\u043D", "g": "monster", "h": 1.15, "yaw": 0, "note": "" }, { "id": "nm_mx_maw", "n": "\u041C\u0430\u0443 (\u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E)", "g": "monster", "h": 2.6, "yaw": 0, "note": "" }, { "id": "nm_mx_mutant", "n": "\u041C\u0443\u0442\u0430\u043D\u0442", "g": "monster", "h": 2.3, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u0430\u0445 \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u0432\u0438\u0433\u043B\u044F\u0434\u0430\u0454 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_parasite", "n": "\u041F\u0430\u0440\u0430\u0437\u0438\u0442", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u043E\u0432\u0438\u0445 \u0448\u043E\u0440\u0442\u0430\u0445 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043E\u0434\u044F\u0433." }, { "id": "nm_wraith", "n": "\u041F\u0440\u0438\u0432\u0438\u0434", "g": "monster", "h": 2.4, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u043F\u043E\u043B\u044C\u043E\u0442\u0443.", "own": true }, { "id": "nm_kobold", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434", "g": "monster", "h": 1.3, "yaw": 0, "note": "\u0413\u0440\u0430\u0454 \u0432\u043B\u0430\u0441\u043D\u0443 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044E \u0441\u043F\u043E\u043A\u043E\u044E.", "own": true }, { "id": "nm_golem", "n": "\u0413\u043E\u043B\u0435\u043C", "g": "monster", "h": 2.8, "yaw": 0, "note": "\u041D\u0430\u0448\u0456 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u0439\u043E\u0433\u043E \u043B\u0430\u043C\u0430\u044E\u0442\u044C \u2014 \u043F\u043E\u043A\u0438 \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "own": true }, { "id": "nm_lizardman", "n": "\u042F\u0449\u0435\u0440\u043E\u043B\u044E\u0434", "g": "monster", "h": 2, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F + \u043D\u0430\u0448\u0456." }, { "id": "nm_werewolf", "n": "\u041F\u0435\u0440\u0435\u0432\u0435\u0440\u0442\u0435\u043D\u044C", "g": "monster", "h": 2.4, "yaw": 0, "note": "29 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439 \u0430\u0442\u0430\u043A.", "own": true }, { "id": "nm_dark_orc", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043E\u0440\u043A", "g": "monster", "h": 1.95, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_shaman", "n": "\u041E\u0440\u043A-\u0448\u0430\u043C\u0430\u043D", "g": "monster", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_warrior", "n": "\u041E\u0440\u043A-\u0432\u043E\u0457\u043D", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_urukhai", "n": "\u0423\u0440\u0443\u043A-\u0445\u0430\u0439", "g": "monster", "h": 2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0434\u0432\u043E\u0454 \u0431\u0456\u0439\u0446\u0456\u0432 \u043D\u0430 \u043F\u0456\u0434\u0441\u0442\u0430\u0432\u0446\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_skelzombie", "n": "\u0421\u043A\u0435\u043B\u0435\u0442-\u0437\u043E\u043C\u0431\u0456", "g": "undead", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_survivor", "n": "\u0412\u0438\u0436\u0438\u0432\u0430\u043B\u044C\u043D\u0438\u0446\u044F", "g": "undead", "h": 1.8, "yaw": 0, "note": "" }, { "id": "nm_mx_warzombie", "n": "\u0417\u043E\u043C\u0431\u0456-\u0432\u043E\u0457\u043D", "g": "undead", "h": 1.85, "yaw": 0, "note": "\u0421\u043E\u043B\u0434\u0430\u0442\u0441\u044C\u043A\u0430 \u0444\u043E\u0440\u043C\u0430 XX \u0441\u0442\u043E\u043B\u0456\u0442\u0442\u044F \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_zombiegirl", "n": "\u0417\u043E\u043C\u0431\u0456-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "undead", "h": 1.7, "yaw": 0, "note": "" }, { "id": "nm_lich", "n": "\u041B\u0456\u0447", "g": "undead", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_demon_dragon", "n": "\u0414\u0435\u043C\u043E\u043D\u0456\u0447\u043D\u0438\u0439 \u0434\u0440\u0430\u043A\u043E\u043D", "g": "boss", "h": 6, "yaw": 0, "note": "\u041C\u0430\u0454 \u0441\u0432\u043E\u0457 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u043F\u043E\u043B\u044C\u043E\u0442\u0443, \u0430\u043B\u0435 \u0432\u043E\u043D\u0438 \u0437\u0441\u0443\u0432\u0430\u044E\u0442\u044C \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0438 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u043D\u0435\u0440\u0443\u0445\u043E\u043C\u043E.", "static": true }, { "id": "nm_dark_wraith", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043F\u0440\u0438\u0432\u0438\u0434 (\u0431\u043E\u0441)", "g": "boss", "h": 3.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0432\u0435\u0440\u0448\u043D\u0438\u043A \u043D\u0430 \u043A\u043E\u043D\u0456 \u0440\u0430\u0437\u043E\u043C \u0437\u0456 \u0448\u043C\u0430\u0442\u043A\u043E\u043C \u0437\u0435\u043C\u043B\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_gravok", "n": "\u0413\u0440\u0430\u0432\u043E\u043A (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_lich_king", "n": "\u041A\u043E\u0440\u043E\u043B\u044C-\u043B\u0456\u0447 (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u0411\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 (\u0442\u0430\u043A \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456). \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_magma_golem", "n": "\u041C\u0430\u0433\u043C\u043E\u0432\u0438\u0439 \u0433\u043E\u043B\u0435\u043C (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_minotaur_boss", "n": "\u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440-\u0431\u043E\u0441", "g": "boss", "h": 3, "yaw": 0, "note": "\u0412 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u0431\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 \u2014 \u044F \u043F\u0435\u0440\u0435\u0431\u0443\u0434\u0443\u0432\u0430\u0432 \u043F\u043E\u0432\u0435\u0440\u0445\u043D\u044E \u0439 \u0434\u0430\u0432 \u043A\u043E\u043B\u0456\u0440 \u0448\u043A\u0456\u0440\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_stone_monster", "n": "\u041A\u0430\u043C'\u044F\u043D\u0435 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_alpha_wolf", "n": "\u0412\u043E\u0432\u043A-\u0432\u043E\u0436\u0430\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_bear", "n": "\u0412\u0435\u0434\u043C\u0456\u0434\u044C", "g": "animal", "h": 2.2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }, { "id": "nm_cat", "n": "\u041A\u0456\u0442", "g": "animal", "h": 0.7, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_crow", "n": "\u0412\u043E\u0440\u043E\u043D\u0430", "g": "animal", "h": 0.55, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_dire_wolf", "n": "\u041B\u044E\u0442\u043E\u0432\u043E\u0432\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "13 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439.", "own": true, "fit": "max" }, { "id": "nm_fox", "n": "\u041B\u0438\u0441", "g": "animal", "h": 0.9, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \xAB\u043F\u0440\u043E\u043A\u0438\u0434\u0430\u0454\u0442\u044C\u0441\u044F\xBB.", "own": true, "fit": "max" }, { "id": "nm_horse", "n": "\u041A\u0456\u043D\u044C", "g": "animal", "h": 2.4, "yaw": 0, "note": "\u0414\u043B\u044F \u043A\u0456\u043D\u043D\u043E\u0457 \u0457\u0437\u0434\u0438.", "own": true, "fit": "max" }, { "id": "nm_rabbit", "n": "\u041A\u0440\u043E\u043B\u0438\u043A", "g": "animal", "h": 0.45, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_wolf", "n": "\u0412\u043E\u0432\u043A", "g": "animal", "h": 1.6, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_deer", "n": "\u041E\u043B\u0435\u043D\u044C", "g": "animal", "h": 2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }];
   NEW_MODELS.forEach((m2) => {
     BODIES[m2.id] = { file: m2.id, height: m2.h, yaw: m2.yaw || 0, walk: ["x", "walk"], run: ["s", "Run"], bbox: true, own: !!m2.own, static: !!m2.static, fit: m2.fit };
   });
 
+  // src/roster.js
+  var ROSTER_ON = false;
+  var Z2 = (id) => ZONES.find((z) => z.id === id);
+  var M2 = MONSTERS;
+  var fig = (body, height) => ({ body, height });
+  if (ROSTER_ON) {
+    M2.goblin_chief.fig = fig("nm_mx_goblin", 1.6);
+    M2.orc.fig = fig("nm_orc_warrior", 2.05);
+    M2.orc_brute.fig = fig("nm_dark_orc", 2.2);
+    if (M2.kobold) M2.kobold.fig = fig("nm_kobold", 1.3);
+    M2.titan.fig = fig("nm_stone_monster", 11);
+  }
+  var base = (o) => Object.assign({ def: 4, spd: 2.4, aggro: 10, range: 1.8, gold: [3, 10], atk_anim: ["Attack1H", "Slash"], drops: [], eq: 0.08, gp: 2, respawn: 120 }, o);
+  var NEW = {
+    deer_inf: base({ n: "\u0417\u0430\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u043E\u043B\u0435\u043D\u044C", lvl: [2, 4], hp: 45, atk: 7, def: 2, spd: 2.6, aggro: 8, xp: 12, fig: fig("nm_deer", 2), drops: [["hide", 0.4, 1]] }),
+    forest_wolf: base({ n: "\u041B\u0456\u0441\u043E\u0432\u0438\u0439 \u0432\u043E\u0432\u043A", lvl: [6, 8], hp: 140, atk: 16, spd: 3.6, aggro: 0, xp: 30, fig: fig("nm_wolf", 1.6), drops: [["pelt", 0.35, 1], ["hide", 0.4, 1]] }),
+    alpha_wolf_f: base({ n: "\u0412\u043E\u0432\u043A-\u0432\u043E\u0436\u0430\u043A", lvl: [10, 10], hp: 420, atk: 26, def: 8, spd: 3.8, aggro: 0, xp: 90, fig: fig("nm_alpha_wolf", 1.9), drops: [["pelt", 1, 2], ["fang", 0.05, 1]], eq: 0.3 }),
+    ghost_wolf: base({ n: "\u041F\u0440\u0438\u043C\u0430\u0440\u043D\u0438\u0439 \u0432\u043E\u0432\u043A", lvl: [12, 14], hp: 300, atk: 30, def: 10, spd: 3.9, aggro: 13, xp: 95, undead: true, fig: fig("nm_dire_wolf", 1.9), drops: [["ecto", 0.4, 1], ["pelt", 0.4, 1]], eq: 0.12 }),
+    bear: base({ n: "\u0411\u0443\u0440\u0438\u0439 \u0432\u0435\u0434\u043C\u0456\u0434\u044C", lvl: [9, 11], hp: 520, atk: 30, def: 12, spd: 2.8, aggro: 0, range: 2.2, xp: 110, fig: fig("nm_bear", 2.2), drops: [["hide", 1, 2]], eq: 0.15 }),
+    rabbit: base({ n: "\u041A\u0440\u043E\u043B\u0438\u043A", lvl: [1, 1], hp: 8, atk: 1, def: 0, spd: 3.2, aggro: 0, xp: 2, gold: [0, 1], fig: fig("nm_rabbit", 0.45), drops: [["hide", 0.15, 1]], eq: 0 }),
+    fox: base({ n: "\u041B\u0438\u0441", lvl: [2, 2], hp: 20, atk: 3, def: 0, spd: 3.4, aggro: 0, xp: 4, gold: [0, 2], fig: fig("nm_fox", 0.9), drops: [["hide", 0.3, 1]], eq: 0 }),
+    crow: base({ n: "\u0412\u043E\u0440\u043E\u043D\u0430", lvl: [1, 2], hp: 10, atk: 2, def: 0, spd: 3, aggro: 0, xp: 3, gold: [0, 1], fig: fig("nm_crow", 0.55), drops: [], eq: 0 }),
+    hobgoblin: base({ n: "\u0425\u043E\u0431\u0433\u043E\u0431\u043B\u0456\u043D", lvl: [7, 9], hp: 190, atk: 22, def: 7, aggro: 13, range: 10, ranged: { color: "#c86aff", speed: 15 }, xp: 50, fig: fig("nm_orc_shaman", 1.8), drops: [["totem", 0.5, 1], ["ear", 0.5, 1]], eq: 0.15, atk_anim: ["Cast"] }),
+    zombie: base({ n: "\u0417\u043E\u043C\u0431\u0456-\u0432'\u044F\u0437\u0435\u043D\u044C", lvl: [14, 16], hp: 380, atk: 30, def: 10, spd: 1.6, xp: 90, undead: true, fig: fig("nm_mx_prisoner", 1.8), drops: [["bone", 0.5, 1], ["herb", 0.3, 1]] }),
+    zombie_s: base({ n: "\u0417\u043E\u043C\u0431\u0456-\u0432\u043E\u043B\u043E\u0446\u044E\u0433\u0430", lvl: [14, 16], hp: 400, atk: 28, def: 11, spd: 1.6, xp: 92, undead: true, fig: fig("nm_mx_survivor", 1.8), drops: [["bone", 0.5, 1], ["badge", 0.3, 1]] }),
+    zombie_g: base({ n: "\u0417\u043E\u043C\u0431\u0456-\u0443\u0442\u043E\u043F\u043B\u0435\u043D\u043D\u0438\u0446\u044F", lvl: [14, 16], hp: 360, atk: 31, def: 9, spd: 1.7, xp: 90, undead: true, fig: fig("nm_mx_zombiegirl", 1.7), drops: [["bone", 0.5, 1], ["pearl", 0.1, 1]] }),
+    ghoul: base({ n: "\u0413\u0443\u043B\u044C", lvl: [16, 18], hp: 520, atk: 38, def: 12, spd: 3.2, aggro: 14, xp: 130, undead: true, fig: fig("nm_mx_ch30", 2), drops: [["nail", 0.5, 1], ["ecto", 0.3, 1]], eq: 0.15 }),
+    golem: base({ n: "\u041A\u0430\u043C'\u044F\u043D\u0438\u0439 \u0433\u043E\u043B\u0435\u043C", lvl: [28, 30], hp: 2400, atk: 90, def: 40, spd: 1.8, range: 2.6, xp: 600, fig: fig("nm_golem", 2.8), drops: [["ore", 0.6, 2], ["iron", 0.8, 3]], eq: 0.2, eqRar: 2 }),
+    // bosses (roles from the Lab comments)
+    demon_s: base({ n: "\u041C\u0430\u043B\u0438\u0439 \u0434\u0435\u043C\u043E\u043D", boss: true, lvl: [16, 16], hp: 4200, atk: 55, def: 16, spd: 2.8, aggro: 13, range: 2.2, xp: 900, gold: [150, 240], fig: fig("nm_mx_demon", 2.3), drops: [["soul", 1, 2], ["sigil", 1, 2]], eq: 1, eqRar: 2, gp: 40, respawn: 300, enrage: 0.35 }),
+    wendigo: base({ n: "\u0412\u0435\u043D\u0434\u0456\u0433\u043E", boss: true, lvl: [18, 18], hp: 5200, atk: 62, def: 18, spd: 3.4, aggro: 14, range: 2.2, xp: 1200, gold: [180, 280], undead: true, fig: fig("nm_mx_warzombie", 2.3), drops: [["pelt", 1, 3], ["soul", 1, 2]], eq: 1, eqRar: 2, gp: 50, respawn: 360, enrage: 0.35 }),
+    sorcerer: base({ n: "\u0427\u0430\u043A\u043B\u0443\u043D\u043A\u0430 \u041D\u0430\u0439\u0442\u0448\u0435\u0439\u0434", boss: true, lvl: [20, 20], hp: 4800, atk: 70, def: 14, spd: 2.4, aggro: 16, range: 12, ranged: { color: "#b46aff", speed: 18 }, xp: 1400, gold: [200, 300], fig: fig("nm_mx_nightshade", 1.9), atk_anim: ["Cast", "CastLong"], drops: [["soul", 1, 2], ["mstaff", 0.2, 1]], eq: 1, eqRar: 3, gp: 55, respawn: 360 }),
+    alien: base({ n: "\u041F\u0440\u0438\u0431\u0443\u043B\u0435\u0446\u044C", boss: true, lvl: [18, 18], hp: 5600, atk: 60, def: 16, spd: 3.6, aggro: 14, range: 2.4, xp: 1300, gold: [180, 280], fig: fig("nm_wraith", 2.6), drops: [["ecto", 1, 3], ["moonstone", 0.6, 1]], eq: 1, eqRar: 2, gp: 50, respawn: 360 }),
+    parasite: base({ n: "\u041F\u0430\u0440\u0430\u0437\u0438\u0442", boss: true, lvl: [20, 20], hp: 6200, atk: 66, def: 18, spd: 2.6, aggro: 14, range: 2.2, xp: 1500, gold: [220, 320], undead: true, fig: fig("nm_mx_parasite", 2.2), drops: [["venom", 1, 3], ["soul", 1, 2]], eq: 1, eqRar: 3, gp: 60, respawn: 420 }),
+    skel_mutant: base({ n: "\u041A\u0456\u0441\u0442\u044F\u043D\u0438\u0439 \u043C\u0443\u0442\u0430\u043D\u0442", boss: true, lvl: [24, 24], hp: 9e3, atk: 82, def: 24, spd: 2.6, aggro: 15, range: 2.4, xp: 2200, gold: [300, 420], undead: true, fig: fig("nm_mx_skelzombie", 2.5), drops: [["bone", 1, 5], ["soul", 1, 3]], eq: 1, eqRar: 3, gp: 70, respawn: 480, enrage: 0.3 }),
+    maw: base({ n: "\u041F\u0430\u0449\u0435\u043A\u0430", boss: true, lvl: [26, 26], hp: 11e3, atk: 95, def: 26, spd: 2.8, aggro: 15, range: 3, xp: 2800, gold: [350, 500], fig: fig("nm_mx_maw", 3), drops: [["soul", 1, 4], ["gcore", 0.1, 1]], eq: 1, eqRar: 3, gp: 80, respawn: 540, enrage: 0.3, slam: { r: 7, tele: 1.3, cd: 9, mult: 1.8 } }),
+    mutant: base({ n: "\u041C\u0443\u0442\u0430\u043D\u0442-\u0432\u0435\u043B\u0435\u0442\u0435\u043D\u044C", boss: true, lvl: [32, 32], hp: 26e3, atk: 130, def: 34, spd: 2.6, aggro: 16, range: 3.2, xp: 6e3, gold: [800, 1200], fig: fig("nm_mx_mutant", 3.6), drops: [["gcore", 0.5, 1], ["soul", 1, 5]], eq: 1, eqRar: 3, gp: 150, respawn: 600, enrage: 0.3, adds: { at: 0.6, type: "ghoul" }, slam: { r: 9, tele: 1.4, cd: 8, mult: 2 } }),
+    gravok: base({ n: "\u0413\u0440\u0430\u0432\u043E\u043A, \u0413\u0435\u043D\u0435\u0440\u0430\u043B \u041F\u043E\u0432\u0435\u043B\u0438\u0442\u0435\u043B\u044F \u0422\u0435\u043C\u0440\u044F\u0432\u0438", boss: true, lvl: [36, 36], hp: 34e3, atk: 150, def: 42, spd: 2.8, aggro: 16, range: 2.8, xp: 9e3, gold: [1200, 1800], fig: fig("nm_gravok", 2.6), atk_anim: ["Attack2H", "Slice2H", "Spin"], drops: [["dsteel", 1, 4], ["soul", 1, 5]], eq: 1, eqRar: 4, gp: 220, respawn: 720, enrage: 0.3, charge: { len: 16, w: 3, tele: 1, cd: 10, mult: 2 } }),
+    dragon: base({ n: "\u0414\u0435\u043C\u043E\u043D\u0456\u0447\u043D\u0438\u0439 \u0417\u043C\u0456\u0439", boss: true, calamity: true, lvl: [48, 48], hp: 14e4, atk: 250, def: 60, spd: 3.4, aggro: 0, range: 5, xp: 55e3, gold: [7e3, 1e4], fig: fig("nm_demon_dragon", 9), drops: [["gcore", 1, 2], ["soul", 1, 10]], eq: 1, eqRar: 4, gp: 1200, respawn: 900, enrage: 0.3, slam: { r: 14, tele: 1.6, cd: 8, mult: 2.2 } })
+  };
+  Object.entries(NEW).forEach(([k, v]) => {
+    if (!M2[k]) M2[k] = v;
+  });
+  function rosterSpawns(spawns) {
+    if (!ROSTER_ON) return;
+    let seed = 4242;
+    const R2 = () => {
+      seed = seed * 16807 % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+    const ring = (zid, type, n, r0, r1, extra) => {
+      const Zn = Z2(zid);
+      if (!Zn) return;
+      for (let i = 0; i < n; i++) {
+        const a = R2() * 6.283, d = (r0 + R2() * (r1 - r0)) * Zn.r;
+        spawns.push(Object.assign({ type, x: Zn.x + Math.cos(a) * d, z: Zn.z + Math.sin(a) * d, wander: 6 }, extra || {}));
+      }
+    };
+    const at = (zid, type, dx, dz, extra) => {
+      const Zn = Z2(zid);
+      if (Zn) spawns.push(Object.assign({ type, x: Zn.x + dx, z: Zn.z + dz, wander: 3 }, extra || {}));
+    };
+    ring("meadow", "deer_inf", 3, 0.5, 0.9);
+    ring("grove", "deer_inf", 2, 0.6, 0.95);
+    ring("meadow", "rabbit", 3, 0.5, 1, { passive: true });
+    ring("farm", "rabbit", 2, 0.5, 0.95, { passive: true });
+    ring("farm", "fox", 1, 0.6, 0.9, { passive: true, wander: 0 });
+    ring("grove", "fox", 1, 0.7, 1, { passive: true, wander: 0 });
+    ring("ruins", "crow", 2, 0.6, 1, { passive: true });
+    ring("darkwood", "forest_wolf", 4, 0.3, 0.8, { passive: true });
+    at("darkwood", "alpha_wolf_f", 18, -10, { passive: true });
+    ring("darkwood", "bear", 2, 0.4, 0.85, { passive: true });
+    ring("heath", "ghost_wolf", 3, 0.3, 0.8);
+    ring("grove", "hobgoblin", 2, 0.5, 0.85);
+    ring("swamp", "zombie", 2, 0.3, 0.8);
+    ring("swamp", "zombie_s", 2, 0.3, 0.8);
+    ring("swamp", "zombie_g", 2, 0.3, 0.8);
+    ring("swamp", "ghoul", 2, 0.4, 0.8);
+    ring("mines", "golem", 2, 0.4, 0.8);
+    at("ruins", "demon_s", -20, -18);
+    at("heath", "wendigo", 22, -24);
+    at("darkwood", "sorcerer", -30, 26);
+    at("swamp", "alien", 26, -18);
+    at("swamp", "parasite", -24, 22);
+    at("swamp", "skel_mutant", 6, 30);
+    at("darkwood", "maw", 34, 30);
+    at("mines", "mutant", 22, 18);
+    at("mines", "gravok", -18, -20);
+    at("titan", "dragon", -60, 55, { wander: 6 });
+  }
+  var STATUES = [
+    { body: "nm_bishop", h: 2.6, place: "shrine", dx: -8, dz: 6, yaw: 2.4, name: "\u0417\u0430\u0433\u0430\u0434\u043A\u043E\u0432\u0430 \u0441\u0442\u0430\u0442\u0443\u044F" },
+    { body: "nm_lich_king", h: 2.8, building: "temple", side: -1, yaw: 0 },
+    { body: "nm_lich_king", h: 2.8, building: "temple", side: 1, yaw: 0 },
+    { body: "nm_minotaur_boss", h: 3.4, building: "arena", side: -1.6, yaw: 0 },
+    { body: "nm_mermaid", h: 2, place: "lake", dx: -10, dz: -4, yaw: 0.8, name: "\u0420\u0443\u0441\u0430\u043B\u043A\u0430" }
+  ];
+  var T = (id, body, h, name, lines, where) => Object.assign({ id, body, height: h, name, lines }, where);
+  var town = (r) => ({ area: [0, 0, r || 30] });
+  var cap = (r) => ({ area: [CITY2.x, CITY2.z, r || 45] });
+  function rosterNpcs() {
+    if (!ROSTER_ON) return [];
+    const ZB = Z2("beasts"), ZD = Z2("dwarves"), ZS = Z2("shrine");
+    return [
+      T("r_akai", "nm_mx_akai", 1.75, "\u0421\u043B\u0456\u0434\u043E\u043F\u0438\u0442\u043A\u0430 \u0410\u043A\u0430\u0439", ["\u0422\u0456\u043D\u0456 \u2014 \u043C\u0456\u0439 \u0434\u0456\u043C.", "\u041D\u0430 \u0412\u043E\u0432\u0447\u0438\u0445 \u043F\u0430\u0433\u043E\u0440\u0431\u0430\u0445 \u0437'\u044F\u0432\u0438\u043B\u0438\u0441\u044C \u043F\u0440\u0438\u043C\u0430\u0440\u043D\u0456 \u0432\u043E\u0432\u043A\u0438. \u0411\u0443\u0434\u044C \u043E\u0431\u0435\u0440\u0435\u0436\u043D\u0438\u0439."], town(26)),
+      T("r_arissa", "nm_mx_arissa", 1.72, "\u041D\u0430\u0439\u043C\u0430\u043D\u043A\u0430 \u0410\u0440\u0456\u0441\u0441\u0430", ["\u041F\u043B\u0430\u0442\u0438 \u2014 \u0456 \u044F \u043F\u0456\u0434\u0443 \u0437 \u0442\u043E\u0431\u043E\u044E \u0445\u043E\u0447 \u0434\u043E \u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440\u0430.", "\u0427\u0443\u043B\u0430, \u0443 \u0431\u043E\u043B\u043E\u0442\u0456 \u0431\u0430\u0447\u0438\u043B\u0438 \u0449\u043E\u0441\u044C \u043D\u0435\u043B\u044E\u0434\u0441\u044C\u043A\u0435."], town(28)),
+      T("r_brute", "nm_mx_brute", 2, "\u0417\u0434\u043E\u0440\u043E\u0432\u0430\u043D\u044C \u0411\u043E\u0439\u043A\u043E", ["\u0425\u0442\u043E \u0442\u0443\u0442 \u043D\u0430\u0439\u0441\u0438\u043B\u044C\u043D\u0456\u0448\u0438\u0439? \u042F!", "\u0412\u0435\u0434\u043C\u0456\u0434\u044C \u0443 \u0422\u0435\u043C\u043D\u043E\u043C\u0443 \u043B\u0456\u0441\u0456 \u043C\u0435\u043D\u0435 \u043F\u043E\u0434\u0440\u044F\u043F\u0430\u0432. \u0425\u0430!"], town(24)),
+      T("r_ch05", "nm_mx_ch05", 1.85, "\u0412\u0435\u0442\u0435\u0440\u0430\u043D \u0421\u0435\u0432\u0435\u0440\u0438\u043D", ["\u042F \u0431\u0430\u0447\u0438\u0432 \u041A\u0430\u0442\u0430\u0441\u0442\u0440\u043E\u0444\u0443 \u043D\u0430 \u0432\u043B\u0430\u0441\u043D\u0456 \u043E\u0447\u0456.", "\u041D\u0430\u0432\u0447\u0438\u0441\u044F \u0431\u043B\u043E\u043A\u0443\u0432\u0430\u0442\u0438. \u0426\u0435 \u0440\u044F\u0442\u0443\u0454 \u0436\u0438\u0442\u0442\u044F."], town(22)),
+      T("r_dreyar", "nm_mx_dreyar", 1.85, "\u041B\u0438\u0446\u0430\u0440 \u0414\u0440\u0435\u044F\u0440", ["\u0427\u0435\u0441\u0442\u044C \u2014 \u043F\u043E\u043D\u0430\u0434 \u0443\u0441\u0435.", "\u0413\u0435\u043D\u0435\u0440\u0430\u043B \u0413\u0440\u0430\u0432\u043E\u043A \u0437\u0431\u0438\u0440\u0430\u0454 \u0432\u0456\u0439\u0441\u044C\u043A\u043E \u0432 \u0448\u0430\u0445\u0442\u0430\u0445."], cap(40)),
+      T("r_erika", "nm_mx_erika", 1.72, "\u041B\u0443\u0447\u043D\u0438\u0446\u044F \u0415\u0440\u0456\u043A\u0430", ["\u0421\u0442\u0440\u0456\u043B\u0430 \u043B\u0435\u0442\u0438\u0442\u044C \u0442\u0443\u0434\u0438, \u043A\u0443\u0434\u0438 \u0434\u0438\u0432\u0438\u0442\u044C\u0441\u044F \u0441\u0435\u0440\u0446\u0435.", "\u0415\u043B\u044C\u0444\u0438 \u043F\u0440\u043E\u0434\u0430\u044E\u0442\u044C \u0447\u0443\u0434\u043E\u0432\u0456 \u043B\u0443\u043A\u0438. \u0410\u043B\u0435 \u0441\u043F\u0435\u0440\u0448\u0443 \u2014 \u0437\u0430\u0441\u043B\u0443\u0436\u0438 \u0457\u0445\u043D\u044E \u043F\u043E\u0432\u0430\u0433\u0443."], town(30)),
+      T("r_eve", "nm_mx_eve", 1.72, "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u0446\u044F \u0404\u0432\u0430", ["\u042F \u043E\u0431\u0456\u0439\u0448\u043B\u0430 \u043F\u0456\u0432 \u0441\u0432\u0456\u0442\u0443. \u041D\u0430\u0441\u0442\u0443\u043F\u043D\u0430 \u2014 \u0421\u043E\u043D\u0446\u0435\u0433\u0440\u0430\u0434!"], cap(45)),
+      T("r_ganfaul", "nm_mx_ganfaul", 1.9, "\u041C\u0435\u0447\u043D\u0438\u043A \u0413\u0430\u043D\u0444\u0430\u0443\u043B", ["\u041C\u0456\u0439 \u043C\u0435\u0447 \u043F\u0430\u043C'\u044F\u0442\u0430\u0454 \u0442\u0438\u0441\u044F\u0447\u0443 \u0431\u0438\u0442\u0432.", "\u041F\u0430\u0449\u0435\u043A\u0430 \u0432 \u0422\u0435\u043C\u043D\u043E\u043C\u0443 \u043B\u0456\u0441\u0456\u2026 \u043D\u0430\u0432\u0456\u0442\u044C \u044F \u0442\u0456\u043A\u0430\u0432."], town(26)),
+      T("r_heraklios", "nm_mx_heraklios", 1.85, "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u0439 \u043B\u0456\u043A\u0430\u0440 \u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439", ["\u0417\u043E\u043C\u0431\u0456 \u043D\u0430 \u0431\u043E\u043B\u043E\u0442\u0456 \u2014 \u0446\u0435 \u043D\u0435 \u043F\u0440\u043E\u043A\u043B\u044F\u0442\u0442\u044F. \u0426\u0435 \u0445\u0432\u043E\u0440\u043E\u0431\u0430.", "\u0425\u0442\u043E\u0441\u044C \u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0442\u0430\u043C \u0434\u043E\u0441\u043B\u0456\u0434\u0438\u2026"], town(30)),
+      T("r_kachujin", "nm_mx_kachujin", 1.72, "\u041C\u0435\u0447\u043D\u0438\u0446\u044F \u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D", ["\u0428\u0432\u0438\u0434\u043A\u0456\u0441\u0442\u044C \u2014 \u0446\u0435 \u0441\u0438\u043B\u0430."], cap(40)),
+      T("r_maria", "nm_mx_maria", 1.75, "\u0412\u043E\u0457\u0442\u0435\u043B\u044C\u043A\u0430 \u041C\u0430\u0440\u0456\u044F", ["\u0421\u043E\u043D\u0446\u0435\u0433\u0440\u0430\u0434 \u043D\u0435 \u0432\u043F\u0430\u0434\u0435, \u043F\u043E\u043A\u0438 \u044F \u0436\u0438\u0432\u0430!"], cap(42)),
+      T("r_maria2", "nm_mx_maria_w", 1.75, "\u0412\u0430\u0440\u0442\u0430 \u0421\u043E\u043D\u0446\u0435\u0433\u0440\u0430\u0434\u0430 \u041C\u0430\u0440\u0456\u0447\u043A\u0430", ["\u041F\u0440\u043E\u0445\u043E\u0434\u044C\u0442\u0435, \u043C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A\u0443."], cap(36)),
+      T("r_medea", "nm_mx_medea", 1.72, "\u0412\u0456\u0434\u044C\u043C\u0430 \u041C\u0435\u0434\u0435\u044F", ["\u0417\u0456\u043B\u043B\u044F, \u043F\u0440\u0438\u0432\u043E\u0440\u043E\u0442\u0438, \u043F\u0440\u043E\u043A\u043B\u044F\u0442\u0442\u044F \u2014 \u0434\u043E\u0440\u043E\u0433\u043E.", "\u041D\u0435 \u0434\u043E\u0432\u0456\u0440\u044F\u0439 \u0427\u0430\u043A\u043B\u0443\u043D\u0446\u0456 \u0437 \u0422\u0435\u043C\u043D\u043E\u0433\u043E \u043B\u0456\u0441\u0443."], town(28)),
+      T("r_paladin", "nm_mx_paladin", 1.9, "\u041F\u0430\u043B\u0430\u0434\u0438\u043D \u041E\u0441\u0442\u0440\u043E\u043C\u0438\u0440", ["\u0421\u0432\u0456\u0442\u043B\u043E \u0432\u0435\u0434\u0435 \u043C\u0435\u043D\u0435.", "\u041D\u0435\u0436\u0438\u0442\u044C \u043D\u0430 \u0431\u043E\u043B\u043E\u0442\u0456 \u0440\u043E\u0441\u0442\u0435. \u0422\u0440\u0435\u0431\u0430 \u0434\u0456\u044F\u0442\u0438."], cap(44)),
+      T("r_uriel", "nm_mx_uriel", 1.95, "\u0423\u0440\u0456\u0435\u043B\u044C \u0417\u043E\u043B\u043E\u0442\u0438\u0439", ["\u042F \u0441\u043B\u0443\u0436\u0443 \u043A\u043E\u0440\u043E\u043B\u044E \u0439 \u0441\u0432\u0456\u0442\u043B\u0443."], cap(30)),
+      T("r_monk", "nm_monk", 1.8, "\u041C\u043E\u043D\u0430\u0445 \u0422\u0438\u0445\u043E\u043C\u0438\u0440", ["\u0422\u0438\u0448\u0430 \u2014 \u043D\u0430\u0439\u043A\u0440\u0430\u0449\u0430 \u0432\u0456\u0434\u043F\u043E\u0432\u0456\u0434\u044C."], { at: [ZS.x + 6, ZS.z + 4], face: 3.6 }),
+      T("r_peasant_f", "nm_mx_peasant_f", 1.66, "\u0421\u0435\u043B\u044F\u043D\u043A\u0430 \u041E\u043A\u0441\u0430\u043D\u0430", ["\u041A\u0443\u043F\u0456\u0442\u044C \u044F\u0431\u043B\u0443\u0447\u043A\u0430!", "\u041A\u043E\u043B\u0438 \u043A\u0440\u0438\u0432\u0430\u0432\u0438\u0439 \u043C\u0456\u0441\u044F\u0446\u044C \u2014 \u0433\u043E\u0431\u043B\u0456\u043D\u0438 \u043B\u0456\u0437\u0443\u0442\u044C \u043D\u0430 \u0445\u0443\u0442\u0456\u0440."], town(32)),
+      T("r_peasant_m", "nm_mx_peasant_m", 1.7, "\u0421\u0435\u043B\u044F\u043D\u0438\u043D \u041F\u0430\u043D\u0430\u0441", ["\u041E\u0445, \u0441\u043F\u0438\u043D\u0430 \u0431\u043E\u043B\u0438\u0442\u044C\u2026", "\u0414\u043E\u0449 \u0431\u0443\u0434\u0435 \u2014 \u0440\u0438\u0431\u0430 \u043A\u043B\u044E\u0432\u0430\u0442\u0438\u043C\u0435!"], town(32)),
+      T("r_peasant_m2", "nm_mx_peasant_m", 1.7, "\u0414\u0456\u0434 \u0406\u0432\u0430\u043D", ["\u0423 \u043C\u043E\u0457 \u0447\u0430\u0441\u0438 \u0432\u043E\u0432\u043A\u0438 \u0431\u0443\u043B\u0438 \u043C\u0435\u043D\u0448\u0456."], cap(50)),
+      T("r_chiya", "nm_chiya", 1.65, "\u0427\u0456\u044F \u0437 \u041F\u0430\u0433\u043E\u0440\u0431\u0456\u0432", ["\u0422\u0438 \u043F\u0430\u0445\u043D\u0435\u0448 \u043C\u0456\u0441\u0442\u043E\u043C!", "\u0412\u043E\u0436\u0430\u043A \u0437\u0433\u0440\u0430\u0457 \u2014 \u043C\u0456\u0439 \u0434\u044F\u0434\u044C\u043A\u043E."], { area: [ZB.x, ZB.z, 22] }),
+      T("r_rabbitman", "nm_rabbitman", 1.7, "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434 \u0422\u0443\u043F\u043E\u0442\u0443\u043D", ["\u0422\u0443\u043F\u0443-\u0442\u0443\u043F\u0443! \u042F \u043D\u0430\u0439\u0448\u0432\u0438\u0434\u0448\u0438\u0439 \u0443 \u041F\u0430\u0433\u043E\u0440\u0431\u0430\u0445!"], { area: [ZB.x, ZB.z, 24] }),
+      T("r_kobold2", "nm_kobold2", 1.4, "\u041A\u043E\u0431\u043E\u043B\u044C\u0434\u0438\u0445\u0430 \u041B\u0456\u0441\u043A\u0430", ["\u042F \u043D\u0435 \u0442\u0430\u043A\u0430, \u044F\u043A \u0442\u0456 \u043A\u043E\u0431\u043E\u043B\u044C\u0434\u0438 \u0432 \u043F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u0456!"], { area: [ZB.x, ZB.z, 20] }),
+      T("r_dwarf", "nm_dwarf", 1.4, "\u0413\u043D\u043E\u043C-\u0432\u0430\u0440\u0442\u043E\u0432\u0438\u0439 \u0411\u0430\u0440\u0456\u043D", ["\u0417\u0430\u043B\u0456\u0437\u043D\u0438\u0439 \u041A\u0440\u044F\u0436 \u0441\u0442\u043E\u0457\u0442\u044C \u0442\u0438\u0441\u044F\u0447\u0443 \u0440\u043E\u043A\u0456\u0432!"], { area: [ZD.x, ZD.z, 16] }),
+      T("r_cursed", "nm_dark_wraith", 3.2, "\u041F\u0440\u043E\u043A\u043B\u044F\u0442\u0438\u0439 \u043C\u0435\u0447\u043D\u0438\u043A", ["\u2026\u042F \u043D\u0435 \u0432\u043E\u0440\u043E\u0433 \u0442\u043E\u0431\u0456. \u041F\u0440\u043E\u043A\u043B\u044F\u0442\u0442\u044F \u0442\u0440\u0438\u043C\u0430\u0454 \u043C\u0435\u043D\u0435 \u0442\u0443\u0442.", "\u041A\u043E\u043B\u0438\u0441\u044C \u043C\u0435\u043D\u0435 \u0437\u0440\u0430\u0434\u0438\u0432 \u0442\u043E\u0439, \u043A\u043E\u043C\u0443 \u044F \u0432\u0456\u0440\u0438\u0432 \u043D\u0430\u0439\u0431\u0456\u043B\u044C\u0448\u0435.", "\u041C\u043E\u0436\u0435, \u043A\u043E\u043B\u0438\u0441\u044C \u0442\u0438 \u0434\u043E\u043F\u043E\u043C\u043E\u0436\u0435\u0448 \u043C\u0435\u043D\u0456 \u0437\u0432\u0456\u043B\u044C\u043D\u0438\u0442\u0438\u0441\u044F."], { at: [ZS.x - 14, ZS.z - 8], face: 0.6, stat: false, statue: true })
+    ];
+  }
+  var NPC_BODIES = { merchant: ["nm_oldwizard", 1.8], merchant2: ["nm_oldwizard", 1.8], stroller1: ["nm_mx_peasant_m", 1.7], cz1: ["nm_mx_peasant_f", 1.66] };
+  function patchNpcs(list) {
+    if (!ROSTER_ON) return list;
+    list.forEach((d) => {
+      const b = NPC_BODIES[d.id];
+      if (b) {
+        d.body = b[0];
+        d.height = b[1];
+        d.gear = {};
+        d.look = {};
+      }
+    });
+    return list;
+  }
+
   // src/life.js
+  var STATUES2 = ROSTER_ON ? STATUES : [];
   Object.assign(MATERIALS, LIFE_MATS);
   var FISH_IDS = new Set(FISH.map((f) => f[0]));
   var hash3 = (s) => {
@@ -59391,14 +59537,14 @@ ${candidateLine}`;
       stop(e);
       ping();
     });
-    const M2 = { rollT: 0, rollCd: 0, rollDir: 0, iframes: 0, jumpV: 0, jumpY: 0, blockT: 0, swim: false, swimAcc: 0 };
+    const M3 = { rollT: 0, rollCd: 0, rollDir: 0, iframes: 0, jumpV: 0, jumpY: 0, blockT: 0, swim: false, swimAcc: 0 };
     const blockHeld = { key: false, btn: false };
     const busy = () => {
       const c = C();
       return !c || c.H.dead || interior || fishing;
     };
     function roll() {
-      if (busy() || M2.rollCd > 0 || M2.jumpY > 0.05 || horse.on) return;
+      if (busy() || M3.rollCd > 0 || M3.jumpY > 0.05 || horse.on) return;
       const a = A.agent;
       let dir = a.heading;
       const k = A.keys;
@@ -59411,10 +59557,10 @@ ${candidateLine}`;
         const c = Math.cos(A.cam.yaw), s = Math.sin(A.cam.yaw);
         dir = Math.atan2(kx * c + kz * s, -kx * s + kz * c);
       }
-      M2.rollT = 0.45;
-      M2.rollCd = 1.1;
-      M2.iframes = 0.38;
-      M2.rollDir = dir;
+      M3.rollT = 0.45;
+      M3.rollCd = 1.1;
+      M3.iframes = 0.38;
+      M3.rollDir = dir;
       a.heading = dir;
       a.path = [];
       a.onArrive = null;
@@ -59425,21 +59571,21 @@ ${candidateLine}`;
       tut("roll");
     }
     function jump() {
-      if (busy() || M2.jumpY > 0.05 || M2.swim) return;
-      M2.jumpV = horse.on ? 5.2 : 4.6;
+      if (busy() || M3.jumpY > 0.05 || M3.swim) return;
+      M3.jumpV = horse.on ? 5.2 : 4.6;
       extraSfx("jump");
       const hi = A.heroInst();
       if (hi && !horse.on) hi.oneShot("Jump", { speed: 1.25, fade: 0.08 });
     }
-    const blocking = () => (blockHeld.key || blockHeld.btn) && !busy() && !M2.swim && !horse.on && M2.rollT <= 0;
+    const blocking = () => (blockHeld.key || blockHeld.btn) && !busy() && !M3.swim && !horse.on && M3.rollT <= 0;
     function guard() {
-      if (M2.iframes > 0) {
+      if (M3.iframes > 0) {
         const p = A.heroObj.position;
         ui.float("\u0423\u0445\u0438\u043B\u0435\u043D\u043D\u044F!", p.x, p.y + 2.3, p.z, "xp");
         return 0;
       }
       if (blocking()) {
-        const perfect = M2.blockT < 0.3;
+        const perfect = M3.blockT < 0.3;
         if (perfect) {
           L2.perfect++;
           extraSfx("perfect");
@@ -59460,7 +59606,7 @@ ${candidateLine}`;
         dismount();
         return;
       }
-      if (busy() || M2.swim) return;
+      if (busy() || M3.swim) return;
       const wh = A.town.where(A.agent.x, A.agent.z);
       if (wh === "town" || wh === "dungeon") {
         ui.toast("\u041A\u043E\u043D\u044F \u043C\u043E\u0436\u043D\u0430 \u043F\u043E\u043A\u043B\u0438\u043A\u0430\u0442\u0438 \u043B\u0438\u0448\u0435 \u0437\u0430 \u0431\u0440\u0430\u043C\u043E\u044E");
@@ -59635,7 +59781,7 @@ ${candidateLine}`;
       endFishing();
     }
     function fishTick(dt) {
-      const near = !fishing && !busy() && !horse.on && !M2.swim && nearWater();
+      const near = !fishing && !busy() && !horse.on && !M3.swim && nearWater();
       bFish.style.display = fishing || near ? "" : "none";
       if (!fishing) return;
       const f = fishing;
@@ -59695,13 +59841,13 @@ ${candidateLine}`;
       const g = new Group();
       if (kind === "herb" || kind === "shroom") {
         const stem = new MeshStandardMaterial({ color: kind === "herb" ? "#4f8a3a" : "#e8dcc0", roughness: 0.8 });
-        const cap = new MeshStandardMaterial({ color: kind === "herb" ? "#f4f0d8" : "#b0502a", roughness: 0.6, emissive: new Color(K2.color), emissiveIntensity: 0.15 });
+        const cap2 = new MeshStandardMaterial({ color: kind === "herb" ? "#f4f0d8" : "#b0502a", roughness: 0.6, emissive: new Color(K2.color), emissiveIntensity: 0.15 });
         for (let i = 0; i < 7; i++) {
           const a = i * 0.9, r = 0.12 + i % 3 * 0.12;
           const s = new Mesh(new CylinderGeometry(0.015, 0.02, 0.3 + i % 2 * 0.12, 5), stem);
           s.position.set(Math.cos(a) * r, 0.16, Math.sin(a) * r);
           g.add(s);
-          const c = kind === "herb" ? new Mesh(new SphereGeometry(0.05, 8, 6), i % 3 === 0 ? new MeshStandardMaterial({ color: "#6aa0ff", emissive: "#2a4aaa", emissiveIntensity: 0.3 }) : cap) : new Mesh(new SphereGeometry(0.09, 10, 6, 0, 6.3, 0, 1.6), cap);
+          const c = kind === "herb" ? new Mesh(new SphereGeometry(0.05, 8, 6), i % 3 === 0 ? new MeshStandardMaterial({ color: "#6aa0ff", emissive: "#2a4aaa", emissiveIntensity: 0.3 }) : cap2) : new Mesh(new SphereGeometry(0.09, 10, 6, 0, 6.3, 0, 1.6), cap2);
           c.position.set(Math.cos(a) * r, 0.32 + i % 2 * 0.12, Math.sin(a) * r);
           g.add(c);
         }
@@ -59959,6 +60105,7 @@ ${candidateLine}`;
     evEl.style.display = "none";
     root.appendChild(evEl);
     function preSpawns(spawns) {
+      rosterSpawns(spawns);
       const FARM = ZONES.find((z) => z.id === "farm");
       EV.raidStart = spawns.length;
       const types = ["goblin", "goblin", "goblin_sh", "goblin", "goblin_sh", "goblin"];
@@ -60316,12 +60463,12 @@ ${candidateLine}`;
     function book(tab) {
       tab = tab || "daily";
       tut("book");
-      const T = [["daily", "\u{1F4DC} \u0414\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F"], ["rep", "\u{1F91D} \u0420\u0435\u043F\u0443\u0442\u0430\u0446\u0456\u044F"], ["beasts", "\u{1F409} \u0411\u0435\u0441\u0442\u0456\u0430\u0440\u0456\u0439"], ["ach", "\u{1F3C6} \u0414\u043E\u0441\u044F\u0433\u043D\u0435\u043D\u043D\u044F"], ["party", "\u{1F465} \u0417\u0430\u0433\u0456\u043D"]];
+      const T2 = [["daily", "\u{1F4DC} \u0414\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F"], ["rep", "\u{1F91D} \u0420\u0435\u043F\u0443\u0442\u0430\u0446\u0456\u044F"], ["beasts", "\u{1F409} \u0411\u0435\u0441\u0442\u0456\u0430\u0440\u0456\u0439"], ["ach", "\u{1F3C6} \u0414\u043E\u0441\u044F\u0433\u043D\u0435\u043D\u043D\u044F"], ["party", "\u{1F465} \u0417\u0430\u0433\u0456\u043D"]];
       if (tab === "party") {
         partySheet();
         return;
       }
-      let h = '<div class="lf-tabs">' + T.map(([k, n]) => '<button class="gm-btn' + (k === tab ? " primary" : "") + '" data-t="' + k + '">' + n + "</button>").join("") + "</div>";
+      let h = '<div class="lf-tabs">' + T2.map(([k, n]) => '<button class="gm-btn' + (k === tab ? " primary" : "") + '" data-t="' + k + '">' + n + "</button>").join("") + "</div>";
       if (tab === "daily") {
         h += '<p style="opacity:.75;font-size:13px">\u041D\u043E\u0432\u0456 \u0434\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F \u0449\u043E\u0434\u043D\u044F. \u041F\u043E\u0433\u043E\u0434\u0430 \u0437\u0430\u0440\u0430\u0437: ' + W_N[W.kind] + "." + (EV.cur ? "<br><b>\u041F\u043E\u0434\u0456\u044F: " + EV_N[EV.cur] + "</b>" : "") + "</p>";
         h += dailyList().map(({ a, Q }) => '<div class="lf-row"><div style="flex:1"><b>' + (a.done ? "\u2705 " : "") + esc2(Q.n) + "</b><br><small>" + esc2(Q.d) + " \xB7 " + Q.gold + " \u{1FA99}, " + Q.xp + " XP" + (Q.rep ? ", " + FACTIONS[Q.rep[0]].i + "+" + Q.rep[1] : "") + '</small><div class="lf-bar"><i style="width:' + a.prog / Q.need * 100 + '%"></i></div></div><small>' + a.prog + "/" + Q.need + "</small></div>").join("");
@@ -60690,36 +60837,36 @@ ${candidateLine}`;
     }
     function update(dt) {
       const a = A.agent, hi = A.heroInst();
-      M2.rollCd = Math.max(0, M2.rollCd - dt);
-      M2.iframes = Math.max(0, M2.iframes - dt);
-      if (M2.rollT > 0) {
-        M2.rollT -= dt;
-        const sp = 10.5 * Math.min(1, M2.rollT / 0.25 + 0.25);
-        a.x += Math.sin(M2.rollDir) * sp * dt;
-        a.z += Math.cos(M2.rollDir) * sp * dt;
+      M3.rollCd = Math.max(0, M3.rollCd - dt);
+      M3.iframes = Math.max(0, M3.iframes - dt);
+      if (M3.rollT > 0) {
+        M3.rollT -= dt;
+        const sp = 10.5 * Math.min(1, M3.rollT / 0.25 + 0.25);
+        a.x += Math.sin(M3.rollDir) * sp * dt;
+        a.z += Math.cos(M3.rollDir) * sp * dt;
         resolveHero();
         a.moving = true;
       }
-      bRoll.classList.toggle("cd", M2.rollCd > 0);
+      bRoll.classList.toggle("cd", M3.rollCd > 0);
       const bl = blocking();
-      M2.blockT = bl ? M2.blockT + dt : 0;
+      M3.blockT = bl ? M3.blockT + dt : 0;
       bBlock.classList.toggle("on", bl);
       if (bl && hi && !hi.busy()) hi.play("Blocking", { fade: 0.1 });
       if (bl) {
         a.path = [];
       }
-      if (M2.jumpV || M2.jumpY > 0) {
-        M2.jumpY += M2.jumpV * dt;
-        M2.jumpV -= 13 * dt;
-        if (M2.jumpY <= 0) {
-          M2.jumpY = 0;
-          M2.jumpV = 0;
+      if (M3.jumpV || M3.jumpY > 0) {
+        M3.jumpY += M3.jumpV * dt;
+        M3.jumpV -= 13 * dt;
+        if (M3.jumpY <= 0) {
+          M3.jumpY = 0;
+          M3.jumpV = 0;
         }
       }
       const wl = waterLevel(a.x, a.z);
       const deep = wl > -50 && heightAt(a.x, a.z) < wl - 1.1;
-      if (deep !== M2.swim) {
-        M2.swim = deep;
+      if (deep !== M3.swim) {
+        M3.swim = deep;
         if (deep) {
           extraSfx("splash");
           if (horse.on) dismount();
@@ -60727,7 +60874,7 @@ ${candidateLine}`;
           ui.toast("\u{1F3CA} \u0412\u0438 \u043F\u043B\u0438\u0432\u0435\u0442\u0435. \u0423 \u0432\u043E\u0434\u0456 \u0431\u0438\u0442\u0438\u0441\u044F \u043D\u0435 \u043C\u043E\u0436\u043D\u0430.");
         }
       }
-      if (M2.swim) {
+      if (M3.swim) {
         if (a.moving) {
           L2.swum = (L2.swum || 0) + dt * 1.4;
         }
@@ -60752,6 +60899,7 @@ ${candidateLine}`;
           ui.toast("\u0423 \u043C\u0456\u0441\u0442\u043E \u2014 \u043F\u0456\u0448\u043A\u0438");
         }
       }
+      catTick(dt);
       fishTick(dt);
       nodeTick(dt);
       weatherTick(dt);
@@ -60776,14 +60924,14 @@ ${candidateLine}`;
       A.agent.x = rx;
       A.agent.z = rz;
     }
-    function heroY(base) {
+    function heroY(base2) {
       const a = A.agent;
       const wl = waterLevel(a.x, a.z);
-      if (M2.swim) return wl - 1.25 + Math.sin(performance.now() * 3e-3) * 0.04;
-      return base + M2.jumpY;
+      if (M3.swim) return wl - 1.25 + Math.sin(performance.now() * 3e-3) * 0.04;
+      return base2 + M3.jumpY;
     }
     function speedMul() {
-      return horse.on ? 2.3 : M2.swim ? 0.5 : blocking() ? 0.45 : 1;
+      return horse.on ? 2.3 : M3.swim ? 0.5 : blocking() ? 0.45 : 1;
     }
     function key(e, down) {
       if (down === false) {
@@ -60855,6 +61003,94 @@ ${candidateLine}`;
       }
       return false;
     }
+    (async () => {
+      for (const st of STATUES2) {
+        let x, z;
+        if (st.building) {
+          const b = A.town.interactives.find((q) => q.id === st.building);
+          if (!b) continue;
+          const ux = b.door.x - b.pos.x, uz = b.door.z - b.pos.z, Lu = Math.hypot(ux, uz) || 1;
+          x = b.door.x + -uz / Lu * 3.6 * st.side + ux / Lu * 1.2;
+          z = b.door.z + ux / Lu * 3.6 * st.side + uz / Lu * 1.2;
+        } else {
+          const Zn = ZONES.find((q) => q.id === st.place);
+          if (!Zn) continue;
+          x = Zn.x + st.dx;
+          z = Zn.z + st.dz;
+        }
+        try {
+          const f = await make({ body: st.body, height: st.h });
+          const wl = waterLevel(x, z);
+          f.obj.position.set(x, Math.max(heightAt(x, z), wl > -50 ? wl - 0.3 : -99), z);
+          if (st.building) {
+            const b = A.town.interactives.find((q) => q.id === st.building);
+            f.obj.rotation.y = Math.atan2(b.door.x - b.pos.x, b.door.z - b.pos.z);
+          } else f.obj.rotation.y = st.yaw || 0;
+          f.obj.traverse((m2) => {
+            if (m2.isMesh) {
+              m2.castShadow = true;
+              m2.receiveShadow = true;
+            }
+          });
+          scene.add(f.obj);
+          statues.push(f);
+        } catch (e) {
+          console.warn("statue", e);
+        }
+      }
+    })();
+    const statues = [];
+    const cat = { on: !!lsGet("ritm-game-cat", false), inst: null, x: 0, z: 0, h: 0, loading: false };
+    const bCat = ROSTER_ON ? sideBtn("\u{1F408}", "\u041A\u0456\u0442-\u043A\u043E\u043C\u043F\u0430\u043D\u044C\u0439\u043E\u043D", () => toggleCat()) : document.createElement("button");
+    async function toggleCat(force) {
+      cat.on = force != null ? force : !cat.on;
+      lsSet("ritm-game-cat", cat.on);
+      bCat.classList.toggle("primary", cat.on);
+      if (cat.on && !cat.inst && !cat.loading) {
+        cat.loading = true;
+        try {
+          cat.inst = await make({ body: "nm_cat", height: 0.75 });
+          scene.add(cat.inst.obj);
+          cat.x = A.agent.x - 1;
+          cat.z = A.agent.z - 1;
+        } catch (e) {
+          console.warn("cat", e);
+        }
+        cat.loading = false;
+      }
+      if (cat.inst) cat.inst.obj.visible = cat.on;
+      const c = C();
+      if (c) {
+        c.H.buffs = c.H.buffs.filter((b) => b.id !== "catpal");
+        if (cat.on) c.H.buffs.push({ id: "catpal", buff: { dr: 0.08 }, t: 1e9, n: "\u041A\u0456\u0442-\u043E\u0445\u043E\u0440\u043E\u043D\u0435\u0446\u044C", i: "\u{1F408}" });
+      }
+      if (force == null) ui.toast(cat.on ? "\u{1F408} \u041A\u0456\u0442 \u0456\u0434\u0435 \u0437 \u0432\u0430\u043C\u0438: \u22128% \u043E\u0442\u0440\u0438\u043C\u0430\u043D\u043E\u0457 \u0448\u043A\u043E\u0434\u0438" : "\u041A\u0456\u0442 \u043F\u0456\u0448\u043E\u0432 \u0434\u043E\u0434\u043E\u043C\u0443");
+    }
+    setTimeout(() => {
+      if (cat.on && ROSTER_ON) toggleCat(true);
+    }, 4e3);
+    function catTick(dt) {
+      if (!cat.on || !cat.inst) return;
+      const a = A.agent;
+      const d = Math.hypot(a.x - cat.x, a.z - cat.z);
+      if (d > 30 || interior) {
+        cat.x = a.x - 1.2;
+        cat.z = a.z - 1.2;
+      }
+      const moving = d > 1.8;
+      if (moving) {
+        const sp = Math.min(d * 2.2, a.run ? 6 : 3.2);
+        cat.x += (a.x - cat.x) / d * sp * dt;
+        cat.z += (a.z - cat.z) / d * sp * dt;
+        cat.h = Math.atan2(a.x - cat.x, a.z - cat.z);
+      }
+      cat.inst.obj.position.set(cat.x, heightAt(cat.x, cat.z), cat.z);
+      cat.inst.obj.rotation.y = cat.h;
+      cat.inst.obj.visible = !interior && !A.under() || A.under();
+      cat.inst.play(moving ? "Walk" : "Idle");
+      cat.inst.update(dt, moving);
+      cat.inst.tick(dt);
+    }
     drawTut();
     dailyList();
     return {
@@ -60877,10 +61113,10 @@ ${candidateLine}`;
       building,
       heroY,
       speedMul,
-      swimming: () => M2.swim,
+      swimming: () => M3.swim,
       force: (o) => Object.assign(FORCE, o),
       nearWater: () => nearWater(),
-      state: () => ({ M: M2, W: Object.assign({}, W), EV: { cur: EV.cur }, fishing: fishing && fishing.state, interior: interior && interior.music, horse: horse.on, L: L2 }),
+      state: () => ({ M: M3, W: Object.assign({}, W), EV: { cur: EV.cur }, fishing: fishing && fishing.state, interior: interior && interior.music, horse: horse.on, L: L2 }),
       riding: () => horse.on,
       camSens: () => SET.cam,
       inInterior: () => !!interior,
@@ -61037,10 +61273,10 @@ ${candidateLine}`;
     initHeights();
     console.timeEnd("heights");
     console.time("town");
-    const town = buildTown({});
+    const town2 = buildTown({});
     console.timeEnd("town");
-    scene.add(town.group);
-    const dun = town.dungeon;
+    scene.add(town2.group);
+    const dun = town2.dungeon;
     scene.add(dun.group);
     dun.group.visible = false;
     const surface = /* @__PURE__ */ new Set();
@@ -61048,14 +61284,14 @@ ${candidateLine}`;
       surface.add(o);
       return o;
     };
-    const terrain = createTerrain(groundMaterial(town.mask, town.wmask, town.mask2));
+    const terrain = createTerrain(groundMaterial(town2.mask, town2.wmask, town2.mask2));
     terrain.update(0, 30, true);
     scene.add(terrain.group);
     surf(terrain.group);
-    surf(town.group);
+    surf(town2.group);
     const ground = { mesh: terrain.group };
     scene.updateMatrixWorld(true);
-    const lightSrc = town.lights.map((l) => {
+    const lightSrc = town2.lights.map((l) => {
       l.light.visible = false;
       return { l, pos: l.light.getWorldPosition(new Vector3()), color: l.light.color.clone(), dist: l.light.distance, always: l.always || l.light.userData.always || 0 };
     });
@@ -61148,22 +61384,26 @@ ${candidateLine}`;
       ];
       return Q.npcs < 14 ? L2.filter((d) => d.service || ["herald", "elfelder", "dwarfking", "beastchief", "cg1", "cg2"].includes(d.id)) : L2;
     })()).concat(ADV_DEFS.map((d) => Object.assign({ adv: true, at: [0, 140] }, d)));
+    patchNpcs(npcDefs);
+    rosterNpcs().forEach((d, i) => {
+      if (Q.npcs >= 14 || i % 4 === 0 || d.statue) npcDefs.push(d);
+    });
     const npcs = [];
     npcDefs.forEach((d, i) => {
       const o = new Group();
       let x, z;
       if (d.stat) {
-        const b = town.interactives.find((q) => q.id === d.stat);
+        const b = town2.interactives.find((q) => q.id === d.stat);
         x = b.door.x + d.side * 3.4;
         z = b.door.z - 1;
       } else if (d.post) {
-        const b = town.interactives.find((q) => q.id === d.post[0]);
+        const b = town2.interactives.find((q) => q.id === d.post[0]);
         const ux = b.door.x - b.pos.x, uz = b.door.z - b.pos.z, L2 = Math.hypot(ux, uz);
         x = b.door.x + -uz / L2 * d.post[1] + ux / L2 * d.post[2];
         z = b.door.z + ux / L2 * d.post[1] + uz / L2 * d.post[2];
         d.face = Math.atan2(ux, uz);
       } else if (d.home) {
-        const b = town.interactives.find((q) => q.id === d.home);
+        const b = town2.interactives.find((q) => q.id === d.home);
         const dx = b.door.x, dz = b.door.z;
         const ang = Math.atan2(dz, dx);
         x = dx + Math.cos(ang + 1.2) * 1.4;
@@ -61172,13 +61412,13 @@ ${candidateLine}`;
         x = d.at[0];
         z = d.at[1];
       } else if (d.area) {
-        [x, z] = town.randomFree(d.area[0], d.area[1], d.area[2] * 0.6);
+        [x, z] = town2.randomFree(d.area[0], d.area[1], d.area[2] * 0.6);
       } else {
         const a = Math.random() * 6.28;
         x = Math.cos(a) * 6;
         z = Math.sin(a) * 6;
       }
-      [x, z] = town.resolve(x, z, 0.5);
+      [x, z] = town2.resolve(x, z, 0.5);
       o.position.set(x, heightAt(x, z), z);
       scene.add(o);
       const npc = { def: d, obj: o, a: { x, z, path: [], speed: 1.25 + Math.random() * 0.2, moving: false, heading: d.stat ? Math.PI : d.face != null ? d.face : Math.random() * 6.28 }, wait: Math.random() * 4, bubbleT: 0, homePos: [x, z], inst: null };
@@ -61186,7 +61426,7 @@ ${candidateLine}`;
       proxy.position.y = 1;
       proxy.userData.npc = npc;
       o.add(proxy);
-      town.pickables.push(proxy);
+      town2.pickables.push(proxy);
       if (d.stat) o.rotation.y = Math.PI;
       if (d.face != null) o.rotation.y = d.face;
       npcs.push(npc);
@@ -61219,7 +61459,7 @@ ${candidateLine}`;
     const birds = [];
     const fireObjs = [];
     function makeFires() {
-      town.fires.forEach((f) => {
+      town2.fires.forEach((f) => {
         const grp = new Group();
         grp.position.set(f.x, f.y, f.z);
         f.parent.add(grp);
@@ -61238,9 +61478,9 @@ ${candidateLine}`;
       try {
         setProg(0.2, "\u0412\u0438\u0441\u0430\u0434\u0436\u0443\u0454\u043C\u043E \u0434\u0435\u0440\u0435\u0432\u0430\u2026");
         await new Promise((r) => setTimeout(r, 30));
-        const near = town.treeSpots.slice();
-        town.wild.treeSpots.forEach((t) => near.push(t));
-        town.wild.deadTrees.forEach((t) => near.push(t));
+        const near = town2.treeSpots.slice();
+        town2.wild.treeSpots.forEach((t) => near.push(t));
+        town2.wild.deadTrees.forEach((t) => near.push(t));
         allTrees = near.filter((t) => t.type !== 6 && t.type !== 7).map((t) => {
           const H = { 0: 11, 1: 12, 2: 10, 3: 13, 4: 7, 5: 8, dead: 10 }[t.type] || 10;
           return { x: t.x, z: t.z, y: H * 0.62 * t.s, r: H * 0.33 * t.s };
@@ -61251,16 +61491,16 @@ ${candidateLine}`;
         setProg(0.55, "\u0420\u043E\u0437\u043A\u043B\u0430\u0434\u0430\u0454\u043C\u043E \u043A\u0430\u043C\u0456\u043D\u043D\u044F\u2026");
         await new Promise((r) => setTimeout(r, 20));
         const rs = await rockSources();
-        scene.add(surf(rockInstances(rs, town.wild.rockSpots)));
+        scene.add(surf(rockInstances(rs, town2.wild.rockSpots)));
         dun.group.add(rockInstances(rs, dun.rockSpots));
         setProg(0.65, "\u0421\u0456\u0454\u043C\u043E \u0442\u0440\u0430\u0432\u0443\u2026");
         const accept = (x, z) => {
           const r = Math.hypot(x, z);
           if (r < WALL_R + 4) {
             if (r > WALL_R - 3) return false;
-            const [d2, c] = town.mask.at(x, z);
+            const [d2, c] = town2.mask.at(x, z);
             if (d2 > 0.35 || c > 0.2) return false;
-            return !town.blocked(x, z, 0.15);
+            return !town2.blocked(x, z, 0.15);
           }
           if (x > 2500 || roadDist(x, z) < 2.4) return false;
           const w = waterLevel(x, z);
@@ -61268,15 +61508,15 @@ ${candidateLine}`;
           const r2 = Math.hypot(x - CITY2.x, z - CITY2.z);
           if (r2 < CITY2.R + 5) {
             if (r2 > CITY2.R - 2) return false;
-            const [d2, c2] = town.mask.at(x, z);
+            const [d2, c2] = town2.mask.at(x, z);
             if (d2 > 0.3 || c2 > 0.15) return false;
-            return !town.blocked(x, z, 0.15);
+            return !town2.blocked(x, z, 0.15);
           }
-          const [d] = town.mask.at(x, z);
+          const [d] = town2.mask.at(x, z);
           return d < 0.3;
         };
         const tint = (x, z, col) => {
-          const m2 = town.mask.at(x, z);
+          const m2 = town2.mask.at(x, z);
           if (m2[2] > 0.2) col.lerp(new Color("#2a3a1c"), m2[2] * 0.6);
           if (m2[3] > 0.2) col.lerp(new Color("#7a6a3a"), m2[3] * 0.55);
         };
@@ -61331,8 +61571,8 @@ ${candidateLine}`;
     })();
     let ready = false;
     function createWorldTree() {
-      const T2 = createTrees([{ x: 0, z: 0, s: 1, r: 0, type: 8 }], 1, "high");
-      const grp = T2.group;
+      const T3 = createTrees([{ x: 0, z: 0, s: 1, r: 0, type: 8 }], 1, "high");
+      const grp = T3.group;
       grp.traverse((m2) => {
         if (m2.isInstancedMesh && m2.material.alphaTest) {
           m2.material = m2.material.clone();
@@ -61386,7 +61626,7 @@ ${candidateLine}`;
         }
       }
       if (C) await preload([kind], C.atk.concat(C.skills.map((s) => s.anim), ["Hit", "Death", "Interact", "Cheer"]));
-      const inst = await make({ body: kind, look, gear, height: kind === "woman" ? 1.68 : 1.8 });
+      const inst = await make({ body: kind, look, gear, height: kind === "woman" ? 1.68 : kind.startsWith("nm_") ? BODIES[kind].height : 1.8 });
       if (seq !== spawnSeq) return;
       if (heroInst) {
         heroObj.remove(heroInst.obj);
@@ -61403,7 +61643,7 @@ ${candidateLine}`;
     let myAct = [0, "", 1];
     const labelsEl = root.querySelector(".gm-labels");
     const labels = [];
-    town.interactives.forEach((b) => {
+    town2.interactives.forEach((b) => {
       const el = document.createElement("div");
       el.className = "gm-label";
       el.textContent = b.name;
@@ -61472,7 +61712,7 @@ ${candidateLine}`;
       root,
       camera,
       P: P2,
-      dungeon: () => town.dungeon,
+      dungeon: () => town2.dungeon,
       others: () => remotePlayers(),
       sheet: sheetOpts,
       hide: hideSheet,
@@ -61530,7 +61770,7 @@ ${candidateLine}`;
       agent,
       heroObj,
       heroInst: () => heroInst,
-      town,
+      town: town2,
       npcs,
       say: (n, t) => say(n, t),
       sky,
@@ -61553,14 +61793,14 @@ ${candidateLine}`;
         }, 380);
       }
     });
-    life.preSpawns(town.wild.spawns);
+    life.preSpawns(town2.wild.spawns);
     combat = createCombat({
       guard: () => life.guard(),
       mods: () => life.mods(),
       onKill: (m2) => life.onKill(m2),
       partyShare: (m2) => life.partyShare(m2),
       scene,
-      town,
+      town: town2,
       ui,
       P: P2,
       appStats: hero.stats,
@@ -61576,8 +61816,8 @@ ${candidateLine}`;
         agent.run = true;
       },
       respawn: () => {
-        const tps = town.interactives.filter((q) => q.id === "temple" || q.id === "temple2");
-        let b = tps[0] || town.interactives.find((q) => q.id === "guild");
+        const tps = town2.interactives.filter((q) => q.id === "temple" || q.id === "temple2");
+        let b = tps[0] || town2.interactives.find((q) => q.id === "guild");
         tps.forEach((q) => {
           if (Math.hypot(q.door.x - agent.x, q.door.z - agent.z) < Math.hypot(b.door.x - agent.x, b.door.z - agent.z)) b = q;
         });
@@ -61592,7 +61832,7 @@ ${candidateLine}`;
     advs = createAdventurers({
       npcs,
       net,
-      town,
+      town: town2,
       heightAt,
       step: (a, dt, sp) => stepAgent(a, dt, sp),
       say: (n, t) => say(n, t),
@@ -61612,7 +61852,7 @@ ${candidateLine}`;
     nav = createNav({
       root,
       P: P2,
-      town,
+      town: town2,
       agent,
       scene,
       npcs,
@@ -61761,7 +62001,7 @@ ${candidateLine}`;
       }
       try {
         if (C) await preload([kind], C.atk.concat(C.skills.map((s2) => s2.anim), ["Hit", "Death", "Cheer"]));
-        const inst = await make({ body: kind, look, gear, height: kind === "woman" ? 1.68 : 1.8 });
+        const inst = await make({ body: kind, look, gear, height: kind === "woman" ? 1.68 : kind.startsWith("nm_") ? BODIES[kind].height : 1.8 });
         if (!remotes.has(r.peer)) {
           return;
         }
@@ -61941,7 +62181,7 @@ ${candidateLine}`;
     function wardrobe() {
       const S = get();
       S.look3d = S.look3d || { kind: "man", outfit: 0 };
-      const kinds = [["man", "\u{1F9D4}", "\u0427\u043E\u043B\u043E\u0432\u0456\u043A"], ["woman", "\u{1F469}", "\u0416\u0456\u043D\u043A\u0430"], ["soldier", "\u{1F6E1}\uFE0F", "\u0423 \u043B\u0430\u0442\u0430\u0445"]];
+      const kinds = [["man", "\u{1F9D4}", "\u0427\u043E\u043B\u043E\u0432\u0456\u043A"], ["woman", "\u{1F469}", "\u0416\u0456\u043D\u043A\u0430"], ["soldier", "\u{1F6E1}\uFE0F", "\u0423 \u043B\u0430\u0442\u0430\u0445"], ["nm_catfig", "\u{1F431}", "\u041A\u043E\u0442\u044F\u0447\u0430 \u0448\u0430\u043F\u043A\u0430"]];
       const html = '<p>\u041E\u0431\u0435\u0440\u0456\u0442\u044C \u0442\u0456\u043B\u043E \u0433\u0435\u0440\u043E\u044F \u0439 \u043A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443. \u0417\u0431\u0440\u043E\u044F, \u043F\u043B\u0430\u0449 \u0456 \u043A\u0430\u043F\u0435\u043B\u044E\u0445 \u0437\u0430\u043B\u0435\u0436\u0430\u0442\u044C \u0432\u0456\u0434 \u043A\u043B\u0430\u0441\u0443 \u0442\u0430 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F.</p><div class="gm-pick">' + kinds.map((k) => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : "") + "><i>" + k[1] + "</i>" + k[2] + "</button>").join("") + '</div><p style="margin-bottom:6px">\u041A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + " 50%," + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : "") + "></button>").join("") + "</div>";
       sheetOpts({ title: "\u0413\u0435\u0440\u043E\u0439", html, buttons: [{ label: "\u0413\u043E\u0442\u043E\u0432\u043E", primary: true, fn: hideSheet }], after: (el) => {
         el.querySelectorAll("[data-k]").forEach((b) => b.onclick = async () => {
@@ -61995,14 +62235,14 @@ ${candidateLine}`;
       const rc = renderer.domElement.getBoundingClientRect();
       ndc.set((cx - rc.left) / rc.width * 2 - 1, -((cy - rc.top) / rc.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
-      const hits = ray.intersectObjects(combat ? combat.pickables().concat(town.pickables) : town.pickables, false);
+      const hits = ray.intersectObjects(combat ? combat.pickables().concat(town2.pickables) : town2.pickables, false);
       if (hits.length) {
         const m2 = hits[0].object;
         if (m2.userData.mon) return { mon: m2.userData.mon };
         if (m2.userData.npc) return { npc: m2.userData.npc };
         if (m2.userData.interact) return { building: m2.userData.interact };
       }
-      const wh = town.where(agent.x, agent.z);
+      const wh = town2.where(agent.x, agent.z);
       if (wh !== "town" && wh !== "dungeon") {
         const gh = ray.intersectObject(ground.mesh, true);
         if (gh.length) return { point: gh[0].point };
@@ -62012,9 +62252,9 @@ ${candidateLine}`;
       return null;
     }
     function route(x, z) {
-      const from = town.where(agent.x, agent.z), to = town.where(x, z);
+      const from = town2.where(agent.x, agent.z), to = town2.where(x, z);
       if (from === "dungeon" || to === "dungeon") return from === to ? dun.findPath(agent.x, agent.z, x, z) : [[agent.x, agent.z]];
-      if (from === "town" && to === "town") return town.findPath(agent.x, agent.z, x, z);
+      if (from === "town" && to === "town") return town2.findPath(agent.x, agent.z, x, z);
       const gateFor = (px2, pz2) => {
         let best = GATES[0], bd = 1e9;
         GATES.forEach((G2) => {
@@ -62028,18 +62268,18 @@ ${candidateLine}`;
       };
       if (from === "town") {
         const G2 = gateFor(x, z);
-        const post = town.findPathWild(G2.out[0], G2.out[1], x, z);
-        return town.findPath(agent.x, agent.z, G2.in[0], G2.in[1]).concat([[G2.cx * (WALL_R + 3), G2.sz * (WALL_R + 3)], G2.out]).concat(post.length ? post : [[x, z]]);
+        const post = town2.findPathWild(G2.out[0], G2.out[1], x, z);
+        return town2.findPath(agent.x, agent.z, G2.in[0], G2.in[1]).concat([[G2.cx * (WALL_R + 3), G2.sz * (WALL_R + 3)], G2.out]).concat(post.length ? post : [[x, z]]);
       }
       if (from === "gate" && to === "town") {
-        return town.findPath(agent.x, agent.z, x, z);
+        return town2.findPath(agent.x, agent.z, x, z);
       }
       if (to === "town" || to === "gate") {
-        const G2 = town.nearestGate(agent.x, agent.z);
-        const pre = town.findPathWild(agent.x, agent.z, G2.out[0], G2.out[1]);
-        return pre.concat([[G2.cx * (WALL_R + 3), G2.sz * (WALL_R + 3)], G2.in.slice()]).concat(to === "town" ? town.findPath(G2.in[0], G2.in[1], x, z) : [[x, z]]);
+        const G2 = town2.nearestGate(agent.x, agent.z);
+        const pre = town2.findPathWild(agent.x, agent.z, G2.out[0], G2.out[1]);
+        return pre.concat([[G2.cx * (WALL_R + 3), G2.sz * (WALL_R + 3)], G2.in.slice()]).concat(to === "town" ? town2.findPath(G2.in[0], G2.in[1], x, z) : [[x, z]]);
       }
-      const pw = town.findPathWild(agent.x, agent.z, x, z);
+      const pw = town2.findPathWild(agent.x, agent.z, x, z);
       return pw.length ? pw : [[x, z]];
     }
     function walkTo(x, z, onArrive) {
@@ -62199,7 +62439,7 @@ ${candidateLine}`;
         if (zz && life.shop(zz.id)) return;
       }
       if (s === "temple") return temple();
-      if (s === "dungeon") return dungeonSheet(town.interactives.find((q) => q.id === "dun_enter"));
+      if (s === "dungeon") return dungeonSheet(town2.interactives.find((q) => q.id === "dun_enter"));
       if (s === "guild") ui.guild();
       else if (s === "shop") P2.reg ? ui.shop() : ui.toast("\u041A\u0440\u0430\u043C\u043D\u0438\u0446\u044F \u043E\u0431\u0441\u043B\u0443\u0433\u043E\u0432\u0443\u0454 \u043B\u0438\u0448\u0435 \u0437\u0430\u0440\u0435\u0454\u0441\u0442\u0440\u043E\u0432\u0430\u043D\u0438\u0445 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432");
       else if (s === "forge") P2.reg ? ui.forge() : ui.toast("\u0421\u043F\u0435\u0440\u0448\u0443 \u0437\u0430\u0440\u0435\u0454\u0441\u0442\u0440\u0443\u0439\u0442\u0435\u0441\u044F \u0432 \u0413\u0456\u043B\u044C\u0434\u0456\u0457");
@@ -62352,7 +62592,7 @@ ${candidateLine}`;
           f.fg.visible = i === fi;
         });
       }
-      town.interactives.forEach((b) => {
+      town2.interactives.forEach((b) => {
         if (b.floor !== fi || b.id !== "dun_up" && b.id !== "dun_down") return;
         const d = Math.hypot(agent.x - b.door.x, agent.z - b.door.z);
         const st = dunTrig.get(b) || { armed: false };
@@ -62365,7 +62605,7 @@ ${candidateLine}`;
         dunTrig.set(b, st);
       });
       const cg = dun.floors[2].chestGlow;
-      if (cg) cg.material.opacity = P2.dun.chest ? 0.55 + Math.sin(T * 3) * 0.2 : 0;
+      if (cg) cg.material.opacity = P2.dun.chest ? 0.55 + Math.sin(T2 * 3) * 0.2 : 0;
     }
     const hint = root.querySelector(".gm-hint");
     const dom = renderer.domElement, ptrs = /* @__PURE__ */ new Map();
@@ -62508,10 +62748,10 @@ ${candidateLine}`;
     resize();
     buildComposer();
     const clock = new Clock();
-    let raf = 0, T = 0, fpsAcc = 0, fpsN = 0;
+    let raf = 0, T2 = 0, fpsAcc = 0, fpsN = 0;
     const v3 = new Vector3(), focus = new Vector3(), camSmooth = new Vector3(), _cv = new Vector3();
     let camHitPrev = 1;
-    const tallAll = town.colliders.filter((c) => c.h);
+    const tallAll = town2.colliders.filter((c) => c.h);
     let tall = [], tallC = [];
     function camBlock(ax, ay, az, bx, by, bz) {
       let best = 1;
@@ -62585,7 +62825,7 @@ ${candidateLine}`;
           a.moving = true;
         }
         OPT.hero = a === agent;
-        const [rx, rz] = town.resolve(a.x, a.z, 0.38);
+        const [rx, rz] = town2.resolve(a.x, a.z, 0.38);
         OPT.hero = false;
         a.x = rx;
         a.z = rz;
@@ -62596,7 +62836,7 @@ ${candidateLine}`;
     function frame(fixedDt) {
       if (!paused) raf = requestAnimationFrame(() => frame());
       const dt = fixedDt || Math.min(0.05, clock.getDelta());
-      T += dt;
+      T2 += dt;
       if (life.inInterior()) {
         syncRemotes(dt);
         presenceOut(performance.now());
@@ -62643,7 +62883,7 @@ ${candidateLine}`;
         agent.moving = true;
         agent.run = run2;
         OPT.hero = true;
-        const [rx, rz] = town.resolve(agent.x, agent.z, 0.38);
+        const [rx, rz] = town2.resolve(agent.x, agent.z, 0.38);
         OPT.hero = false;
         agent.x = rx;
         agent.z = rz;
@@ -62658,7 +62898,7 @@ ${candidateLine}`;
       }
       life.update(dt);
       if (combat) {
-        combat.update(dt, T);
+        combat.update(dt, T2);
       }
       if (forest) forest.update(agent.x, agent.z);
       if (!under) {
@@ -62681,11 +62921,11 @@ ${candidateLine}`;
       ambT -= dt;
       if (ambT <= 0) {
         ambT = 0.25;
-        const wh = town.where(agent.x, agent.z);
+        const wh = town2.where(agent.x, agent.z);
         ambience(0.25, { day: sky.state.lampLevel < 0.5 ? 1 : 0, town: wh === "town" || Math.hypot(agent.x - CITY2.x, agent.z - CITY2.z) < CITY2.R, quiet: under });
       }
-      if (town.cull) town.cull(agent.x, agent.z, Q.drawR || 340);
-      ringMat.opacity = 0.35 + Math.sin(T * 2.5) * 0.1;
+      if (town2.cull) town2.cull(agent.x, agent.z, Q.drawR || 340);
+      ringMat.opacity = 0.35 + Math.sin(T2 * 2.5) * 0.1;
       npcs.forEach((n) => {
         const a = n.a;
         if (n.def.adv) return;
@@ -62699,13 +62939,13 @@ ${candidateLine}`;
           n.wait -= dt;
         } else if (!a.path.length) {
           if (n.def.area) {
-            const [x, z] = town.randomFree(n.def.area[0], n.def.area[1], n.def.area[2]);
-            a.path = town.findPathWild(a.x, a.z, x, z);
+            const [x, z] = town2.randomFree(n.def.area[0], n.def.area[1], n.def.area[2]);
+            a.path = town2.findPathWild(a.x, a.z, x, z);
             n.wait = 4 + Math.random() * 8;
           } else {
             const home = n.def.home ? n.homePos : [0, 0], rad = n.def.home ? 5 : 16;
-            const [x, z] = town.randomFree(home[0], home[1], rad);
-            a.path = town.where(home[0], home[1]) === "town" ? town.findPath(a.x, a.z, x, z) : town.findPathWild(a.x, a.z, x, z);
+            const [x, z] = town2.randomFree(home[0], home[1], rad);
+            a.path = town2.where(home[0], home[1]) === "town" ? town2.findPath(a.x, a.z, x, z) : town2.findPathWild(a.x, a.z, x, z);
             n.wait = 3 + Math.random() * 7;
           }
         }
@@ -62727,8 +62967,8 @@ ${candidateLine}`;
           }
         }
       });
-      town.anim.forEach((f) => f(T, dt));
-      wind.time.value = T;
+      town2.anim.forEach((f) => f(T2, dt));
+      wind.time.value = T2;
       const lamp = sky.state.lampLevel;
       poolT -= dt;
       if (poolT <= 0) {
@@ -62762,26 +63002,26 @@ ${candidateLine}`;
         const d = Math.hypot(sr.pos.x - heroObj.position.x, sr.pos.z - heroObj.position.z);
         p.light.intensity = sr.l.base * Math.max(lamp, sr.always) * (sr.l.light.userData.flicker || 1) * p.fade * (1 - MathUtils.smoothstep(d, 24, 34));
       });
-      town.glows.forEach((g) => {
+      town2.glows.forEach((g) => {
         const op = Math.max(lamp, g.always) * 0.75;
         g.s.material.opacity = op;
         if (!g.wp) g.wp = g.s.getWorldPosition(new Vector3());
         g.s.visible = op > 0.01 && Math.abs(g.wp.x - agent.x) < 260 && Math.abs(g.wp.z - agent.z) < 260;
       });
-      town.M.glass.emissiveIntensity = town.M.glass.userData.nightGlow * Math.pow(lamp, 1.5);
-      town.M.lampGlass.emissiveIntensity = town.M.lampGlass.userData.nightGlow * lamp + 0.05;
+      town2.M.glass.emissiveIntensity = town2.M.glass.userData.nightGlow * Math.pow(lamp, 1.5);
+      town2.M.lampGlass.emissiveIntensity = town2.M.lampGlass.userData.nightGlow * lamp + 0.05;
       fireObjs.forEach((f) => f.parts.forEach((p, i) => {
         p.t += dt * (1.3 + i * 0.15);
         const k2 = p.t % 1;
-        const s = f.s * (p.k ? (1 - k2) * 0.9 + 0.2 : 0.5 + Math.sin(T * 20 + i) * 0.08);
-        p.sp.position.set(Math.sin(T * 7 + i * 2) * 0.05 * f.s, k2 * f.s * 0.9 * (p.k ? 1 : 0.3), Math.cos(T * 6 + i) * 0.05 * f.s);
+        const s = f.s * (p.k ? (1 - k2) * 0.9 + 0.2 : 0.5 + Math.sin(T2 * 20 + i) * 0.08);
+        p.sp.position.set(Math.sin(T2 * 7 + i * 2) * 0.05 * f.s, k2 * f.s * 0.9 * (p.k ? 1 : 0.3), Math.cos(T2 * 6 + i) * 0.05 * f.s);
         p.sp.scale.set(s, s * 1.4, 1);
         p.sp.material.opacity = p.k ? (1 - k2) * 0.8 : 0.9;
       }));
       birds.forEach((b) => {
         b.mx.update(dt);
-        const a = T * b.sp + b.ph;
-        b.b.position.set(Math.cos(a) * b.r, b.h + Math.sin(T * 0.4 + b.ph) * 2, Math.sin(a) * b.r);
+        const a = T2 * b.sp + b.ph;
+        b.b.position.set(Math.cos(a) * b.r, b.h + Math.sin(T2 * 0.4 + b.ph) * 2, Math.sin(a) * b.r);
         b.b.rotation.y = -a;
       });
       cam.introT = Math.min(1, cam.introT + dt / 3.2);
@@ -62830,7 +63070,7 @@ ${candidateLine}`;
       if (sh > 0) camera.position.add(_cv.set((Math.random() - 0.5) * sh * 0.4, (Math.random() - 0.5) * sh * 0.4, (Math.random() - 0.5) * sh * 0.4));
       camera.lookAt(tx, lookY, tz);
       focus.set(tx, 0, tz);
-      sky.update(dt, T, focus);
+      sky.update(dt, T2, focus);
       renderer.toneMappingExposure = sky.exposure();
       life.post();
       if (markerT > 0) {
@@ -62869,7 +63109,7 @@ ${candidateLine}`;
     }
     frame();
     function goTo(id) {
-      const b = town.interactives.find((q) => q.id === id);
+      const b = town2.interactives.find((q) => q.id === id);
       if (!b) return;
       walkTo(b.door.x, b.door.z, () => {
         agent.heading = Math.atan2(b.pos.x - agent.x, b.pos.z - agent.z);
@@ -62894,7 +63134,7 @@ ${candidateLine}`;
       }
     }, setTime(h) {
       sky.setTime(h, true);
-    }, root, renderer, raf: () => raf, resize, scene, town, agent, npcs, cam, camera, heroObj, sky, setQuality, kd, ku, isReady: () => ready, combat: () => combat, ui, P: P2, spawnHero: () => spawnHero(), teleport: (x, z) => {
+    }, root, renderer, raf: () => raf, resize, scene, town: town2, agent, npcs, cam, camera, heroObj, sky, setQuality, kd, ku, isReady: () => ready, combat: () => combat, ui, P: P2, spawnHero: () => spawnHero(), teleport: (x, z) => {
       agent.x = x;
       agent.z = z;
       agent.path = [];

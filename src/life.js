@@ -15,6 +15,8 @@ import { get as saveGet, commit as saveCommit } from './save.js';
 import { LIFE_MATS, FISH, NODE_KINDS, NODE_ZONES, RECIPES, FACTIONS, REP_TIERS, SHOPS, ACHIEVEMENTS, DAILY_POOL, DIALOGS } from './life_data.js';
 import { buildInterior, INTERIORS } from './interiors.js';
 import './newmodels.js';   // registers the downloaded bodies (horse, etc.)
+import { rosterSpawns, STATUES as STATUES0, ROSTER_ON } from './roster.js';
+const STATUES = ROSTER_ON ? STATUES0 : [];
 
 Object.assign(RPG.MATERIALS, LIFE_MATS);
 const FISH_IDS = new Set(FISH.map(f => f[0]));
@@ -359,6 +361,7 @@ export function createLife(A){
   const evEl = document.createElement('div'); evEl.className = 'lf-ev'; evEl.style.display = 'none'; root.appendChild(evEl);
   // raid monsters: extra spawns near the farm, dormant until the event
   function preSpawns(spawns){
+    rosterSpawns(spawns);   // approved models as monsters, animals and bosses (before the raid block!)
     const FARM = ZONES.find(z => z.id === 'farm'); EV.raidStart = spawns.length;
     const types = ['goblin', 'goblin', 'goblin_sh', 'goblin', 'goblin_sh', 'goblin'];
     types.forEach((type, i) => { const a = i/types.length*Math.PI*2 + .3, r = FARM.r*.75; spawns.push({ type, x: FARM.x + Math.cos(a)*r, z: FARM.z + Math.sin(a)*r, wander: 6, raid: true }); });
@@ -745,7 +748,7 @@ export function createLife(A){
     if(M.swim){ if(a.moving){ L.swum = (L.swum || 0) + dt*1.4; } if(Math.random() < dt*3 && a.moving && C()) C().emit(a.x, wl + .05, a.z, 3, '#dff4ff', .6, .5, .08, .4); if(C()){ C().setTarget(null); } }
     // horse
     if(horse.on && horse.inst){ if(hi) horse.hold.rotation.y = hi.obj.rotation.y; horse.inst.update(dt, a.moving); horse.inst.mixer.timeScale = a.moving ? 1.2 : 0; if(hi){ hi.obj.position.y = 1.5; if(!hi.busy()) hi.play('Idle'); hi.mixer.update(0); seatPose(hi); } if(a.moving) L.ridden = (L.ridden || 0) + dt*speedMul()*4.4; if(A.town.where(a.x, a.z) === 'town'){ dismount(); ui.toast('У місто — пішки'); } }
-    fishTick(dt); nodeTick(dt); weatherTick(dt); arrowsTick(dt); achTick(dt); tutTick(dt); musicPick(dt);
+    catTick(dt); fishTick(dt); nodeTick(dt); weatherTick(dt); arrowsTick(dt); achTick(dt); tutTick(dt); musicPick(dt);
     evT -= dt; if(evT <= 0){ evT = 1; evTick(); }
     portals.forEach(p => { p.arch.material.opacity = .45 + Math.sin(performance.now()*.003)*.2; });
   }
@@ -785,6 +788,36 @@ export function createLife(A){
     if(b.node){ gather(b.node); return true; }
     if(b.id.startsWith('life:enter:')){ enter(b.id.slice(11)); return true; }
     return false;
+  }
+  // ---------- statues ----------
+  (async () => {
+    for(const st of STATUES){
+      let x, z;
+      if(st.building){ const b = A.town.interactives.find(q => q.id === st.building); if(!b) continue; const ux = b.door.x - b.pos.x, uz = b.door.z - b.pos.z, Lu = Math.hypot(ux, uz) || 1; x = b.door.x + (-uz/Lu)*3.6*st.side + ux/Lu*1.2; z = b.door.z + (ux/Lu)*3.6*st.side + uz/Lu*1.2; }
+      else { const Zn = ZONES.find(q => q.id === st.place); if(!Zn) continue; x = Zn.x + st.dx; z = Zn.z + st.dz; }
+      try{ const f = await F.make({ body: st.body, height: st.h }); const wl = waterLevel(x, z); f.obj.position.set(x, Math.max(heightAt(x, z), wl > -50 ? wl - .3 : -99), z);
+        if(st.building){ const b = A.town.interactives.find(q => q.id === st.building); f.obj.rotation.y = Math.atan2(b.door.x - b.pos.x, b.door.z - b.pos.z); } else f.obj.rotation.y = st.yaw || 0;
+        f.obj.traverse(m => { if(m.isMesh){ m.castShadow = true; m.receiveShadow = true; } }); scene.add(f.obj); statues.push(f); }catch(e){ console.warn('statue', e); }
+    }
+  })();
+  const statues = [];
+  // ---------- cat companion: follows the hero, +8% damage reduction while out ----------
+  const cat = { on: !!lsGet('ritm-game-cat', false), inst: null, x: 0, z: 0, h: 0, loading: false };
+  const bCat = ROSTER_ON ? sideBtn('🐈', 'Кіт-компаньйон', () => toggleCat()) : document.createElement('button');
+  async function toggleCat(force){
+    cat.on = force != null ? force : !cat.on; lsSet('ritm-game-cat', cat.on); bCat.classList.toggle('primary', cat.on);
+    if(cat.on && !cat.inst && !cat.loading){ cat.loading = true; try{ cat.inst = await F.make({ body: 'nm_cat', height: .75 }); scene.add(cat.inst.obj); cat.x = A.agent.x - 1; cat.z = A.agent.z - 1; }catch(e){ console.warn('cat', e); } cat.loading = false; }
+    if(cat.inst) cat.inst.obj.visible = cat.on;
+    const c = C(); if(c){ c.H.buffs = c.H.buffs.filter(b => b.id !== 'catpal'); if(cat.on) c.H.buffs.push({ id: 'catpal', buff: { dr: .08 }, t: 1e9, n: 'Кіт-охоронець', i: '🐈' }); }
+    if(force == null) ui.toast(cat.on ? '🐈 Кіт іде з вами: −8% отриманої шкоди' : 'Кіт пішов додому');
+  }
+  setTimeout(() => { if(cat.on && ROSTER_ON) toggleCat(true); }, 4000);
+  function catTick(dt){
+    if(!cat.on || !cat.inst) return; const a = A.agent; const d = Math.hypot(a.x - cat.x, a.z - cat.z);
+    if(d > 30 || interior){ cat.x = a.x - 1.2; cat.z = a.z - 1.2; }
+    const moving = d > 1.8; if(moving){ const sp = Math.min(d*2.2, a.run ? 6 : 3.2); cat.x += (a.x - cat.x)/d*sp*dt; cat.z += (a.z - cat.z)/d*sp*dt; cat.h = Math.atan2(a.x - cat.x, a.z - cat.z); }
+    cat.inst.obj.position.set(cat.x, heightAt(cat.x, cat.z), cat.z); cat.inst.obj.rotation.y = cat.h; cat.inst.obj.visible = !interior && !A.under() || A.under();
+    cat.inst.play(moving ? 'Walk' : 'Idle'); cat.inst.update(dt, moving); cat.inst.tick(dt);
   }
   drawTut(); dailyList();
   return { update, post, key, tap, noteTap, presence, remote, gone, guard, mods, onKill, partyShare, preSpawns, postCombat, talk, shop, building, heroY, speedMul,
