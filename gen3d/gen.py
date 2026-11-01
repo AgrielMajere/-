@@ -10,6 +10,8 @@ print('todo', todo, flush=True)
 if not todo: sys.exit(0)
 t0 = time.time()
 pipe = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained('tencent/Hunyuan3D-2mini', subfolder='hunyuan3d-dit-v2-mini-turbo', use_safetensors=False, device='cpu', dtype=torch.float32)
+pipe.enable_flashvdm(topk_mode='merge')
+pipe.vae.to('cpu', torch.float32)
 print('model loaded', round(time.time() - t0), 's', flush=True)
 rembg = BackgroundRemover()
 for p in todo:
@@ -17,7 +19,7 @@ for p in todo:
     img = Image.open(p)
     img = img.convert('RGBA') if img.mode == 'RGBA' and img.getextrema()[3][0] < 250 else rembg(img.convert('RGB'))
     img.save(f'gen3d/out/{name}_rgba.png')
-    mesh = pipe(image=img, num_inference_steps=8, octree_resolution=256, num_chunks=8000, generator=torch.manual_seed(1234), output_type='trimesh')[0]
+    mesh = pipe(image=img, num_inference_steps=5, octree_resolution=256, num_chunks=20000, generator=torch.manual_seed(1234), output_type='trimesh')[0]
     mesh = FloaterRemover()(mesh); mesh = DegenerateFaceRemover()(mesh); mesh = FaceReducer()(mesh, max_facenum=60000)
     mesh.export(f'gen3d/out/{name}.glb')
     print(name, 'done in', round(time.time() - t), 's, faces', len(mesh.faces), flush=True)
