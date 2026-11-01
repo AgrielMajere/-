@@ -20,6 +20,11 @@ for p in todo:
     img = img.convert('RGBA') if img.mode == 'RGBA' and img.getextrema()[3][0] < 250 else rembg(img.convert('RGB'))
     img.save(f'gen3d/out/{name}_rgba.png')
     mesh = pipe(image=img, num_inference_steps=5, octree_resolution=256, num_chunks=20000, generator=torch.manual_seed(1234), output_type='trimesh')[0]
-    mesh = FloaterRemover()(mesh); mesh = DegenerateFaceRemover()(mesh); mesh = FaceReducer()(mesh, max_facenum=60000)
+    mesh.export(f'gen3d/out/{name}_raw.glb')
+    try:
+        parts = mesh.split(only_watertight=False); parts = sorted(parts, key=lambda m: -len(m.faces)); keep = [m for m in parts if len(m.faces) > len(parts[0].faces)*.02]
+        import trimesh; mesh = trimesh.util.concatenate(keep)
+        if len(mesh.faces) > 60000: mesh = mesh.simplify_quadric_decimation(face_count=60000)
+    except Exception as e: print('cleanup skipped:', e, flush=True)
     mesh.export(f'gen3d/out/{name}.glb')
     print(name, 'done in', round(time.time() - t), 's, faces', len(mesh.faces), flush=True)
