@@ -4,8 +4,7 @@ cd /home/claude/mmo
 rm -rf labpub labtmp && mkdir -p labpub/models labpub/tex
 npx esbuild src/labmain.js --bundle --format=iife --global-name=RitmLab --loader:.jpg=file --loader:.png=file --asset-names=assets/[name]-[hash] --public-path=./ --minify --target=es2019 --outdir=labtmp --log-level=warning
 mv labtmp/labmain.js labpub/lab.js; [ -d labtmp/assets ] && mv labtmp/assets labpub/assets; rm -rf labtmp
-for m in man woman soldier anims_x anims_s anims_k; do cp pub/models/$m.json labpub/models/; done
-mkdir -p /tmp/claude-0/gensrc && rm -f /tmp/claude-0/gensrc/* && cp public/models/gen_*.glb /tmp/claude-0/gensrc/ && node tools_glbjson.mjs /tmp/claude-0/gensrc labpub/models
+mkdir -p /tmp/claude-0/gensrc && rm -f /tmp/claude-0/gensrc/* && cp public/models/gen_*.glb public/models/nm_*.glb public/models/{man,woman,soldier,anims_x,anims_s,anims_k}.glb /tmp/claude-0/gensrc/ && node tools_glbjson.mjs /tmp/claude-0/gensrc labpub/models
 cp public/tex/*.jpg labpub/tex/
 cat > labpub/index.html <<'H'
 <title>Лабораторія вигляду</title>

@@ -16,6 +16,30 @@ const DIR = { Hips: 'Spine', Spine: 'Spine2', Spine2: 'Head', Head: null, LeftAr
 const KAYKIT = { Hips: 'hips', Spine: 'spine', Spine2: 'chest', Head: 'head', LeftArm: 'upperarml', LeftForeArm: 'lowerarml', LeftHand: 'wristl', RightArm: 'upperarmr', RightForeArm: 'lowerarmr', RightHand: 'wristr',
   LeftUpLeg: 'upperlegl', LeftLeg: 'lowerlegl', LeftFoot: 'footl', LeftToeBase: 'toesl', RightUpLeg: 'upperlegr', RightLeg: 'lowerlegr', RightFoot: 'footr', RightToeBase: 'toesr' };
 
+// Other rig families (3ds Max Biped, Character Creator, Blender Rigify, assorted Sketchfab rigs):
+// node name -> normalised key (trailing glTF index, "__code__" tails and family prefixes removed),
+// then each canonical bone takes the first unused candidate that exists.
+const GEN = (() => {
+  const T = { Hips: ['defspine', 'pelvis', 'hips', 'hip', 'base'], Spine: ['defspine001', 'waist', 'spine', 'body', 'spine1'],
+    Spine1: ['defspine002', 'spine01', 'spine1', 'spine2'], Spine2: ['defspine003', 'spine02', 'spine2', 'chest', 'spine3'],
+    Neck: ['defspine004', 'necktwist01', 'neck', 'neck1'], Head: ['defspine006', 'head', 'head1'] };
+  const side = (s, S, W) => ({
+    Shoulder: [s + 'clavicle', W + 'shoulder', 'defshoulder' + s, 'shoulder' + s],
+    Arm: [s + 'upperarm', W + 'arm', 'defupperarm' + s, 'arm' + s, 'arm' + W],
+    ForeArm: [s + 'forearm', W + 'forearm', W + 'elbow', 'defforearm' + s, 'elbow' + s, 'elbow' + W],
+    Hand: [s + 'hand', W + 'hand', W + 'wrist', 'defhand' + s, 'hand' + s, 'hand' + W],
+    UpLeg: [s + 'thigh', W + 'upleg', W + 'leg', 'defthigh' + s, 'leg' + s, 'hip' + s, 'thigh' + s, 'upleg' + W],
+    Leg: [s + 'calf', W + 'knee', 'defshin' + s, 'knee' + s, 'shin' + s, 'calf' + s, 'leg' + W],
+    Foot: [s + 'foot', W + 'ankle', W + 'foot', 'deffoot' + s, 'foot' + s, 'foot' + W],
+    ToeBase: [s + 'toe0', s + 'toebase', W + 'toe', W + 'toebase', 'deftoe' + s, 'toe' + s, 'foot1' + s, 'toe' + W] });
+  [['l', 'Left', 'left'], ['r', 'Right', 'right']].forEach(([s, S, W]) => { const o = side(s, S, W); for(const k in o) T[S + k] = o[k]; });
+  return T;
+})();
+function normName(n){
+  if(/scaleCompensation$/i.test(n)) return '';
+  n = n.replace(/_\d+$/, '').replace(/__.*$/, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return n.replace(/^(mixamorig|bip001|bip01|ccbase|npc|bip)/, '');
+}
 function findBones(root){
   const names = new Map(); root.traverse(o => { if(o.name && !names.has(o.name)) names.set(o.name, o); });
   const out = new Map();
@@ -25,7 +49,13 @@ function findBones(root){
     for(const [n, ob] of names){ if(n === k || n === 'mixamorig' + k || n === 'mixamorig:' + k){ o = ob; break; } }
     if(o) out.set(k, o);
   }
-  return out;
+  if(out.size >= 14) return out;
+  // not a Mixamo rig: generic matching (only bones, so meshes named "Body" etc. never match)
+  const norm = new Map(); root.traverse(o => { if(!o.isBone) return; const k = normName(o.name); if(k && !norm.has(k)) norm.set(k, o); });
+  if(norm.size < 8) return out;
+  const g = new Map(), used = new Set();
+  for(const k of CANON){ for(const c of GEN[k] || []){ const o = norm.get(c); if(o && !used.has(o)){ g.set(k, o); used.add(o); break; } } }
+  return g.size > out.size ? g : out;
 }
 const _v = new THREE.Vector3(), _v2 = new THREE.Vector3(), _q = new THREE.Quaternion(), _q2 = new THREE.Quaternion();
 

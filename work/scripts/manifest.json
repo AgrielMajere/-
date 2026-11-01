@@ -1,0 +1,626 @@
+[
+{
+"id": "mx_akai",
+"src": "akai_e_espiritu.fbx",
+"kind": "mix",
+"n": "Акай (воїн у масці)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_arissa",
+"src": "Arissa.fbx",
+"kind": "mix",
+"n": "Арісса (найманка)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_brute",
+"src": "Brute.fbx",
+"kind": "mix",
+"n": "Громило",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_ch05",
+"src": "Ch05_nonPBR.fbx",
+"kind": "mix",
+"n": "Персонаж Ch05",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_ch09",
+"src": "Ch09_nonPBR.fbx",
+"kind": "mix",
+"n": "Персонаж Ch09",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_ch30",
+"src": "Ch30_nonPBR.fbx",
+"kind": "mix",
+"n": "Персонаж Ch30",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_demon",
+"src": "Demon T Wiezzorek.fbx",
+"kind": "mix",
+"n": "Демон",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_dreyar",
+"src": "Dreyar By M.Aure.fbx",
+"kind": "mix",
+"n": "Дреяр (старий воїн)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_erika",
+"src": "Erika Archer.fbx",
+"kind": "mix",
+"n": "Еріка (лучниця)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_eve",
+"src": "Eve By J.Gonzales.fbx",
+"kind": "mix",
+"n": "Єва",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_ganfaul",
+"src": "Ganfaul M Aure.fbx",
+"kind": "mix",
+"n": "Ганфаул (чарівник)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_goblin",
+"src": "goblin_d_shareyko.fbx",
+"kind": "mix",
+"n": "Гоблін",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_heraklios",
+"src": "Heraklios By A. Dizon.fbx",
+"kind": "mix",
+"n": "Гераклій (лицар)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_kachujin",
+"src": "Kachujin G Rosales.fbx",
+"kind": "mix",
+"n": "Качуджин (мечниця)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_maria",
+"src": "Maria J J Ong.fbx",
+"kind": "mix",
+"n": "Марія (воїтелька)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_maria_w",
+"src": "Maria WProp J J Ong.fbx",
+"kind": "mix",
+"n": "Марія зі зброєю",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_maw",
+"src": "Maw J Laygo.fbx",
+"kind": "mix",
+"n": "Мау (чудовисько)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_medea",
+"src": "Medea By M. Arrebola.fbx",
+"kind": "mix",
+"n": "Медея (відьма)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_mutant",
+"src": "Mutant.fbx",
+"kind": "mix",
+"n": "Мутант",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_nightshade",
+"src": "Nightshade J Friedrich.fbx",
+"kind": "mix",
+"n": "Найтшейд (вбивця)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_paladin",
+"src": "Paladin J Nordstrom.fbx",
+"kind": "mix",
+"n": "Паладин",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_paladin_w",
+"src": "Paladin WProp J Nordstrom.fbx",
+"kind": "mix",
+"n": "Паладин зі зброєю",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_parasite",
+"src": "Parasite L Starkie.fbx",
+"kind": "mix",
+"n": "Паразит",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_peasant_f",
+"src": "Peasant Girl.fbx",
+"kind": "mix",
+"n": "Селянка",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_peasant_m",
+"src": "Peasant Man.fbx",
+"kind": "mix",
+"n": "Селянин",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_pirate",
+"src": "Pirate By P. Konstantinov.fbx",
+"kind": "mix",
+"n": "Пірат",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_prisoner",
+"src": "Prisoner B Styperek.fbx",
+"kind": "mix",
+"n": "В'язень",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_skelzombie",
+"src": "Skeletonzombie T Avelange.fbx",
+"kind": "mix",
+"n": "Скелет-зомбі",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_survivor",
+"src": "Survivor A Lusth.fbx",
+"kind": "mix",
+"n": "Виживальниця",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_uriel",
+"src": "Uriel A Plotexia.fbx",
+"kind": "mix",
+"n": "Уріель (ангел-воїтель)",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_warzombie",
+"src": "Warzombie F Pedroso.fbx",
+"kind": "mix",
+"n": "Зомбі-воїн",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "mx_zombiegirl",
+"src": "Zombiegirl W Kurniawan.fbx",
+"kind": "mix",
+"n": "Зомбі-дівчина",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "anime_girl",
+"src": "sf_anime_girl.glb",
+"kind": "hum",
+"n": "Аніме-дівчина",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "dwarf_adv",
+"src": "sf_dwarf_adv.glb",
+"kind": "hum",
+"n": "Гном-шукач пригод",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "wraith",
+"src": "sf_wraith.glb",
+"kind": "hum",
+"n": "Привид",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "kobold",
+"src": "sf_kobold.glb",
+"kind": "hum",
+"n": "Кобольд",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "kobold2",
+"src": "sf_kobold2.glb",
+"kind": "hum",
+"n": "Кобольд 2",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "rabbitman",
+"src": "sf_rabbitman.glb",
+"kind": "hum",
+"n": "Зайцелюд",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "golem",
+"src": "sf_golem.glb",
+"kind": "hum",
+"n": "Голем",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "priest",
+"src": "sf_priest.glb",
+"kind": "hum",
+"n": "Жрець",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "lizardman",
+"src": "sf_lizardman.glb",
+"kind": "hum",
+"n": "Ящеролюд",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "minotaur_s",
+"src": "sf_minotaur_s.glb",
+"kind": "hum",
+"n": "Мінотавр",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "werewolf",
+"src": "sf_werewolf.glb",
+"kind": "hum",
+"n": "Перевертень",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "alpha_wolf",
+"src": "sf_alpha_wolf.glb",
+"kind": "own",
+"n": "Вовк-вожак",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "bear",
+"src": "sf_bear.glb",
+"kind": "own",
+"n": "Ведмідь",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "cat",
+"src": "sf_cat.glb",
+"kind": "own",
+"n": "Кіт",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "crow",
+"src": "sf_crow.glb",
+"kind": "own",
+"n": "Ворона",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "dire_wolf",
+"src": "sf_dire_wolf.glb",
+"kind": "own",
+"n": "Лютововк",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "fox",
+"src": "sf_fox.glb",
+"kind": "own",
+"n": "Лис",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "horse",
+"src": "sf_horse.glb",
+"kind": "own",
+"n": "Кінь",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "rabbit",
+"src": "sf_rabbit.glb",
+"kind": "own",
+"n": "Кролик",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "wolf",
+"src": "sf_wolf.glb",
+"kind": "own",
+"n": "Вовк",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "deer",
+"src": "sf_deer.glb",
+"kind": "own",
+"n": "Олень",
+"tris": 30000,
+"anims": 1
+},
+{
+"id": "demon_dragon",
+"src": "sf_demon_dragon.glb",
+"kind": "own",
+"n": "Демонічний дракон",
+"tris": 45000,
+"anims": 1
+},
+{
+"id": "icy_dragon",
+"src": "sf_icy_dragon.glb",
+"kind": "own",
+"n": "Крижаний дракон",
+"tris": 45000,
+"anims": 1
+},
+{
+"id": "mermaid",
+"src": "sf_mermaid.glb",
+"kind": "own",
+"n": "Русалка",
+"tris": 45000,
+"anims": 1
+},
+{
+"id": "bishop",
+"src": "sf_bishop.glb",
+"kind": "static",
+"n": "Єпископ",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "bunnygirl",
+"src": "sf_bunnygirl.glb",
+"kind": "static",
+"n": "Дівчина-кролиця",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "catboy",
+"src": "sf_catboy.glb",
+"kind": "static",
+"n": "Котолюд",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "chiya",
+"src": "sf_chiya.glb",
+"kind": "static",
+"n": "Чія",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "dark_orc",
+"src": "sf_dark_orc.glb",
+"kind": "static",
+"n": "Темний орк",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "dark_wraith",
+"src": "sf_dark_wraith.glb",
+"kind": "static",
+"n": "Темний привид (бос)",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "druid",
+"src": "sf_druid.glb",
+"kind": "static",
+"n": "Друїд",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "dwarf",
+"src": "sf_dwarf.glb",
+"kind": "static",
+"n": "Гном",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "foxgirl",
+"src": "sf_foxgirl.glb",
+"kind": "static",
+"n": "Лисиця-дівчина",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "gravok",
+"src": "sf_gravok.glb",
+"kind": "static",
+"n": "Гравок (бос)",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "kyra",
+"src": "sf_kyra.glb",
+"kind": "static",
+"n": "Кайра",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "lich",
+"src": "sf_lich.glb",
+"kind": "static",
+"n": "Ліч",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "lich_king",
+"src": "sf_lich_king.glb",
+"kind": "static",
+"n": "Король-ліч (бос)",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "magma_golem",
+"src": "sf_magma_golem.glb",
+"kind": "static",
+"n": "Магмовий голем (бос)",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "minotaur_boss",
+"src": "sf_minotaur_boss.glb",
+"kind": "static",
+"n": "Мінотавр-бос",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "monk",
+"src": "sf_monk.glb",
+"kind": "static",
+"n": "Монах",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "oldwizard",
+"src": "sf_oldwizard.glb",
+"kind": "static",
+"n": "Старий чарівник",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "orc_shaman",
+"src": "sf_orc_shaman.glb",
+"kind": "static",
+"n": "Орк-шаман",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "orc_warrior",
+"src": "sf_orc_warrior.glb",
+"kind": "static",
+"n": "Орк-воїн",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "stone_monster",
+"src": "sf_stone_monster.glb",
+"kind": "static",
+"n": "Кам'яне чудовисько (бос)",
+"tris": 45000,
+"anims": 0
+},
+{
+"id": "urukhai",
+"src": "sf_urukhai.glb",
+"kind": "static",
+"n": "Урук-хай",
+"tris": 30000,
+"anims": 0
+},
+{
+"id": "wolfgirl",
+"src": "sf_wolfgirl.glb",
+"kind": "static",
+"n": "Вовчиця-дівчина",
+"tris": 30000,
+"anims": 0
+}
+]

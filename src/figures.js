@@ -36,9 +36,9 @@ async function rig(body){
     const A = await sources();
     const g = body === 'bones' ? { scene: A.x.scene.clone(true) } : await loadModel(def.file);
     g.scene.updateMatrixWorld(true);
-    let top = 0, head = 0; g.scene.traverse(o => { if(/HeadTop_End$/.test(o.name)) top = o.getWorldPosition(new THREE.Vector3()).y; if(/Head$/.test(o.name) && !/Top/.test(o.name)) head = o.getWorldPosition(new THREE.Vector3()).y; });
-    if(def.gen){ const bb = new THREE.Box3().setFromObject(g.scene); top = bb.max.y - bb.min.y; }
-    const R = { g, A, clips: {}, h: top || head*1.09 || 1.8, def, body };
+    let top = 0, head = 0, y0 = 0; g.scene.traverse(o => { if(/HeadTop_End$/.test(o.name)) top = o.getWorldPosition(new THREE.Vector3()).y; if(/Head$/.test(o.name) && !/Top/.test(o.name)) head = o.getWorldPosition(new THREE.Vector3()).y; });
+    if(def.gen || def.bbox){ const bb = new THREE.Box3().setFromObject(g.scene, true); const sz = bb.getSize(new THREE.Vector3()); top = def.fit === 'max' ? Math.max(sz.x, sz.y, sz.z) : sz.y; y0 = bb.min.y; }
+    const R = { g, A, clips: {}, h: top || head*1.09 || 1.8, y0, def, body };
     return R;
   })();
   rigs.set(body, p);
@@ -48,6 +48,8 @@ function clipFrom(R, name){
   if(R.clips[name] !== undefined) return R.clips[name];
   const { A, g, def } = R;
   let out = null;
+  if(def.static){ R.clips[name] = null; return null; }
+  if(def.own){ R.clips[name] = ownClip(g.animations || [], name); return R.clips[name]; }
   const direct = (src, cn) => {
     const S = A[src]; const c = S.animations.find(a => a.name === cn); if(!c) return null;
     if(R.body === 'bones' && src === 'x') return c;   // the bones rig IS the Xbot skeleton
@@ -67,6 +69,18 @@ function clipFrom(R, name){
   }
   R.clips[name] = out;
   return out;
+}
+// creatures that bring their own animations: pick a clip by what its name says
+const OWN = { Idle: /idle|stand|breath|look|howl|sit/i, Walk: /walk|move|crawl|swim/i, Run: /run|gallop|trot|sprint|fly|charge/i,
+  Death: /death|die|dead/i, Hit: /hit|recoil|damage|hurt/i, Cheer: /howl|roar|cheer|taunt|intimid|dance/i,
+  Attack: /attack|bite|claw|swipe|strike|slash|combo|punch/i };
+function ownClip(list, name){
+  if(!list.length) return null;
+  const key = /Attack|Slash|Stab|Spin|Kick|Punch|Dual|Bow|Shoot|Cast|Throw|Slice/.test(name) ? 'Attack' : OWN[name] ? name : null;
+  const good = list.filter(c => c.duration > .2 && !/t-?pose|startpose|^pose|bind/i.test(c.name));
+  const pool = good.length ? good : list;
+  const re = key && OWN[key];
+  return (re && pool.find(c => re.test(c.name))) || (name === 'Idle' ? pool[0] : null) || pool[0];
 }
 export async function preload(bodies, clipNames){
   for(const b of bodies){ const R = await rig(b); (clipNames || []).forEach(n => clipFrom(R, n)); }
@@ -156,7 +170,7 @@ export async function make(spec){
   });
   const H = spec.height || def.height;
   const scale = H/R.h;
-  const inner = new THREE.Group(); inner.add(obj); inner.scale.set(scale*(spec.width || 1), scale, scale*(spec.width || 1)); inner.rotation.y = def.yaw;
+  const inner = new THREE.Group(); inner.add(obj); inner.scale.set(scale*(spec.width || 1), scale, scale*(spec.width || 1)); inner.rotation.y = def.yaw; if(R.y0) inner.position.y = -R.y0*scale;
   const wrap = new THREE.Group(); wrap.add(inner);
   wrap.updateMatrixWorld(true);
   // body build: proportions on top of the overall height/width (bone scaling; clips only key rotations + hips position)

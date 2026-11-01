@@ -18,8 +18,15 @@ meshes = [o for o in bpy.context.scene.objects if o.type == 'MESH']
 bpy.ops.object.select_all(action='DESELECT')
 for o in meshes: o.select_set(True)
 bpy.context.view_layer.objects.active = meshes[0]
+bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')   # Sketchfab roots carry the up-axis rotation
+bpy.ops.object.select_all(action='DESELECT')
+for o in meshes: o.select_set(True)
+bpy.context.view_layer.objects.active = meshes[0]
 if len(meshes) > 1: bpy.ops.object.join()
 ob = bpy.context.view_layer.objects.active
+ROT = float(sys.argv[5]) if len(sys.argv) > 5 else 0.0   # yaw (deg) that turns the model to face the viewer
+if ROT:
+    ob.rotation_euler[2] = math.radians(ROT)
 bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 for o in list(bpy.context.scene.objects):
     if o != ob: bpy.data.objects.remove(o, do_unlink=True)
@@ -158,12 +165,16 @@ bpy.ops.object.select_all(action='DESELECT'); ob.select_set(True); ao.select_set
 # heat weighting needs a closed, welded surface: weight a welded proxy, then copy weights onto the real mesh
 proxy = ob.copy(); proxy.data = ob.data.copy(); bpy.context.scene.collection.objects.link(proxy)
 bpy.ops.object.select_all(action='DESELECT'); proxy.select_set(True); bpy.context.view_layer.objects.active = proxy
-bpy.ops.object.mode_set(mode='EDIT'); bpy.ops.mesh.select_all(action='SELECT'); bpy.ops.mesh.remove_doubles(threshold=.002); bpy.ops.object.mode_set(mode='OBJECT')
+# watertight proxy: voxel remesh (works for armour plates, cloth, multi-part meshes)
+for md in list(proxy.modifiers): proxy.modifiers.remove(md)
+rm = proxy.modifiers.new('vox', 'REMESH'); rm.mode = 'VOXEL'; rm.voxel_size = H/110; rm.adaptivity = 0
+bpy.ops.object.modifier_apply(modifier='vox')
+print('proxy tris', len(proxy.data.polygons))
 bpy.ops.object.select_all(action='DESELECT'); proxy.select_set(True); ao.select_set(True); bpy.context.view_layer.objects.active = ao
 bpy.ops.object.parent_set(type='ARMATURE_AUTO')
 pz = sum(1 for v in proxy.data.vertices if len(v.groups) == 0); print('proxy verts without weights', pz, 'of', len(proxy.data.vertices))
 for g in proxy.vertex_groups: ob.vertex_groups.new(name=g.name)
-mod = ob.modifiers.new('wt', 'DATA_TRANSFER'); mod.object = proxy; mod.use_vert_data = True; mod.data_types_verts = {'VGROUP_WEIGHTS'}; mod.vert_mapping = 'NEAREST'; mod.layers_vgroup_select_src = 'ALL'; mod.layers_vgroup_select_dst = 'NAME'
+mod = ob.modifiers.new('wt', 'DATA_TRANSFER'); mod.object = proxy; mod.use_vert_data = True; mod.data_types_verts = {'VGROUP_WEIGHTS'}; mod.vert_mapping = 'POLYINTERP_NEAREST'; mod.layers_vgroup_select_src = 'ALL'; mod.layers_vgroup_select_dst = 'NAME'
 bpy.ops.object.select_all(action='DESELECT'); ob.select_set(True); bpy.context.view_layer.objects.active = ob
 bpy.ops.object.modifier_apply(modifier='wt')
 bpy.data.objects.remove(proxy, do_unlink=True)

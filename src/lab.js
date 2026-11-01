@@ -8,6 +8,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import * as F from './figures.js';
 import { tex } from './assets.js';
+import { NEW_MODELS, GROUPS } from './newmodels.js';
 
 const SKIN = ['#f3d5bf', '#e8c0a0', '#d6a47c', '#b07a52', '#8a5636', '#5e3a24', '#3e2618'];
 const HAIR = ['#1a1412', '#3a2a1e', '#6a4428', '#a86a3a', '#d8b070', '#efe2c0', '#b8b8c0', '#8a2a1a', '#2a3a6a'];
@@ -40,10 +41,11 @@ function toSpec(s){
 const BASE = { sex: 'man', race: 'human', height: 1.8, build: 'normal', head: 1, legs: 1, skin: SKIN[1], hairC: HAIR[1], hairStyle: 'model', beard: false, eyes: '#4a6a8a', top: CLOTH[0], bottom: '#2a2a30', hat: false, cape: false, capeC: '#6a1e2a', weapon: '' };
 const V = (id, n, o) => ({ id, n, st: Object.assign({}, BASE, o) });
 const KNIGHT = { body: 'soldier', height: 1.95, width: 1.08, look: { armor: '#c4c6cc', metal: true }, gear: { right: { type: 'sword', gold: true }, left: { type: 'shield', kite: true, color: '#6a1a16', trim: '#d0a040' }, cape: '#7a1a14', capeLen: 1.35, crest: '#d4a83a', tabard: { color: '#7a1a14', trim: '#d4a83a' } } };
-const PRESETS = [
+const PRESETS = NEW_MODELS.map(m => ({ id: m.id, n: m.n, g: m.g, note: m.note, st: { raw: { body: m.id, height: m.h } } })).concat([
   { id: 'img-berserker2', n: 'Берсерк — версія 2 (на відеокарті, з текстурами)', st: { raw: { body: 'gen_berserker2', height: 1.95 } } },
-  { id: 'img-berserker', n: 'Берсерк — версія 1 (без відеокарти)', st: { raw: { body: 'gen_berserker', height: 1.95 } } }
-];
+  { id: 'img-berserker', n: 'Берсерк — версія 1 (без відеокарти)', g: 'old', st: { raw: { body: 'gen_berserker', height: 1.95 } } }
+]);
+PRESETS.forEach(p => { if(!p.g) p.g = 'old'; });
 
 export async function openLab(root){
   const css = document.createElement('style'); css.textContent = `
@@ -81,9 +83,9 @@ export async function openLab(root){
   const cam = new THREE.PerspectiveCamera(35, 1, .05, 200); cam.position.set(0, 1.5, 4.6);
   const ctl = new OrbitControls(cam, renderer.domElement); ctl.target.set(0, 1.0, 0); ctl.enableDamping = true; ctl.minDistance = 1.2; ctl.maxDistance = 9; ctl.maxPolarAngle = Math.PI*.52;
   const hemi = new THREE.HemisphereLight('#cfe2ff', '#4a3a28', .7); scene.add(hemi);
-  const sun = new THREE.DirectionalLight('#fff1dc', 2.4); sun.position.set(3, 6, 4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4 }); sun.shadow.bias = -.0004; scene.add(sun);
+  const sun = new THREE.DirectionalLight('#fff1dc', 2.4); sun.position.set(3, 6, 4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, far: 40 }); sun.shadow.bias = -.0004; scene.add(sun);
   const gtex = tex('grass.jpg', { srgb: true, repeat: 6 });
-  const ground = new THREE.Mesh(new THREE.CircleGeometry(8, 64), new THREE.MeshStandardMaterial({ map: gtex, roughness: 1, color: '#c8d0b8' })); ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(24, 96), new THREE.MeshStandardMaterial({ map: gtex, roughness: 1, color: '#c8d0b8' })); ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
   const LIGHTS = { day: ['#9cc4ea', '#fff1dc', 2.4, .7, .95], sunset: ['#e8a070', '#ffb070', 1.8, .45, .9], night: ['#1a2440', '#9ab0ff', .55, .3, .8] };
   function setLight(k){ const L = LIGHTS[k]; scene.background = new THREE.Color(L[0]); sun.color.set(L[1]); sun.intensity = L[2]; hemi.intensity = L[3]; renderer.toneMappingExposure = L[4]; sun.position.set(k === 'sunset' ? 6 : 3, k === 'sunset' ? 2.2 : 6, 4); }
   setLight('day');
@@ -96,9 +98,13 @@ export async function openLab(root){
     const seq = ++buildSeq; const made = [];
     for(const st of list){ try{ made.push(await F.make(st.raw ? st.raw : toSpec(st))); }catch(e){ console.warn(e); } if(seq !== buildSeq) return; }
     stage.forEach(f => scene.remove(f.obj)); stage = made;
-    const n = made.length, gap = 1.25;
-    made.forEach((f, i) => { f.obj.position.set((i - (n - 1)/2)*gap, 0, 0); scene.add(f.obj); f.play(anim); });
-    ctl.target.set(0, 1.0, 0); const d = n > 1 ? 5.2 + n*.6 : 4.4; const dir = cam.position.clone().sub(ctl.target).normalize(); cam.position.copy(ctl.target).addScaledVector(dir, d);
+    const n = made.length; const ws = made.map(f => { f.obj.updateMatrixWorld(true); const b = new THREE.Box3().expandByObject(f.obj, true); return b.isEmpty() ? 1 : Math.max(.8, b.max.x - b.min.x) + .35; });
+    const tot = ws.reduce((a, b) => a + b, 0); let x = -tot/2;
+    made.forEach((f, i) => { f.obj.position.set(x + ws[i]/2, 0, 0); x += ws[i]; scene.add(f.obj); f.play(anim); });
+    const box = new THREE.Box3(); made.forEach(f => { f.obj.updateMatrixWorld(true); box.expandByObject(f.obj, true); });
+    const sz = box.isEmpty() ? new THREE.Vector3(1, 1.8, 1) : box.getSize(new THREE.Vector3()); const big = Math.max(sz.y, sz.x*.75, sz.z*.6, .4);
+    ctl.target.set(0, Math.max(.2, sz.y*.52), 0); ctl.maxDistance = Math.max(9, big*5); cam.near = Math.max(.01, big*.01); cam.updateProjectionMatrix();
+    const d = big*2.35 + (n > 1 ? n*.5 : 0); const dir = cam.position.clone().sub(ctl.target).normalize(); cam.position.copy(ctl.target).addScaledVector(dir, d);
   }
   const ANIMS = [['Idle', 'Стоїть'], ['Walk', 'Йде'], ['Run', 'Біжить'], ['Attack1H', 'Удар'], ['Cast', 'Чари'], ['Cheer', 'Радіє']];
   function drawBar(){
@@ -120,13 +126,16 @@ export async function openLab(root){
   }
 
   // ---------- panel ----------
-  let tab = 'variants', sel = ['img-berserker2', 'img-berserker'], ed = Object.assign({}, BASE, PRESETS[0].st);
+  let tab = 'variants', grp = 'all', sel = [PRESETS[0].id], ed = Object.assign({}, BASE);
   const all = () => PRESETS.concat(mine);
   function render(){
     let h = '<div class="lb-tabs"><button data-t="variants" class="' + (tab === 'variants' ? 'on' : '') + '">Варіанти</button></div>';
     if(tab === 'variants'){
-      h += '<p class="lb-cmp">Торкніться картки, щоб показати. Утримуйте Shift або натисніть «＋ порівняти», щоб поставити поруч до трьох.</p>';
-      h += all().map(it => { const v = votes[it.id] || {}; return '<div class="lb-card' + (sel.includes(it.id) ? ' on' : '') + '" data-id="' + it.id + '"><b>' + esc(it.n) + '</b><div class="lb-vote"><button data-v="1" class="' + (v.vote === 1 ? 'on' : '') + '">👍</button><button data-v="-1" class="' + (v.vote === -1 ? 'on' : '') + '">👎</button><button data-c="1">＋ порівняти</button><input data-m placeholder="коментар…" value="' + esc(v.comment || '') + '"></div></div>'; }).join('');
+      const cnt = g => all().filter(it => g === 'all' || it.g === g).length;
+      h += '<div class="lb-chips" style="margin-bottom:8px">' + [['all', 'Усі']].concat(GROUPS).filter(([k]) => cnt(k)).map(([k, n]) => '<button data-g="' + k + '" class="' + (grp === k ? 'on' : '') + '">' + n + ' · ' + cnt(k) + '</button>').join('') + '</div>';
+      const rated = all().filter(it => (votes[it.id] || {}).vote).length;
+      h += '<p class="lb-cmp">Оцінено ' + rated + ' з ' + all().length + '. Торкніться картки, щоб показати; «＋ порівняти» ставить поруч до трьох.</p>';
+      h += all().filter(it => grp === 'all' || it.g === grp).map(it => { const v = votes[it.id] || {}; return '<div class="lb-card' + (sel.includes(it.id) ? ' on' : '') + '" data-id="' + it.id + '"><b>' + esc(it.n) + '</b>' + (it.note ? '<div class="lb-note" style="margin:-2px 0 6px">' + esc(it.note) + '</div>' : '') + '<div class="lb-vote"><button data-v="1" class="' + (v.vote === 1 ? 'on' : '') + '">👍</button><button data-v="-1" class="' + (v.vote === -1 ? 'on' : '') + '">👎</button><button data-c="1">＋ порівняти</button><input data-m placeholder="коментар…" value="' + esc(v.comment || '') + '"></div></div>'; }).join('');
       h += '<p class="lb-note">' + (db ? 'Ваші 👍/👎 і коментарі зберігаються тут, Claude прочитає їх сам.' : 'Збереження оцінок недоступне в цьому перегляді — оцінки працюватимуть лише до перезавантаження.') + '</p>';
     } else {
       const sw = (key, list) => '<div class="lb-chips">' + list.map(c => '<button class="lb-sw' + (ed[key] === c ? ' on' : '') + '" style="background:' + c + '" data-sw="' + key + '" data-val="' + c + '"></button>').join('') + '</div>';
@@ -149,6 +158,7 @@ export async function openLab(root){
       h += '<div class="lb-row"><label>Назва варіанта</label><div class="lb-vote"><input data-name placeholder="Напр. «Мій лучник»"><button data-save class="on">Зберегти для оцінки</button></div></div>';
     }
     panel.innerHTML = h;
+    panel.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { grp = b.dataset.g; render(); });
     panel.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { tab = b.dataset.t; render(); if(tab === 'editor') show([ed]); else showSel(); });
     panel.querySelectorAll('.lb-card').forEach(c => { const id = c.dataset.id, it = all().find(x => x.id === id);
       c.onclick = e => { if(e.target.closest('button,input')) return; if(e.shiftKey) toggleCmp(id); else { sel = [id]; ed = it.st.raw ? ed : Object.assign({}, BASE, it.st); showSel(); render(); } };

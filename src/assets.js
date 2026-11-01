@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 
 export const BASE = () => (window.RITM_GAME_BASE || '');
 // Binary models are shipped with a .wasm extension (some hosts refuse .glb uploads)
 const MODEL_EXT = () => (window.RITM_GAME_MODEL_EXT || '.wasm');
 
-const gltf = new GLTFLoader();
+const gltf = new GLTFLoader(); gltf.setMeshoptDecoder(MeshoptDecoder);
 const texLoader = new THREE.TextureLoader();
 const cache = new Map();
 
