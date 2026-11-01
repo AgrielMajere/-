@@ -1,0 +1,57 @@
+name: gen3d-gpu
+on:
+  push:
+    branches: [gen3d]
+    paths: ['gen3d/in/**', '.github/workflows/gen3d_gpu.yml', 'gen3d/kaggle/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: gen3d-gpu, cancel-in-progress: false }
+jobs:
+  kaggle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Prepare Kaggle kernel
+        run: |
+          test -n "$KAGGLE_API_TOKEN" || { echo "::error::Secret KAGGLE_API_TOKEN is missing"; exit 1; }
+          pip install --quiet "kaggle>=1.8.0"
+          USER=$(python -c "from kaggle.api.kaggle_api_extended import KaggleApi; a=KaggleApi(); a.authenticate(); print(a.config_values.get('username',''))")
+          echo "kaggle user: $USER"; test -n "$USER"
+          echo "KUSER=$USER" >> $GITHUB_ENV
+          TODO=$(python -c "import os,json; ins=sorted(os.listdir('gen3d/in')); print(json.dumps([f for f in ins if not os.path.exists('gen3d/out_gpu/'+os.path.splitext(f)[0]+'.glb')]))")
+          echo "todo: $TODO"; echo "TODO=$TODO" >> $GITHUB_ENV
+          mkdir -p kk && python - <<'PY'
+          import os, json
+          todo = os.environ['TODO']
+          src = open('gen3d/kaggle/kernel.py').read().replace('__IMAGES__', todo.replace("'", ''))
+          open('kk/kernel.py', 'w').write(src)
+          json.dump({"id": os.environ['KUSER'] + "/kraina-gen3d", "title": "kraina-gen3d", "code_file": "kernel.py", "language": "python", "kernel_type": "script",
+                     "is_private": True, "enable_gpu": True, "enable_internet": True, "machine_shape": "NvidiaTeslaT4"}, open('kk/kernel-metadata.json', 'w'))
+          PY
+          cat kk/kernel-metadata.json
+      - name: Run on Kaggle GPU
+        if: env.TODO != '[]'
+        run: |
+          kaggle kernels push -p kk
+          for i in $(seq 1 200); do
+            sleep 60
+            S=$(kaggle kernels status $KUSER/kraina-gen3d 2>&1 | tail -1); echo "$(date +%H:%M) $S"
+            echo "$S" | grep -qiE 'complete' && break
+            echo "$S" | grep -qiE 'error|cancel' && { kaggle kernels output $KUSER/kraina-gen3d -p kout || true; tail -c 6000 kout/*.log 2>/dev/null; exit 1; }
+          done
+          mkdir -p kout && kaggle kernels output $KUSER/kraina-gen3d -p kout
+          ls -la kout kout/out || true
+          mkdir -p gen3d/out_gpu && cp kout/out/* gen3d/out_gpu/ 2>/dev/null || true
+          tail -c 3000 kout/*.log 2>/dev/null || true
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          mkdir -p gen3d/out_gpu; [ -d kout ] && tail -c 20000 kout/*.log > gen3d/out_gpu/last_log.txt 2>/dev/null || true
+          git add gen3d/out_gpu; git commit -m "gen3d-gpu: results" || echo "nothing new"; git pull --rebase -q || true; git push || true

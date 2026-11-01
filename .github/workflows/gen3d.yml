@@ -1,8 +1,5 @@
 name: gen3d
 on:
-  push:
-    branches: [gen3d]
-    paths: ['gen3d/in/**', '.github/workflows/gen3d.yml', 'gen3d/gen.py']
   workflow_dispatch:
 permissions:
   contents: write
