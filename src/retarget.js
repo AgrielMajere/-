@@ -38,7 +38,7 @@ const GEN = (() => {
 function normName(n){
   if(/scaleCompensation$/i.test(n)) return '';
   n = n.replace(/_\d+$/, '').replace(/__.*$/, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  return n.replace(/^(mixamorig|bip001|bip01|ccbase|npc|bip)/, '');
+  return n.replace(/^(mixamorig\d*|bip001|bip01|ccbase|npc|bip)/, '');
 }
 function findBones(root){
   const names = new Map(); root.traverse(o => { if(o.name && !names.has(o.name)) names.set(o.name, o); });
@@ -46,7 +46,7 @@ function findBones(root){
   if(names.has('hips') && names.has('upperarml')){ for(const [k, n] of Object.entries(KAYKIT)) if(names.has(n)) out.set(k, names.get(n)); return out; }
   for(const k of CANON){
     let o = null;
-    for(const [n, ob] of names){ if(n === k || n === 'mixamorig' + k || n === 'mixamorig:' + k){ o = ob; break; } }
+    for(const [n, ob] of names){ if(n === k || n.replace(/^mixamorig\d*:?/, '') === k){ o = ob; break; } }
     if(o) out.set(k, o);
   }
   if(out.size >= 14) return out;

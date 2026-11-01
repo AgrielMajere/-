@@ -134,12 +134,16 @@ export function createCombat(o){
     if(m.sp){ m.sp.dec && m.sp.dec.dispose(); m.sp = null; }
     if(H.target === m){ H.target = null; ui.target(null); }
     if(m.fig){ m.fig.oneShot(Math.random() < .5 ? 'Death' : 'DeathB', { keep: true, fade: .1 }); }
-    if(!m.hitByMe || performance.now() - m.hitByMe > 45000) return;
+    if(!m.hitByMe || performance.now() - m.hitByMe > 45000){
+      const sh = o.partyShare && o.partyShare(m); // a party member's kill near me
+      if(sh){ const lk = Math.max(.25, Math.min(1.6, 1 + (m.lvl - P.lvl)*.12)); gainXp(Math.round(m.def.xp*lk*sh.xp*D.mods.xp)); const g = Math.round(m.def.gold[0]*sh.gold); if(g > 0){ P.gold += g; ui.float('+' + g + ' 🪙 (загін)', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold'); } RPG.save(); ui.hud(); }
+      return;
+    }
     m.hitByMe = 0;
-    const def = m.def;
+    const def = m.def; const WM = o.mods ? o.mods() : { xp: 1, loot: 1 };
     // rewards
     const lvlK = Math.max(.25, Math.min(1.6, 1 + (m.lvl - P.lvl)*.12));
-    gainXp(Math.round(def.xp*(1 + (m.lvl - def.lvl[0])*.15)*lvlK*D.mods.xp));
+    gainXp(Math.round(def.xp*(1 + (m.lvl - def.lvl[0])*.15)*lvlK*D.mods.xp*WM.xp));
     const gold = Math.round((def.gold[0] + Math.random()*(def.gold[1] - def.gold[0]))*D.mods.gold);
     P.gold += gold; ui.float('+' + gold + ' 🪙', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold');
     P.kills[m.type] = (P.kills[m.type] || 0) + 1;
@@ -147,7 +151,7 @@ export function createCombat(o){
     if(def.boss){ P.bosses[m.type] = (P.bosses[m.type] || 0) + 1; ui.toast('👑 Переможено боса: ' + def.n + '!', 'big'); shake = .6; }
     if(def.chest){ P.dun.chest = true; P.dun.clears = (P.dun.clears || 0) + 1; setTimeout(() => ui.toast('🗝️ Скарбниця Мінотавра відчинилася — вона за ареною!', 'big'), 1600); }
     const items = [];
-    def.drops.forEach(([id, ch, q]) => { if(Math.random() < Math.min(1, ch*D.mods.loot)) items.push({ k: 'mat', id, q }); });
+    def.drops.forEach(([id, ch, q]) => { if(Math.random() < Math.min(1, ch*D.mods.loot*WM.loot)) items.push({ k: 'mat', id, q }); });
     if(Math.random() < Math.min(1, def.eq*D.mods.loot)){
       const own = Math.random() < .6;
       const C = RPG.CLASSES[P.cls];
@@ -160,6 +164,7 @@ export function createCombat(o){
     }
     if(Math.random() < .18) items.push({ k: 'use', id: Math.random() < .6 ? (m.lvl > 9 ? 'hp2' : 'hp1') : (m.lvl > 9 ? 'mp2' : 'mp1'), q: 1 });
     if(items.length) dropBag(m.x, m.z, items);
+    o.onKill && o.onKill(m);
     RPG.save(); ui.hud();
   }
   function dropBag(x, z, items){
@@ -168,7 +173,12 @@ export function createCombat(o){
     const sack = new THREE.Mesh(new THREE.SphereGeometry(.2, 14, 10), new THREE.MeshStandardMaterial({ color: '#7a5a3a', roughness: .9 })); sack.scale.set(1, .85, 1); sack.position.y = .17; sack.castShadow = true; g.add(sack);
     const tie = new THREE.Mesh(new THREE.CylinderGeometry(.05, .09, .1, 8), sack.material); tie.position.y = .36; g.add(tie);
     const col = best >= 0 ? RPG.RARITY[best].c : '#ffd27a';
-    const beam = new THREE.Mesh(new THREE.CylinderGeometry(.08, .2, best >= 2 ? 6 : 2.2, 10, 1, true), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .35, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+    const BH = best >= 0 ? [2.6, 4, 8, 12, 18][best] : 2.2;
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(best >= 3 ? .14 : .08, best >= 3 ? .35 : .2, BH, 10, 1, true), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .35, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+    beam.position.y = BH/2; g.add(beam);
+    if(best >= 1){ const top = items.find(it => it.rar === best); const cv = document.createElement('canvas'); cv.width = 512; cv.height = 64; const cg = cv.getContext('2d'); cg.font = '600 30px Georgia'; cg.textAlign = 'center'; const nm = RPG.itemIcon(top) + ' ' + RPG.itemName(top); const tw = cg.measureText(nm).width + 28; cg.fillStyle = 'rgba(10,8,6,.72)'; cg.fillRect(256 - tw/2, 8, tw, 46); cg.fillStyle = col; cg.fillText(nm, 256, 41);
+      const lab = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthTest: false })); lab.scale.set(3.2, .4, 1); lab.position.y = 1.1; lab.renderOrder = 5; g.add(lab); }
+    if(best >= 3) sfx('chime');
     beam.position.y = (best >= 2 ? 6 : 2.2)/2; g.add(beam);
     const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: softSprite(), color: col, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.set(1.2, 1.2, 1); gl.position.y = .3; g.add(gl);
     g.position.set(x + (Math.random() - .5)*.6, heightAt(x, z), z + (Math.random() - .5)*.6); scene.add(g);
@@ -332,6 +342,7 @@ export function createCombat(o){
 
   function damageHero(amount, srcName){
     if(H.dead) return;
+    const gf = o.guard ? o.guard() : 1; if(gf <= 0) return; amount *= gf;
     let dr = D.mods.dr + buffVal('dr'); const defB = 1 + buffVal('def');
     const dmg = Math.max(1, Math.round(RPG.dmgCalc(amount, D.def*defB, 1)*(1 - Math.min(.8, dr))));
     H.hp -= dmg; H.combatT = 6;
@@ -359,7 +370,7 @@ export function createCombat(o){
     // cooldowns & buffs
     Object.keys(H.cd).forEach(k => { H.cd[k] = Math.max(0, H.cd[k] - dt); });
     H.atkCd = Math.max(0, H.atkCd - dt); H.potCd = Math.max(0, H.potCd - dt);
-    H.buffs.forEach(b => b.t -= dt); H.buffs = H.buffs.filter(b => b.t > 0);
+    H.buffs.forEach(b => { b.t -= dt; if(b.regen && !H.dead) H.hp = Math.min(D.maxHp, H.hp + D.maxHp*b.regen*dt); }); H.buffs = H.buffs.filter(b => b.t > 0);
     H.combatT = Math.max(0, H.combatT - dt);
     H.regenT += dt;
     if(H.regenT > 1 && !H.dead){ H.regenT = 0; const inTown = town.where(p.x, p.z) === 'town'; const k = (H.combatT > 0 ? .004 : inTown ? .05 : .012) + D.mods.regen + buffVal('regen'); H.hp = Math.min(D.maxHp, H.hp + D.maxHp*k); H.mp = Math.min(D.maxMp, H.mp + D.maxMp*(k + .006)); }
@@ -463,7 +474,7 @@ export function createCombat(o){
 
     // loot bags
     for(let i = bags.length - 1; i >= 0; i--){
-      const b = bags[i]; b.t += dt; b.g.rotation.y += dt*.8; b.beam.material.opacity = .25 + Math.sin(b.t*3)*.1;
+      const b = bags[i]; b.t += dt; b.g.rotation.y += dt*.8; b.beam.material.opacity = .25 + Math.sin(b.t*3)*.1 + (b.items.some(it => it.rar >= 3) ? Math.sin(b.t*8)*.12 : 0);
       if(Math.hypot(b.g.position.x - p.x, b.g.position.z - p.z) < (H.target && !H.target.dead ? 1.6 : 4) && !H.dead){
         b.items.forEach(it => { const r = RPG.addItem(P, it); if(r) ui.toast((it.k === 'mat' || it.k === 'use' ? RPG.itemIcon(it) + ' ' + RPG.itemName(it) + (it.q > 1 ? ' ×' + it.q : '') : '<b style="color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + ' ' + RPG.itemName(it) + '</b>'), 'loot'); else ui.toast('Рюкзак переповнений!'); });
         emit(b.g.position.x, b.g.position.y + .4, b.g.position.z, 20, '#ffd27a', 2, .6, .12, 2);
@@ -558,7 +569,7 @@ export function createCombat(o){
     const mine = tg && tg.me;
     f.oneShot(anim, { hitAt: def.ranged ? .5 : .45, speed: def.boss ? .9 : 1.1, onHit: () => {
       if(m.dead) return;
-      const atk = Math.round(m.atk*(m.enraged ? 1.35 : 1));
+      const atk = Math.round(m.atk*(m.enraged ? 1.35 : 1)*(o.mods ? o.mods().matk : 1));
       const from = new THREE.Vector3(m.x + Math.sin(m.heading)*.5, heightAt(m.x, m.z) + ((m.fig && m.fig.height) || 1.6)*.75, m.z + Math.cos(m.heading)*.5);
       if(mine){
         const p = heroPos(); const d = Math.hypot(p.x - m.x, p.z - m.z);

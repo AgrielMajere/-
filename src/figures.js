@@ -82,6 +82,7 @@ function ownClip(list, name){
   const re = key && OWN[key];
   return (re && pool.find(c => re.test(c.name))) || (name === 'Idle' ? pool[0] : null) || pool[0];
 }
+export function findBoneOf(inst, k){ inst._b = inst._b || {}; if(!(k in inst._b)) inst._b[k] = findBone(inst.obj, k); return inst._b[k]; }
 export async function preload(bodies, clipNames){
   for(const b of bodies){ const R = await rig(b); (clipNames || []).forEach(n => clipFrom(R, n)); }
 }
@@ -244,6 +245,8 @@ export async function make(spec){
   }
   // pose the figure in its idle frame so grips match how weapons are held at rest
   play(spec.idle || 'Idle', { fade: 0 }); mixer.update(0); wrap.updateMatrixWorld(true);
+  if(def.own){ // own clips may move/rotate the root: put the posed creature back on the ground, centred
+    const bb = new THREE.Box3().setFromObject(obj, true); if(!bb.isEmpty()){ const c = bb.getCenter(new THREE.Vector3()); inner.position.y -= bb.min.y; inner.position.x -= c.x; inner.position.z -= c.z; wrap.updateMatrixWorld(true); } }
   const VERT = { staff: 1, scepter: 1, bow: 1 };
   const LIFT = { staff: 4, scepter: .6, sword: -.15, greatsword: -.1, axe: -.1, mace: -.1, club: -.1, dagger: -.3, bow: 5 };
   if(gear.right){ const w = buildWeapon(gear.right.type, gear.right); if(w){ w.userData.type = gear.right.type; attached.right = grip('Right', w, LIFT[gear.right.type]); attached.rightObj = w; } }

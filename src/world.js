@@ -163,10 +163,11 @@ export function waterLevel(x, z){
 export function deepWater(x, z){ const w = waterLevel(x, z); return w > -50 && heightAt(x, z) < w - .55; }
 
 // the open land outside the town wall
+export const OPT = { hero: false };   // set while resolving the hero (who can swim)
 export function inWild(x, z, margin){
   const m = margin || 0, r = Math.hypot(x, z);
   if(x > 2500) return false;
   if(r < WALL_R + 2.2 + m) return false;
   if(landDist(x, z) < m) return false;
-  return !deepWater(x, z);
+  return OPT.hero || !deepWater(x, z);
 }

@@ -246,11 +246,19 @@ export function createUI(o){
   const canEquip = it => { if(it.k === 'weapon') return RPG.WEAPONS[it.w].cls.includes(P.cls); if(it.k === 'shield') return !!RPG.CLASSES[P.cls].off; return ['armor', 'helm', 'ring', 'amulet'].includes(it.k); };
   function statsBlock(){ const cb = o.combat(); const D = cb.D; return '<div class="rp-stats"><span>⚔️ Атака<b>' + D.atk + '</b></span><span>🛡️ Захист<b>' + D.def + '</b></span><span>❤️ HP<b>' + D.maxHp + '</b></span><span>💙 MP<b>' + D.maxMp + '</b></span><span>💪 Сила<b>' + D.st.str + '</b></span><span>🏃 Спритн.<b>' + D.st.agi + '</b></span><span>🧠 Інтел.<b>' + D.st.int + '</b></span><span>🎯 Крит<b>' + D.crit.toFixed(0) + '%</b></span></div>'; }
 
+  // what changes if this item replaces the one worn in the same slot
+  function compareTo(it){
+    const cur = P.eq[slotOf(it)]; const st = x => { const o = {}; if(!x) return o; const pm = 1 + (x.plus || 0)*.1; if(x.atk) o.atk = Math.round(x.atk*pm); if(x.def) o.def = Math.round(x.def*pm); Object.entries(x.bonus || {}).forEach(([k, v]) => o[k] = (o[k] || 0) + v); return o; };
+    const a = st(it), b = st(cur); const keys = [...new Set(Object.keys(a).concat(Object.keys(b)))];
+    const N = Object.assign({ atk: 'Атака', def: 'Захист' }, RPG.BONUS_N);
+    const rows = keys.map(k => { const d = (a[k] || 0) - (b[k] || 0); if(!d) return ''; return '<span style="color:' + (d > 0 ? '#7ae07a' : '#ff7a6a') + ';margin-right:10px;white-space:nowrap">' + (d > 0 ? '▲ +' : '▼ ') + d + ' ' + (N[k] || k) + '</span>'; }).join('');
+    return '<div style="font-size:12.5px;margin:6px 0;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.06)">' + (cur ? 'Порівняно з «' + esc(RPG.itemName(cur)) + '»: ' : 'Слот порожній: ') + (rows || '<span style="opacity:.7">без змін</span>') + '</div>';
+  }
   function inventory(mode){
     mode = mode || 'bag'; let sel = null;
     const render = () => {
       let h = statsBlock() + '<div class="rp-eq">' + RPG.SLOTS.map(([k, n]) => { const it = P.eq[k]; return '<div data-slot="' + k + '" style="border-color:' + (it ? RPG.itemColor(it) : 'rgba(255,255,255,.15)') + '"><em>' + n + '</em>' + (it ? '<i>' + it.i + '</i>' + esc(RPG.itemName(it)) : '<span style="opacity:.4">—</span>') + '</div>'; }).join('') + '</div>';
-      if(sel){ const it = sel.it; h += '<div class="rp-detail"><h4 style="color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + ' ' + esc(RPG.itemName(it)) + (it.q > 1 ? ' ×' + it.q : '') + '</h4>' + itemStats(it) + '<div class="rp-row">' +
+      if(sel){ const it = sel.it; h += '<div class="rp-detail"><h4 style="color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + ' ' + esc(RPG.itemName(it)) + (it.q > 1 ? ' ×' + it.q : '') + '</h4>' + itemStats(it) + (!sel.slot && it.k !== 'mat' && it.k !== 'use' && canEquip(it) ? compareTo(it) : '') + '<div class="rp-row">' +
         (sel.slot ? '<button class="gm-btn" data-a="unequip">Зняти</button>' : '') +
         (!sel.slot && it.k !== 'mat' && it.k !== 'use' && canEquip(it) ? '<button class="gm-btn primary" data-a="equip">Одягнути</button>' : '') +
         (it.k === 'use' ? '<button class="gm-btn primary" data-a="use">Використати</button>' : '') +

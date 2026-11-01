@@ -12,7 +12,7 @@ await p.click(`[data-a="${ANIM}"]`);
 const ids = only.length ? only : await p.$$eval('.lb-card', cs => cs.map(c => c.dataset.id));
 for(const id of ids){
   logs.push('== ' + id);
-  await p.click(`.lb-card[data-id="${id}"] b`); await p.waitForTimeout(5000);
-  await p.locator('.lb-view').screenshot({ path: path.join(OUT, id + '.png') });
+  await p.evaluate(i => { const e = document.querySelector(`.lb-card[data-id="${i}"] b`); e.scrollIntoView(); e.click(); }, id); await p.waitForTimeout(6000);
+  await p.screenshot({ path: path.join(OUT, id + '.png'), clip: { x: 0, y: 0, width: 560, height: 560 } });
 }
 fs.writeFileSync(path.join(OUT, 'log.txt'), logs.join('\n')); await b.close(); srv.close();

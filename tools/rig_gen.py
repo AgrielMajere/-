@@ -128,12 +128,33 @@ for cl in (ank, knee):
         cs = sorted([(c[0] + c[1])/2 for c in cl], key=lambda x: abs(x))[:2]; cs = sorted(cs)
         if cs[0] < 0 < cs[1]: legx = (cs[1], cs[0]); break
 print('leg clusters', knee, ank, '->', legx)
+# T-pose / wide arms? (arm span at chest height much wider than the hips)
+# many vertices far from the axis at shoulder height but few at chest height => arms stretched out
+band = lambda a, b: V[(V[:, 2] > hz(a)) & (V[:, 2] < hz(b))]
+hi, lo = band(.74, .88), band(.60, .70)
+n_hi = int((np.abs(hi[:, 0]) > .26*H).sum()); n_lo = int((np.abs(lo[:, 0]) > .26*H).sum())
+upper = hi[np.abs(hi[:, 0]) > .26*H]
+wide = float(np.percentile(np.abs(upper[:, 0]), 98)) if len(upper) > 20 else 0
+hipw = n_lo
+TPOSE = (n_hi > 3*n_lo + 40 and wide > .3*H) or (len(sys.argv) > 6 and sys.argv[6] == 't')
+if TPOSE and wide < .3*H: wide = float(np.percentile(np.abs(band(.7, .9)[:, 0]), 99.5))
+armZ = hz(.80)
+if TPOSE:
+    far = upper[np.abs(upper[:, 0]) > .7*wide]; armZ = float(np.median(far[:, 2])) if len(far) else hz(.8)
+    shx = .12*H
+print('T-pose arms' if TPOSE else 'arms down', round(float(wide), 3), round(float(hipw), 3))
 for side, sgn in (('Left', 1), ('Right', -1)):
     # Blender +x is the character's LEFT when the character faces -y
+    if TPOSE:
+        hx = wide*.86
+        J[side + 'Shoulder'] = (sgn*.06*H/1.8, 0, armZ + .01*H); J[side + 'Arm'] = (sgn*shx, 0, armZ)
+        J[side + 'ForeArm'] = (sgn*(shx + (hx - shx)*.5), 0, armZ); J[side + 'Hand'] = (sgn*hx, 0, armZ); J[side + 'HandEnd'] = (sgn*wide*.98, 0, armZ)
+        continue
     hand_x = (xr(hz(.40), hz(.50))[1] if sgn > 0 else -xr(hz(.40), hz(.50))[0])*.82
     J[side + 'Shoulder'] = (sgn*.06*H/1.8, 0, hz(.815)); J[side + 'Arm'] = (sgn*shx, 0, hz(.80))
     elbow_x = (shx + hand_x)/2
     J[side + 'ForeArm'] = (sgn*elbow_x, 0, hz(.63)); J[side + 'Hand'] = (sgn*hand_x, 0, hz(.47)); J[side + 'HandEnd'] = (sgn*hand_x, 0, hz(.41))
+for side, sgn in (('Left', 1), ('Right', -1)):
     lx = (legx[0] if sgn > 0 else legx[1]) if legx else sgn*.1*H/1.8
     J[side + 'UpLeg'] = (sgn*max(.08, abs(lx)*.8)*H/H, 0, hz(.505)); J[side + 'Leg'] = (lx, 0, hz(.285)); J[side + 'Foot'] = (lx*1.05, 0, hz(.05))
     J[side + 'ToeBase'] = (lx*1.05, FRONT*.12*H/1.8, hz(.01)); J[side + 'ToeEnd'] = (lx*1.05, FRONT*.2*H/1.8, hz(.01))
@@ -180,6 +201,39 @@ bpy.ops.object.modifier_apply(modifier='wt')
 bpy.data.objects.remove(proxy, do_unlink=True)
 ob.parent = ao; am = ob.modifiers.new('Armature', 'ARMATURE'); am.object = ao
 nz = sum(1 for v in me.vertices if len(v.groups) == 0)
+if nz > .3*len(me.vertices):
+    # fallback: distance-to-bone weights (left/right kept apart), smoothed over the mesh
+    print('heat weighting failed -> distance weights')
+    bones = [b for b in ['Hips'] + list(PARENT)]
+    A = np.array([J[b] for b in bones]); B = np.array([J[TAIL[b]] for b in bones])
+    P = np.array([v.co[:] for v in me.vertices])
+    D = np.empty((len(P), len(bones)))
+    for j in range(len(bones)):
+        ab = B[j] - A[j]; L2 = max(1e-9, ab @ ab)
+        t = np.clip(((P - A[j]) @ ab)/L2, 0, 1)
+        D[:, j] = np.linalg.norm(P - (A[j] + t[:, None]*ab), axis=1)
+    side = P[:, 0]
+    for j, b in enumerate(bones):
+        if b.startswith('Left'): D[side < -.02*H, j] += H        # character's left = +x
+        if b.startswith('Right'): D[side > .02*H, j] += H
+        if b in ('LeftShoulder', 'RightShoulder'): D[:, j] *= 1.6
+    W = 1.0/np.maximum(D, .01*H)**4
+    k = 3; idx = np.argsort(-W, axis=1)[:, k:]; np.put_along_axis(W, idx, 0, axis=1)
+    W /= W.sum(1, keepdims=True)
+    # Laplacian smoothing over edges
+    E = np.array([e.vertices[:] for e in me.edges])
+    for it in range(6):
+        acc = np.zeros_like(W); cnt = np.zeros(len(P))
+        np.add.at(acc, E[:, 0], W[E[:, 1]]); np.add.at(acc, E[:, 1], W[E[:, 0]])
+        np.add.at(cnt, E[:, 0], 1); np.add.at(cnt, E[:, 1], 1)
+        m = cnt > 0; W[m] = .5*W[m] + .5*acc[m]/cnt[m][:, None]
+    W /= W.sum(1, keepdims=True)
+    for g in list(ob.vertex_groups): ob.vertex_groups.remove(g)
+    G = [ob.vertex_groups.new(name=b) for b in bones]
+    for j, g in enumerate(G):
+        nzi = np.nonzero(W[:, j] > .01)[0]
+        for i in nzi: g.add([int(i)], float(W[i, j]), 'REPLACE')
+    nz = sum(1 for v in me.vertices if len(v.groups) == 0)
 print('verts without weights', nz, 'of', len(me.vertices))
 
 bpy.ops.export_scene.gltf(filepath=out, export_format='GLB', export_skins=True, export_animations=False, export_yup=True, export_image_format='JPEG', export_jpeg_quality=88)

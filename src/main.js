@@ -97,6 +97,8 @@ function lerpAngle(a, b, t){ let d = b - a; while(d > Math.PI) d -= Math.PI*2; w
 function lsGet(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 
+import { createLife } from './life.js';
+import { OPT as WOPT } from './world.js';
 export function open(ctx){
   if(state) close();
   ctx = ctx || {};
@@ -107,7 +109,7 @@ export function open(ctx){
     '<div class="gm-net"><button class="gm-btn" data-gm="players">👥 <span>1</span></button><button class="gm-btn" data-gm="chat">💬</button></div>' +
     '<div class="gm-chatlog"></div><form class="gm-chatin" hidden><input id="gm-chat-input" maxlength="120" autocomplete="off" placeholder="Повідомлення для всіх поруч… (Enter)"></form>' +
     '<div class="gm-side"><button class="gm-btn" data-gm="map" title="Карта світу (M)">🗺</button><button class="gm-btn" data-gm="sound" title="Звук">🔊</button><button class="gm-btn" data-gm="time" title="Час доби">🌅</button><button class="gm-btn" data-gm="quality" title="Якість графіки">⚙️</button><button class="gm-btn" data-gm="cam" title="Камера">🎥</button></div>' +
-    '<div class="gm-bottom"><div class="gm-hint">Торкніться землі — іти, монстра — атакувати · тягніть — камера · WASD, пробіл, 1–3</div>' +
+    '<div class="gm-bottom"><div class="gm-hint">Торкніться землі — іти, монстра — атакувати · тягніть — камера · WASD · R перекат · F блок · пробіл стрибок · Tab ціль · 1–3</div>' +
     '<div class="gm-bar"><button class="gm-btn" data-gm="bag"><i>🎒</i><span>Рюкзак</span></button><button class="gm-btn" data-gm="quests"><i>📜</i><span>Квести</span></button><button class="gm-btn" data-gm="card"><i>🪪</i><span>Картка</span></button><button class="gm-btn" data-gm="wardrobe"><i>🧥</i><span>Вигляд</span></button></div></div>' +
     '<div class="gm-sheet"><div class="gm-soon">СКОРО</div><h3></h3><div class="gm-body"></div><div class="gm-btns"></div></div>' +
     '<div class="gm-fps"></div>' +
@@ -164,6 +166,7 @@ export function open(ctx){
   buildPool(QUALITY[qName].lights);
   let poolT = 0;
 
+  const kset = new Set();
   // ---------- hero ----------
   const heroObj = new THREE.Group(); scene.add(heroObj);
   const accent = hero.accent || '#e6a23c';
@@ -436,10 +439,14 @@ export function open(ctx){
   const remotes = new Map();
   const remotePlayers = () => { const out = []; remotes.forEach((r, peer) => { if(r.x != null) out.push({ peer, x: r.x, z: r.z, dead: r.dead, name: r.name }); }); return out; };
   let advs = null, myFol = null;
-  combat = createCombat({ scene, town, ui, P, appStats: hero.stats, net, players: remotePlayers, extra: () => advs ? advs.targets() : [], hitNpc: (i, d) => advs && advs.hit(i, d),
+  const life = createLife({ root, scene, camera, renderer, P, ui, sheet: sheetOpts, hide: hideSheet, combat: () => combat, agent, heroObj, heroInst: () => heroInst, town, npcs, say: (n, t) => say(n, t), sky, net, get cam(){ return cam; }, keys: kset,
+    openService: s2 => openService(s2), quality: () => qualitySheet(), under: () => under, travelFade: cb => { hideSheet(); fadeEl.style.opacity = 1; setTimeout(() => { cb(); setTimeout(() => { fadeEl.style.opacity = 0; }, 160); }, 380); } });
+  life.preSpawns(town.wild.spawns);
+  combat = createCombat({ guard: () => life.guard(), mods: () => life.mods(), onKill: m => life.onKill(m), partyShare: m => life.partyShare(m), scene, town, ui, P, appStats: hero.stats, net, players: remotePlayers, extra: () => advs ? advs.targets() : [], hitNpc: (i, d) => advs && advs.hit(i, d),
     hero: { obj: heroObj, agent, inst: () => heroInst },
     moveTo: (x, z) => { agent.path = route(x, z); agent.onArrive = null; agent.chasing = true; agent.run = true; },
     respawn: () => { const tps = town.interactives.filter(q => q.id === 'temple' || q.id === 'temple2'); let b = tps[0] || town.interactives.find(q => q.id === 'guild'); tps.forEach(q => { if(Math.hypot(q.door.x - agent.x, q.door.z - agent.z) < Math.hypot(b.door.x - agent.x, b.door.z - agent.z)) b = q; }); agent.x = b.door.x; agent.z = b.door.z; agent.path = []; heroObj.position.set(agent.x, 0, agent.z); camSmooth.set(0, 0, 0); } });
+  life.postCombat(combat);
   advs = createAdventurers({ npcs, net, town, heightAt, step: (a, dt, sp) => stepAgent(a, dt, sp), say: (n, t) => say(n, t), combat: () => combat, players: remotePlayers,
     me: () => ({ x: agent.x, z: agent.z, dead: !!(combat && combat.H.dead) }), proj: (f, m, c, ar) => combat && combat.proj(f, m, c, ar),
     healFx: (x, z) => combat && combat.emit(x, heightAt(x, z) + .3, z, 30, '#ffe9a0', 1, 1.1, .14, 2.2),
@@ -478,6 +485,7 @@ export function open(ctx){
       x: Math.round(agent.x*10), z: Math.round(agent.z*10), hd: Math.round(agent.heading*100), mv: agent.moving ? (agent.run ? 2 : 1) : 0, fol: myFol,
       d: combat && combat.H.dead ? 1 : 0, hp: combat ? Math.round(combat.H.hp/Math.max(1, combat.D.maxHp)*100) : 100,
       a: myAct, hits: combat && !combat.isHost() ? combat.hitOut : [], say: mySay };
+    Object.assign(pr, life.presence());
     net.self(pr, now);
   }
   function lookOf(p){ return [p.k, p.o, p.c, p.w, p.sh].join('|'); }
@@ -512,6 +520,7 @@ export function open(ctx){
       const tx = (+p.x || 0)/10, tz = (+p.z || 0)/10;
       if(r.x == null || Math.hypot(tx - r.x, tz - r.z) > 12){ r.x = tx; r.z = tz; } else { const k = Math.min(1, dt*10); r.x += (tx - r.x)*k; r.z += (tz - r.z)*k; }
       r.hd = (+p.hd || 0)/100; r.mv = p.mv | 0; r.dead = !!p.d; r.name = cleanText(p.n || 'Авантюрист').slice(0, 24); r.lvl = +p.l || 1; r.cls = p.c; r.hp = +p.hp || 0; r.rank = +p.r || 0;
+      life.remote(o2.peer, p, r);
       r.label.textContent = r.name + ' · ' + r.lvl + (p.c && RPG.CLASSES[p.c] ? ' ' + RPG.CLASSES[p.c].i : '');
       if(lookOf(p) !== r.key) buildRemote(r, p);
       r.obj.position.set(r.x, heightAt(r.x, r.z), r.z);
@@ -527,7 +536,7 @@ export function open(ctx){
       if(Array.isArray(p.say) && p.say[0] !== r.sayT && typeof p.say[1] === 'string'){ const t = cleanText(p.say[1]); if(r.sayT !== 0 && t) { logChat(r.name, t); bubbleFor(r, t); } r.sayT = p.say[0]; }
       if(combat && combat.isHost() && Array.isArray(p.hits)) combat.absorbHits(o2.peer, p.hits);
     });
-    remotes.forEach((r, peer) => { if(!seen.has(peer)){ scene.remove(r.obj); r.label.remove(); remotes.delete(peer); logChat('', '🚪 ' + (r.name || 'Гравець') + ' виходить', true); } });
+    remotes.forEach((r, peer) => { if(!seen.has(peer)){ life.gone(peer); scene.remove(r.obj); r.label.remove(); remotes.delete(peer); logChat('', '🚪 ' + (r.name || 'Гравець') + ' виходить', true); } });
     root.querySelector('[data-gm=players] span').textContent = String(remotes.size + 1);
     // labels & bubbles over remote players
     const w2 = root.clientWidth, h2 = root.clientHeight;
@@ -619,13 +628,14 @@ export function open(ctx){
   function say(npc, text){ bubbleNpc = npc; npc.bubbleT = 4.6; bubble.textContent = text; bubble.classList.add('on'); if(npc.inst){ npc.inst.talk(Math.min(3.5, text.length*.06)); npc.inst.smile(.6); setTimeout(() => npc.inst && npc.inst.smile(0), 4000); } }
   function onTap(cx, cy){
     hint.style.opacity = 0;
+    if(life.tap(cx, cy)) return;
     const r = pick(cx, cy); if(!r) return;
     hideSheet();
     if(r.mon){ if(!P.reg){ ui.toast('Спершу зареєструйтеся в Гільдії'); return; } combat.setTarget(r.mon); combat.H.queued = null; return; }
     if(combat && combat.H.dead) return;
     if(combat) combat.setTarget(null);
     if(r.point){
-      marker.position.set(r.point.x, heightAt(r.point.x, r.point.z) + .06, r.point.z); markerT = 1;
+      marker.position.set(r.point.x, heightAt(r.point.x, r.point.z) + .06, r.point.z); markerT = 1; life.noteTap(r.point.x, r.point.z);
       walkTo(r.point.x, r.point.z);
     } else if(r.building){
       const b = r.building; marker.position.set(b.door.x, heightAt(b.door.x, b.door.z) + .06, b.door.z); markerT = 1;
@@ -634,7 +644,9 @@ export function open(ctx){
       const n = r.npc; const dx = agent.x - n.a.x, dz = agent.z - n.a.z, d = Math.hypot(dx, dz) || 1;
       const tx = n.a.x + dx/d*1.4, tz = n.a.z + dz/d*1.4;
       n.a.path = []; n.wait = 7;
-      walkTo(tx, tz, () => { agent.heading = Math.atan2(n.a.x - agent.x, n.a.z - agent.z); n.a.heading = Math.atan2(agent.x - n.a.x, agent.z - n.a.z); doInteract(); if(n.inst){ n.inst.play('Cheer', { once: true }); setTimeout(() => { if(n.inst) n.inst.play(n.def.idle || 'Idle'); }, 1800); } const L = n.def.lines; say(n, L[Math.floor(Math.random()*L.length)]); if(n.def.service) setTimeout(() => openService(n.def.service), 900); else if(n.def.adv) setTimeout(() => advSheet(n), 900); else if(P.reg) setTimeout(() => talkTo(n), 900); });
+      walkTo(tx, tz, () => { agent.heading = Math.atan2(n.a.x - agent.x, n.a.z - agent.z); n.a.heading = Math.atan2(agent.x - n.a.x, agent.z - n.a.z); doInteract(); if(n.inst){ n.inst.play('Cheer', { once: true }); setTimeout(() => { if(n.inst) n.inst.play(n.def.idle || 'Idle'); }, 1800); } const L = n.def.lines; say(n, L[Math.floor(Math.random()*L.length)]); const qn = P.reg && (RPG.QUEST_POOL.some(q => q.giver === n.def.id && !P.done[q.id]) || P.quests.some(a => { const Q = RPG.QUEST_POOL.find(q => q.id === a.id); return Q && ((Q.type === 'talk' && Q.to === n.def.id && !a.prog) || Q.giver === n.def.id); }));
+        if(!qn && !n.def.adv && life.talk(n)) return;
+        if(n.def.service) setTimeout(() => openService(n.def.service), 900); else if(n.def.adv) setTimeout(() => advSheet(n), 900); else if(P.reg) setTimeout(() => talkTo(n), 900); });
     }
   }
   function temple(){
@@ -658,8 +670,9 @@ export function open(ctx){
     if(!P.reg) return; const zn = zoneAt(agent.x, agent.z);
     if(zn) P.quests.forEach(a => { const Q = RPG.QUEST_POOL.find(q => q.id === a.id); if(Q && Q.type === 'visit' && Q.zone === zn.id && !a.prog){ a.prog = 1; RPG.save(); ui.toast('🧭 «' + Q.n + '»: місце знайдено — поверніться до замовника', 'loot'); } });
   }
-  function openService(s){ if(s === 'temple') return temple(); if(s === 'dungeon') return dungeonSheet(town.interactives.find(q => q.id === 'dun_enter')); if(s === 'guild') ui.guild(); else if(s === 'shop') P.reg ? ui.shop() : ui.toast('Крамниця обслуговує лише зареєстрованих авантюристів'); else if(s === 'forge') P.reg ? ui.forge() : ui.toast('Спершу зареєструйтеся в Гільдії'); }
+  function openService(s){ if(s === 'shop'){ const zz = zoneAt(agent.x, agent.z); if(zz && life.shop(zz.id)) return; } if(s === 'temple') return temple(); if(s === 'dungeon') return dungeonSheet(town.interactives.find(q => q.id === 'dun_enter')); if(s === 'guild') ui.guild(); else if(s === 'shop') P.reg ? ui.shop() : ui.toast('Крамниця обслуговує лише зареєстрованих авантюристів'); else if(s === 'forge') P.reg ? ui.forge() : ui.toast('Спершу зареєструйтеся в Гільдії'); }
   function openBuilding(b0){
+    if(life.building(b0)) return;
     const b = /^(guild|shop|forge|tavern|temple)2$/.test(b0.id || '') ? Object.assign({}, b0, { id: b0.id.slice(0, -1) }) : b0;
     if(b.id && b.id.startsWith('dun_')) return dungeonSheet(b);
     if(b.id === 'guild') return ui.guild();
@@ -753,15 +766,15 @@ export function open(ctx){
   dom.addEventListener('pointermove', e => {
     const p = ptrs.get(e.pointerId); if(!p) return;
     const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
-    if(ptrs.size === 1){ moved += Math.abs(dx) + Math.abs(dy); if(moved > 8){ cam.tYaw -= dx*.0065; cam.tPitch = Math.max(.06, Math.min(1.3, cam.tPitch + dy*.0045)); } }
+    if(ptrs.size === 1){ moved += Math.abs(dx) + Math.abs(dy); if(moved > 8){ cam.tYaw -= dx*.0065*life.camSens(); cam.tPitch = Math.max(.06, Math.min(1.3, cam.tPitch + dy*.0045*life.camSens())); } }
     else if(ptrs.size === 2){ const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); cam.tDist = Math.max(2.6, Math.min(48, cam.tDist*(pinch/d))); pinch = d; }
   });
   const up = e => { const had = ptrs.has(e.pointerId); ptrs.delete(e.pointerId); if(had && ptrs.size === 0 && moved <= 8 && performance.now() - downAt < 600 && e.type === 'pointerup') onTap(e.clientX, e.clientY); };
   dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', up);
   dom.addEventListener('wheel', e => { e.preventDefault(); cam.tDist = Math.max(2.6, Math.min(48, cam.tDist*(1 + e.deltaY*.0012))); }, { passive: false });
-  const keys = new Set();
-  const kd = e => { if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return; if(e.code === 'Enter'){ e.preventDefault(); openChat(); return; } if(e.code === 'KeyM' && nav){ nav.isOpen() ? nav.closeMap() : nav.openMap(); return; } if(e.code === 'Escape' && nav && nav.isOpen()){ nav.closeMap(); return; } keys.add(e.code); if(combat && P.reg){ if(e.code === 'Space'){ e.preventDefault(); const ev = combat.H.target; if(!ev || ev.dead){ const n = combat.nearestMonster(16); if(n) combat.setTarget(n); } } if(e.code === 'Digit1') combat.useSkill(0); if(e.code === 'Digit2') combat.useSkill(1); if(e.code === 'Digit3') combat.useSkill(2); if(e.code === 'KeyQ') combat.usePotion('hp'); if(e.code === 'KeyE') combat.usePotion('mp'); if(e.code === 'KeyI') ui.inventory(); } if(/Key[WASD]|Arrow/.test(e.code)){ agent.path = []; agent.onArrive = null; hint.style.opacity = 0; } };
-  const ku = e => keys.delete(e.code);
+  const keys = kset;
+  const kd = e => { if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return; if(e.code === 'Tab') e.preventDefault(); if(life.key(e)) return; if(e.code === 'Enter'){ e.preventDefault(); openChat(); return; } if(e.code === 'KeyM' && nav){ nav.isOpen() ? nav.closeMap() : nav.openMap(); return; } if(e.code === 'Escape' && nav && nav.isOpen()){ nav.closeMap(); return; } keys.add(e.code); if(combat && P.reg){ if(e.code === 'Tab'){ e.preventDefault(); const ev = combat.H.target; if(!ev || ev.dead){ const n = combat.nearestMonster(16); if(n) combat.setTarget(n); } } if(e.code === 'Digit1') combat.useSkill(0); if(e.code === 'Digit2') combat.useSkill(1); if(e.code === 'Digit3') combat.useSkill(2); if(e.code === 'KeyQ') combat.usePotion('hp'); if(e.code === 'KeyE') combat.usePotion('mp'); if(e.code === 'KeyI') ui.inventory(); } if(/Key[WASD]|Arrow/.test(e.code)){ agent.path = []; agent.onArrive = null; hint.style.opacity = 0; } };
+  const ku = e => { keys.delete(e.code); life.key(e, false); };
   window.addEventListener('keydown', kd); window.addEventListener('keyup', ku);
 
   root.addEventListener('click', e => {
@@ -822,7 +835,7 @@ export function open(ctx){
       const step = (speed || a.speed)*dt;
       if(d <= step + .02){ a.x = tx; a.z = tz; a.path.shift(); if(!a.path.length && a.onArrive){ const f = a.onArrive; a.onArrive = null; f(); } }
       else { a.x += dx/d*step; a.z += dz/d*step; a.heading = Math.atan2(dx, dz); a.moving = true; }
-      const [rx, rz] = town.resolve(a.x, a.z, .38); a.x = rx; a.z = rz;
+      WOPT.hero = a === agent; const [rx, rz] = town.resolve(a.x, a.z, .38); WOPT.hero = false; a.x = rx; a.z = rz;
     }
   }
   let paused = false, lowFps = 0, autoLocked = false, hudT = 0;
@@ -830,6 +843,7 @@ export function open(ctx){
   function frame(fixedDt){
     if(!paused) raf = requestAnimationFrame(() => frame());
     const dt = fixedDt || Math.min(.05, clock.getDelta()); T += dt;
+    if(life.inInterior()){ syncRemotes(dt); presenceOut(performance.now()); life.interiorFrame(dt); return; }
     fpsAcc += dt; fpsN++;
     if(fpsAcc > 1){
       const fps = fpsN/fpsAcc; fpsEl.textContent = Math.round(fps) + ' fps · ' + qName; fpsAcc = 0; fpsN = 0;
@@ -843,14 +857,15 @@ export function open(ctx){
     if(combat && combat.H.dead){ kx = 0; kz = 0; agent.path = []; }
     if(kx || kz){ if(combat) combat.setTarget(null);
       const run = !(keys.has('ShiftLeft') || keys.has('ShiftRight'));
-      const sp = (run ? 4.4 : 1.6)*(combat ? combat.D.mods.spd : 1), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw);
+      const sp = (run ? 4.4 : 1.6)*(combat ? combat.D.mods.spd : 1)*life.speedMul(), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw);
       const wx = kx*c + kz*s, wz = -kx*s + kz*c, l = Math.hypot(wx, wz);
       agent.x += wx/l*sp*dt; agent.z += wz/l*sp*dt; agent.heading = Math.atan2(wx, wz); agent.moving = true; agent.run = run;
-      const [rx, rz] = town.resolve(agent.x, agent.z, .38); agent.x = rx; agent.z = rz;
-    } else stepAgent(agent, dt, (agent.run ? 4.4 : 1.6)*(combat ? combat.D.mods.spd : 1));
-    heroObj.position.set(agent.x, heightAt(agent.x, agent.z), agent.z);
+      WOPT.hero = true; const [rx, rz] = town.resolve(agent.x, agent.z, .38); WOPT.hero = false; agent.x = rx; agent.z = rz;
+    } else stepAgent(agent, dt, (agent.run ? 4.4 : 1.6)*(combat ? combat.D.mods.spd : 1)*life.speedMul());
+    heroObj.position.set(agent.x, life.heroY(heightAt(agent.x, agent.z)), agent.z);
     dungeonTick(dt);
-    if(heroInst){ heroInst.obj.rotation.y = lerpAngle(heroInst.obj.rotation.y, agent.heading, Math.min(1, dt*10)); heroInst.update(dt, agent.moving); heroInst.tick(dt); if(!heroBusy && !heroInst.busy() && !(combat && combat.H.dead)) heroInst.play(agent.moving ? (agent.run ? 'Run' : 'Walk') : 'Idle'); }
+    if(heroInst){ heroInst.obj.rotation.y = lerpAngle(heroInst.obj.rotation.y, agent.heading, Math.min(1, dt*10)); heroInst.update(dt, agent.moving); heroInst.tick(dt); if(!heroBusy && !heroInst.busy() && !(combat && combat.H.dead) && !life.blocking() && !life.riding()) heroInst.play(agent.moving ? (agent.run ? 'Run' : 'Walk') : 'Idle'); }
+    life.update(dt);
     if(combat){ combat.update(dt, T); }
     if(forest) forest.update(agent.x, agent.z);
     if(!under){ terrain.update(agent.x, agent.z); if(grassField) grassField.update(agent.x, agent.z); if(flowerField) flowerField.update(agent.x, agent.z); }
@@ -932,6 +947,7 @@ export function open(ctx){
     focus.set(tx, 0, tz);
     sky.update(dt, T, focus);
     renderer.toneMappingExposure = sky.exposure();
+    life.post();
 
     if(markerT > 0){ markerT -= dt*1.2; marker.material.opacity = Math.max(0, markerT); const s = 1 + (1 - markerT)*.8; marker.scale.set(s, s, s); }
 
@@ -954,7 +970,7 @@ export function open(ctx){
   frame();
 
   function goTo(id){ const b = town.interactives.find(q => q.id === id); if(!b) return; walkTo(b.door.x, b.door.z, () => { agent.heading = Math.atan2(b.pos.x - agent.x, b.pos.z - agent.z); doInteract(); openBuilding(b); }); }
-  state = { T3: THREE, nav: () => nav, goTo, pause(v){ paused = v; if(!v){ clock.getDelta(); frame(); } }, step(n, d){ for(let i = 0; i < (n || 1); i++) frame(d || 1/30); }, sim(n, d){ skipRender = true; try{ for(let i = 0; i < (n || 1); i++) frame(d || 1/30); } finally { skipRender = false; } }, setTime(h){ sky.setTime(h, true); }, root, renderer, raf: () => raf, resize, scene, town, agent, npcs, cam, camera, heroObj, sky, setQuality, kd, ku, isReady: () => ready, combat: () => combat, ui, P, spawnHero: () => spawnHero(), teleport: (x, z) => { agent.x = x; agent.z = z; agent.path = []; camSmooth.set(0, 0, 0); }, enterFloor, toSurface, dun, dungeonSheet, under: () => under };
+  state = { T3: THREE, life, nav: () => nav, goTo, pause(v){ paused = v; if(!v){ clock.getDelta(); frame(); } }, step(n, d){ for(let i = 0; i < (n || 1); i++) frame(d || 1/30); }, sim(n, d){ skipRender = true; try{ for(let i = 0; i < (n || 1); i++) frame(d || 1/30); } finally { skipRender = false; } }, setTime(h){ sky.setTime(h, true); }, root, renderer, raf: () => raf, resize, scene, town, agent, npcs, cam, camera, heroObj, sky, setQuality, kd, ku, isReady: () => ready, combat: () => combat, ui, P, spawnHero: () => spawnHero(), teleport: (x, z) => { agent.x = x; agent.z = z; agent.path = []; camSmooth.set(0, 0, 0); }, enterFloor, toSurface, dun, dungeonSheet, under: () => under };
   window.__gm = state;
 }
 
