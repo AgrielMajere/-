@@ -333,6 +333,13 @@ export async function make(spec){
     onceCb = { t: 0, dur, hitAt: dur*(o.hitAt == null ? .45 : o.hitAt), hit: o.onHit, done: o.onDone, hitFired: false, back: o.back, keep: o.keep };
     return dur;
   }
+  // swing the arms a little away from the body (bulky clothes): world-space rotation about the facing axis
+  const _aq = new THREE.Quaternion(), _pq = new THREE.Quaternion(), _bq = new THREE.Quaternion(), _fw = new THREE.Vector3();
+  function armsOut(a){
+    obj.updateMatrixWorld(true); _fw.set(0, 0, 1).applyQuaternion(obj.getWorldQuaternion(_pq));
+    [['LeftArm', -1], ['RightArm', 1]].forEach(([k, sgn]) => { const b = findBone(obj, k); if(!b || !b.parent) return;
+      b.parent.getWorldQuaternion(_pq); b.getWorldQuaternion(_bq); _aq.setFromAxisAngle(_fw, sgn*a); _bq.premultiply(_aq); b.quaternion.copy(_pq.invert().multiply(_bq)); });
+  }
   let talkT = 0, smile = 0, capeT = Math.random()*10;
   const inst = {
     obj: wrap, inner, body, mixer, play, oneShot, attached, height: H,
@@ -341,6 +348,7 @@ export async function make(spec){
     talk(sec){ talkT = sec; }, smile(v){ smile = v; },
     update(dt, moving){
       mixer.update(dt);
+      if(def.armOut) armsOut(def.armOut);
       if(locked > 0) locked -= dt;
       if(onceCb){ onceCb.t += dt; if(!onceCb.hitFired && onceCb.t >= onceCb.hitAt){ onceCb.hitFired = true; onceCb.hit && onceCb.hit(); }
         if(onceCb.t >= onceCb.dur){ const c = onceCb; onceCb = null; if(!c.keep) play(c.back || 'Idle', { fade: .25 }); c.done && c.done(); } }

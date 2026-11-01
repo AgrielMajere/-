@@ -236,9 +236,38 @@ if nz > .3*len(me.vertices):
     nz = sum(1 for v in me.vertices if len(v.groups) == 0)
 print('verts without weights', nz, 'of', len(me.vertices))
 
+# legs: always side-separated distance weights below the hips (heat weights fuse legs that stand close together)
+if len(sys.argv) > 7 and sys.argv[7] == 'legs':
+    LB = ['Hips', 'LeftUpLeg', 'LeftLeg', 'LeftFoot', 'LeftToeBase', 'RightUpLeg', 'RightLeg', 'RightFoot', 'RightToeBase']
+    A_ = np.array([J[b] for b in LB]); B_ = np.array([J[TAIL[b]] for b in LB])
+    P_ = np.array([v.co[:] for v in me.vertices]); sel = np.nonzero(P_[:, 2] < hz(.5))[0]
+    for g in LB:
+        if not ob.vertex_groups.get(g): ob.vertex_groups.new(name=g)
+    allg = [g.index for g in ob.vertex_groups]
+    W = np.zeros((len(P_), len(LB))); insel = np.zeros(len(P_), bool); insel[sel] = True
+    for i in sel:
+        p = P_[i]; side = 1 if p[0] > 0 else -1
+        for j, bn in enumerate(LB):
+            ab = B_[j] - A_[j]; t = np.clip(np.dot(p - A_[j], ab)/max(1e-9, ab @ ab), 0, 1); dd = np.linalg.norm(p - (A_[j] + t*ab))
+            if abs(p[0]) > .025*H and ((bn.startswith('Left') and side < 0) or (bn.startswith('Right') and side > 0)): dd += H
+            if bn == 'Hips': dd *= 1.0 + 3*max(0, (hz(.45) - p[2])/H)
+            W[i, j] = 1/max(dd, .01*H)**4
+        W[i] /= W[i].sum()
+    # smooth along the surface so knees and ankles bend softly
+    E = np.array([e.vertices[:] for e in me.edges]); E = E[insel[E[:, 0]] & insel[E[:, 1]]]
+    for it in range(8):
+        acc = np.zeros_like(W); cnt = np.zeros(len(P_))
+        np.add.at(acc, E[:, 0], W[E[:, 1]]); np.add.at(acc, E[:, 1], W[E[:, 0]]); np.add.at(cnt, E[:, 0], 1); np.add.at(cnt, E[:, 1], 1)
+        m = insel & (cnt > 0); W[m] = .5*W[m] + .5*acc[m]/cnt[m][:, None]
+    for i in sel:
+        w = W[i]; top = np.argsort(-w)[:3]; w2 = np.zeros_like(w); w2[top] = w[top]; w2 /= max(1e-9, w2.sum())
+        for gi in allg: ob.vertex_groups[gi].remove([int(i)])
+        for j in top:
+            if w2[j] > .01: ob.vertex_groups[LB[j]].add([int(i)], float(w2[j]), 'REPLACE')
+    print('legs reweighted', len(sel))
 # keep hair / cloaks / props hanging near the arms out of the arm bones: anything far from the arm chain goes to the torso
 ARMB = [b for b in ('LeftArm', 'LeftForeArm', 'LeftHand', 'RightArm', 'RightForeArm', 'RightHand') if ob.vertex_groups.get(b)]
-if ARMB:
+if ARMB and not TPOSE:   # T-pose sleeves are wide by nature: leave them on the arms
     segs = [(np.array(J[b]), np.array(J[TAIL[b]])) for b in ARMB]
     def dseg(p, a, b):
         ab = b - a; t = max(0.0, min(1.0, float(np.dot(p - a, ab)/max(1e-9, np.dot(ab, ab))))); return float(np.linalg.norm(p - (a + t*ab)))
