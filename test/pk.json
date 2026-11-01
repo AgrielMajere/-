@@ -1,0 +1,1 @@
+[{"out":"/tmp/claude-0/-home-claude/ec9ac6e6-2041-5efd-8280-5d1e7727adfc/scratchpad/m/pk.png","js":"(async()=>{const g=__gm;await g.spawnHero();g.teleport(0,6);g.sim(20);await new Promise(r=>setTimeout(r,3000));g.sim(3);return g.npcs.length})()","steps":2}]

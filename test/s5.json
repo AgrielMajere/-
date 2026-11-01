@@ -1,0 +1,4 @@
+[{"out":"/tmp/claude-0/-home-claude/ec9ac6e6-2041-5efd-8280-5d1e7727adfc/scratchpad/m/w1.png","js":"(async()=>{const g=__gm;g.setTime(11);const n=g.npcs.find(n=>n.def.id==='elder');n.a.x=-3;n.a.z=12.5;n.a.path=[[9,12.5]];n.wait=99;g.teleport(1,17);g.agent.heading=Math.PI;g.cam.yaw=g.cam.tYaw=0;g.cam.dist=g.cam.tDist=6;g.cam.pitch=g.cam.tPitch=.12;g.sim(3);})()","steps":1},
+ {"out":"/tmp/claude-0/-home-claude/ec9ac6e6-2041-5efd-8280-5d1e7727adfc/scratchpad/m/w2.png","js":"(async()=>{const g=__gm;g.step(5);})()","steps":1},
+ {"out":"/tmp/claude-0/-home-claude/ec9ac6e6-2041-5efd-8280-5d1e7727adfc/scratchpad/m/w3.png","js":"(async()=>{const g=__gm;g.step(5);})()","steps":1},
+ {"out":"/tmp/claude-0/-home-claude/ec9ac6e6-2041-5efd-8280-5d1e7727adfc/scratchpad/m/w4.png","js":"(async()=>{const g=__gm;g.step(5);})()","steps":1}]

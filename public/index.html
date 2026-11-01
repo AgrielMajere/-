@@ -1,0 +1,6 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Місто Шляху</title><link rel="icon" href="data:,"><meta name="description" content="Реалістичне 3D-місто: люди з mocap-анімаціями, фізичне небо, зміна часу доби.">
+<style>:root{--bg:#0b0a09;--fg:#f1e3c8}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b0a09}}:root[data-theme="dark"]{--bg:#0b0a09}html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);overflow:hidden}</style></head><body>
+<script>window.RITM_GAME_MODEL_EXT = location.search.includes('wasm') ? '.wasm' : '.glb';</script>
+<script src="game.js"></script>
+<script>RitmGame.open({ hero: { name: 'Мандрівник', className: 'Воїн', level: 7, accent: '#e6a23c', stats: [{label:'Сила',value:14,color:'#e4573d'},{label:'Інтелект',value:11,color:'#4fb3d9'},{label:'Живучість',value:17,color:'#7bc96f'},{label:'Духовна сила',value:9,color:'#c79bff'}] }, onExit(){ setTimeout(()=>location.reload(), 300); } });</script>
+</body></html>
