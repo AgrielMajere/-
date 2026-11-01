@@ -31,7 +31,20 @@ npm i            # + trystero@0.26.0 (є в package.json)
 - Тіла персонажів: `src/figures.js` (`BODIES`, у т.ч. `gen:true` для згенерованих), Лаба: `src/lab.js` (`PRESETS`).
 - Ріг для нерігованих мешів: `tools/rig_gen.py` (Blender bpy).
 
-## ПОТОЧНА ЗАДАЧА
+## СТАН НА 2026-11-01 (вечір) — гілка `source` актуальна
+### Зроблено
+- **Лабораторія** (https://claude.ai/artifact/QEHHCewnUPpqVKtA7XBSH5) — опубліковано 77 нових моделей (`nm_*`, файли `public/models/nm_*.glb`) з групами, нотатками й 👍/👎 (db-колекція `lab`, id карток = `nm_<id>`). Прибрано: minotaur_s, icy_dragon (зламані в оригіналі). Реєстр — `src/newmodels.js` (генерує `tools/gen_newmodels.py`).
+- Конвеєр моделей у `work/scripts/`: run1.py (Blender `tools/prep_model.py`: зварювання + decimate), rigged.py (gltf-transform simplify для вже ригнутих GLB), rigall.py (`tools/rig_gen.py`: автокістки з воксельною оболонкою, T-поза, запасні ваги за відстанню), stage2.sh (webp 1024 + meshopt + resample). Встановити: `pip install bpy==5.2.3 --break-system-packages`, `npm i -g @gltf-transform/cli@4.1.1`.
+- `src/retarget.js` розпізнає скелети Biped / Character Creator / Rigify / mixamorig1; `src/figures.js`: власні анімації тварин (`own`), `static`, `bbox`/`fit`.
+- **16 фіч** у `src/life.js` (+ `life_data.js`, `interiors.js`, `audio.js`): загін (запрошення, стрілки до друзів, пінг G, спільний досвід), перекат R / блок F (ідеальний блок), стрибок — пробіл (ціль тепер Tab), плавання, кінь H (nm_horse), риболовля T, збирання трав/руди, ремесло C, крамниці поселень + репутація 3 народів, щоденні доручення, події за годинником (Кривавий місяць, Набіг на Вербівку, Ярмарок), погода (дощ/туман/гроза), книга пригод B (доручення, репутація, бестіарій, 28 досягнень), діалоги з виборами (16 NPC), навчання новачка, налаштування 🎚️, промені здобичі за рідкістю + порівняння речей, музика за ситуацією, інтер'єри (таверна, тронна зала Сонцеграда, Зала Предків).
+- Гра викладена на GitHub Pages (гілка `main`, збірка `./packgh.sh` → `gh/`).
+
+## ДАЛІ
+1. Прочитати оцінки з Лаби (ArtifactData, колекція `lab`); лайкнуті `nm_*` — у гру (НПС/монстри/герої) + екран титрів CC BY для Sketchfab.
+2. Тест загону двома вікнами (mocktrystero; у swiftshader повільно).
+
+## (архів) ПОЧАТКОВА ЗАДАЧА
+
 Користувач скачав ~79 моделей у `C:\Users\s.kravchenko\Downloads\Картинки Персонаж`:
 - `sf_*.glb` — 47 моделей зі Sketchfab (CC BY 4.0 — потрібні титри з авторами; авторів брати з https://sketchfab.com/3d-models/<uid> — uid у списку моделей).
 - `*.fbx` — 32 персонажі з Mixamo (уже з кістками Mixamo). Ліцензія Mixamo: можна в грі, НЕ можна викладати сирі файли окремо → у публічний репозиторій класти лише оброблені GLB.
