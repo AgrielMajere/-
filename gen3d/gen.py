@@ -4,6 +4,7 @@ from PIL import Image
 torch.set_num_threads(os.cpu_count() or 4)
 from hy3dgen.rembg import BackgroundRemover
 from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline, FloaterRemover, DegenerateFaceRemover, FaceReducer
+os.makedirs('gen3d/out', exist_ok=True)
 todo = [p for p in sorted(glob.glob('gen3d/in/*')) if not os.path.exists('gen3d/out/' + os.path.splitext(os.path.basename(p))[0] + '.glb')]
 print('todo', todo, flush=True)
 if not todo: sys.exit(0)
