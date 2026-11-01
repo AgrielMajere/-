@@ -39,7 +39,7 @@ const CSS = `
 .lf-arrow span{position:absolute;left:14px;top:-8px;white-space:nowrap}
 .lf-fish{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translateX(-50%);z-index:4;text-align:center;color:#fff;text-shadow:0 1px 3px #000;font-size:15px}
 .lf-fish button{font-size:22px;padding:12px 26px;border-radius:14px;margin-top:6px}
-.lf-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.lf-tabs button{padding:6px 10px;font-size:13px}
+.lf-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.lf-tabs .gm-btn{width:auto!important;flex:1 1 auto;min-width:0;padding:6px 9px!important;font-size:12.5px!important;margin:0!important}
 .lf-row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .lf-row small{opacity:.65}.lf-bar{height:6px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:4px}.lf-bar i{display:block;height:100%;background:#e6a23c}
 .lf-dlg p{font-size:15px;line-height:1.45}.lf-dlg .gm-btn{display:block;width:100%;text-align:left;margin:6px 0}
@@ -47,6 +47,7 @@ const CSS = `
 .lf-ping{position:absolute;z-index:3;pointer-events:none;color:#7ad8ff;font-weight:700;text-shadow:0 1px 3px #000;font-size:13px;white-space:nowrap}
 .gm-side,.rp-hud,.rp-actions,.gm-bar,.gm-net,.rp-target,.gm-chatlog,.rp-toast{zoom:var(--uiz,1)}
 .gm-sheet{zoom:var(--uiz,1)}
+.gm-side{max-height:calc(100% - 230px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 `;
 
 export function createLife(A){
@@ -66,7 +67,7 @@ export function createLife(A){
   const sideBtn = (icon, title, fn) => { const b = document.createElement('button'); b.className = 'gm-btn'; b.title = title; b.textContent = icon; b.onclick = e => { e.stopPropagation(); fn(); }; side && side.appendChild(b); return b; };
   sideBtn('📖', 'Книга пригод (B)', () => book());
   sideBtn('⚗️', 'Ремесло (C)', () => craftSheet());
-  sideBtn('⚙️', 'Налаштування', () => settingsSheet());
+  sideBtn('🎚️', 'Налаштування: гучність, камера, розмір інтерфейсу', () => settingsSheet());
   const acts = document.createElement('div'); acts.className = 'lf-acts'; root.appendChild(acts);
   const actBtn = (icon, title, key) => { const b = document.createElement('button'); b.className = 'gm-btn'; b.title = title; b.innerHTML = icon + (key ? '<small>' + key + '</small>' : ''); acts.appendChild(b); return b; };
   const bRoll = actBtn('🤸', 'Перекат (R)', 'R'), bBlock = actBtn('🛡️', 'Блок — утримуйте (F)', 'F'), bJump = actBtn('⤴️', 'Стрибок (пробіл)', '␣');
@@ -633,7 +634,7 @@ export function createLife(A){
     const v = volumes();
     const sl = (k, n, val, a, b, st) => '<label>' + n + ' · <b data-v="' + k + '">' + Math.round(val*100) + '%</b></label><input type="range" data-s="' + k + '" min="' + a + '" max="' + b + '" step="' + st + '" value="' + val + '">';
     const h = '<div class="lf-set">' + sl('sfx', '🔊 Звуки (удари, кроки)', v.sfx, 0, 1, .05) + sl('amb', '🌲 Атмосфера (вітер, птахи, дощ)', v.amb, 0, 1, .05) + sl('music', '🎵 Музика', v.music, 0, 1, .05) +
-      sl('cam', '🎥 Чутливість камери', SET.cam, .3, 2.5, .05) + sl('ui', '🔠 Розмір інтерфейсу', SET.ui, .75, 1.4, .05) + '</div><p class="gm-note">Якість графіки — кнопка ⚙ у бічній панелі (там, де була). Налаштування зберігаються в цьому браузері.</p>';
+      sl('cam', '🎥 Чутливість камери', SET.cam, .3, 2.5, .05) + sl('ui', '🔠 Розмір інтерфейсу', SET.ui, .75, 1.4, .05) + '</div><p class="gm-note">Якість графіки — кнопка нижче. Налаштування зберігаються в цьому браузері.</p>';
     A.sheet({ title: 'Налаштування', html: h, buttons: [{ label: 'Якість графіки', fn: () => A.quality() }, { label: 'Готово', primary: true, fn: A.hide }], after: s => {
       s.querySelectorAll('[data-s]').forEach(r => r.oninput = () => { const k = r.dataset.s, val = +r.value; s.querySelector('[data-v="' + k + '"]').textContent = Math.round(val*100) + '%';
         if(k === 'cam' || k === 'ui'){ SET[k] = val; lsSet('ritm-game-settings', SET); if(k === 'ui') applyUi(); } else setVolumes({ [k]: val }); });

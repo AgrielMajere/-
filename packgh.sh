@@ -4,7 +4,7 @@ cd /home/claude/mmo
 rm -rf gh ghtmp && mkdir -p gh/models gh/tex
 npx esbuild src/main.js --bundle --format=iife --global-name=RitmGame --loader:.jpg=file --loader:.png=file --asset-names=assets/[name]-[hash] --public-path=./ --minify --target=es2019 --outdir=ghtmp --log-level=warning
 mv ghtmp/main.js gh/game.js && mv ghtmp/assets gh/assets && rm -rf ghtmp
-for f in public/models/*.glb; do b=$(basename $f); case $b in nefertiti*|bust*|head*|chartest*|resttest*) continue;; esac; cp $f gh/models/; done
+for f in public/models/*.glb; do b=$(basename $f); case $b in nefertiti*|bust*|head*|chartest*|resttest*) continue;; nm_horse.glb) ;; nm_*) continue;; esac; cp $f gh/models/; done
 cp public/tex/*.jpg gh/tex/
 cat > gh/index.html <<'H'
 <!doctype html>
