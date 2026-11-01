@@ -20,7 +20,7 @@ jobs:
       - name: Prepare Kaggle kernel
         run: |
           test -n "$KAGGLE_API_TOKEN" || { echo "::error::Secret KAGGLE_API_TOKEN is missing"; exit 1; }
-          pip install --quiet "kaggle>=1.8.0"
+          pip install --quiet "kaggle>=1.8.0" six
           USER=$(python -c "from kaggle.api.kaggle_api_extended import KaggleApi; a=KaggleApi(); a.authenticate(); print(a.config_values.get('username',''))")
           echo "kaggle user: $USER"; test -n "$USER"
           echo "KUSER=$USER" >> $GITHUB_ENV
