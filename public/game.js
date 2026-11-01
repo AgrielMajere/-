@@ -60189,7 +60189,7 @@ ${candidateLine}`;
       if (FORCE.weather) return FORCE.weather;
       const s = Math.floor(Date.now() / (20 * 60 * 1e3));
       const h = hash3("w" + s) % 100;
-      return h < 45 ? "clear" : h < 60 ? "cloudy" : h < 78 ? "rain" : h < 88 ? "fog" : "storm";
+      return h < 52 ? "clear" : h < 68 ? "cloudy" : h < 84 ? "rain" : h < 90 ? "fog" : "storm";
     }
     const N_DROPS = 1400, rainGeo = new BufferGeometry(), rainPos = new Float32Array(N_DROPS * 6);
     rainGeo.setAttribute("position", new BufferAttribute(rainPos, 3));
@@ -60213,7 +60213,7 @@ ${candidateLine}`;
         if (lastKind) ui.toast("\u041F\u043E\u0433\u043E\u0434\u0430: " + W_N[k]);
         lastKind = k;
       }
-      const tr = { clear: [0, 0, 0], cloudy: [0, 0.15, 0], rain: [0.85, 0.25, 0], fog: [0, 1, 0], storm: [1, 0.35, 1] }[k];
+      const tr = { clear: [0, 0, 0], cloudy: [0, 0, 0], rain: [0.85, 0.1, 0], fog: [0, 1, 0], storm: [1, 0.2, 1] }[k];
       const s = Math.min(1, dt * 0.15);
       W.rain += (tr[0] - W.rain) * s;
       W.fog += (tr[1] - W.fog) * s;
@@ -60253,15 +60253,22 @@ ${candidateLine}`;
       boltLight.intensity = W.flash * 4;
       moonLight.intensity = EV.cur === "moon" && A.sky.state.lampLevel > 0.4 && !hide ? 0.35 : 0;
     }
+    let fogBase = 3e-3, fogSet = null, fogCol = null;
+    const fogColSet = new Color(), _red = new Color("#5a1010"), _grey = new Color("#8a949e");
     function post() {
       if (A.under() || interior) return;
       const f = scene.fog;
       if (f) {
-        f.density *= 1 + W.fog * 2.4 + W.rain * 0.5;
-        if (EV.cur === "moon" && A.sky.state.lampLevel > 0.4) f.color.lerp(new Color("#5a1010"), 0.3);
-        else f.color.lerp(new Color("#8a949e"), W.rain * 0.35 + W.fog * 0.3);
+        if (fogSet === null || Math.abs(f.density - fogSet) > 1e-9) fogBase = f.density;
+        if (!fogCol || !f.color.equals(fogColSet)) fogCol = f.color.clone();
+        f.density = fogBase * (1 + W.fog * 0.7 + W.rain * 0.2);
+        fogSet = f.density;
+        f.color.copy(fogCol);
+        if (EV.cur === "moon" && A.sky.state.lampLevel > 0.4) f.color.lerp(_red, 0.3);
+        else f.color.lerp(_grey, W.rain * 0.15 + W.fog * 0.15);
+        fogColSet.copy(f.color);
       }
-      A.renderer.toneMappingExposure *= 1 - W.rain * 0.22 - W.fog * 0.08 + W.flash * 0.8;
+      A.renderer.toneMappingExposure *= 1 - W.rain * 0.1 - W.fog * 0.03 + W.flash * 0.8;
     }
     function dailyList() {
       const d = today2();

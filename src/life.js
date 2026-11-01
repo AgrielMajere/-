@@ -385,7 +385,7 @@ export function createLife(A){
   // =====================================================================
   const W = { rain: 0, fog: 0, storm: 0, kind: 'clear', flash: 0, nextBolt: 8 };
   const W_N = { clear: '☀️ Ясно', cloudy: '⛅ Хмарно', rain: '🌧 Дощ', fog: '🌫 Туман', storm: '⛈ Гроза' };
-  function weatherKind(){ if(FORCE.weather) return FORCE.weather; const s = Math.floor(Date.now()/(20*60*1000)); const h = hash('w' + s) % 100; return h < 45 ? 'clear' : h < 60 ? 'cloudy' : h < 78 ? 'rain' : h < 88 ? 'fog' : 'storm'; }
+  function weatherKind(){ if(FORCE.weather) return FORCE.weather; const s = Math.floor(Date.now()/(20*60*1000)); const h = hash('w' + s) % 100; return h < 52 ? 'clear' : h < 68 ? 'cloudy' : h < 84 ? 'rain' : h < 90 ? 'fog' : 'storm'; }
   const N_DROPS = 1400, rainGeo = new THREE.BufferGeometry(), rainPos = new Float32Array(N_DROPS*6);
   rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
   const rainMat = new THREE.LineBasicMaterial({ color: '#a8b8c8', transparent: true, opacity: 0, depthWrite: false });
@@ -397,7 +397,7 @@ export function createLife(A){
   function weatherTick(dt){
     const k = weatherKind(); W.kind = k;
     if(k !== lastKind){ if(lastKind) ui.toast('Погода: ' + W_N[k]); lastKind = k; }
-    const tr = { clear: [0, 0, 0], cloudy: [0, .15, 0], rain: [.85, .25, 0], fog: [0, 1, 0], storm: [1, .35, 1] }[k];
+    const tr = { clear: [0, 0, 0], cloudy: [0, 0, 0], rain: [.85, .1, 0], fog: [0, 1, 0], storm: [1, .2, 1] }[k];
     const s = Math.min(1, dt*.15); W.rain += (tr[0] - W.rain)*s; W.fog += (tr[1] - W.fog)*s; W.storm += (tr[2] - W.storm)*s;
     const hide = A.under() || interior;
     rainMat.opacity = hide ? 0 : W.rain*.42; rainMesh.visible = rainMat.opacity > .01;
@@ -410,11 +410,16 @@ export function createLife(A){
     boltLight.intensity = W.flash*4;
     moonLight.intensity = EV.cur === 'moon' && A.sky.state.lampLevel > .4 && !hide ? .35 : 0;
   }
-  // after sky.update (it rewrites fog and exposure every frame)
+  let fogBase = .003, fogSet = null, fogCol = null; const fogColSet = new THREE.Color(), _red = new THREE.Color('#5a1010'), _grey = new THREE.Color('#8a949e');
   function post(){
     if(A.under() || interior) return;
-    const f = scene.fog; if(f){ f.density *= 1 + W.fog*2.4 + W.rain*.5; if(EV.cur === 'moon' && A.sky.state.lampLevel > .4) f.color.lerp(new THREE.Color('#5a1010'), .3); else f.color.lerp(new THREE.Color('#8a949e'), W.rain*.35 + W.fog*.3); }
-    A.renderer.toneMappingExposure *= 1 - W.rain*.22 - W.fog*.08 + W.flash*.8;
+    const f = scene.fog;
+    if(f){ // the sky sets fog only now and then: always work from its own value, never compound ours
+      if(fogSet === null || Math.abs(f.density - fogSet) > 1e-9) fogBase = f.density;
+      if(!fogCol || !f.color.equals(fogColSet)) fogCol = f.color.clone();
+      f.density = fogBase*(1 + W.fog*.7 + W.rain*.2); fogSet = f.density;
+      f.color.copy(fogCol); if(EV.cur === 'moon' && A.sky.state.lampLevel > .4) f.color.lerp(_red, .3); else f.color.lerp(_grey, W.rain*.15 + W.fog*.15); fogColSet.copy(f.color); }
+    A.renderer.toneMappingExposure *= 1 - W.rain*.1 - W.fog*.03 + W.flash*.8;
   }
 
   // =====================================================================
