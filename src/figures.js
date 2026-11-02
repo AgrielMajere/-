@@ -8,12 +8,12 @@ import { buildWeapon, buildCape, buildWizardHat, buildHood, buildCrown } from '.
 // animated by mocap (walk/idle) + KayKit combat clips retargeted at load time.
 
 export const BODIES = {
-  man: { file: 'man', height: 1.80, yaw: 0, walk: ['x', 'walk'], run: ['s', 'Run'] },
+  man: { file: 'man', height: 1.80, yaw: 0, walk: ['x', 'walk'], run: ['x', 'run'] },
   woman: { file: 'woman', height: 1.68, yaw: 0, walk: ['x', 'walk'], run: ['x', 'run'] },
   soldier: { file: 'soldier', height: 1.86, yaw: Math.PI, walk: ['s', 'Walk'], run: ['s', 'Run'], idle: ['s', 'Idle'] },
   bones: { file: 'anims_x', height: 1.78, yaw: 0, walk: ['x', 'walk'], run: ['x', 'run'] },
-  gen_berserker: { file: 'gen_berserker', height: 1.95, yaw: 0, walk: ['x', 'walk'], run: ['s', 'Run'], gen: true },
-  gen_berserker2: { file: 'gen_berserker2', height: 1.95, yaw: 0, walk: ['x', 'walk'], run: ['s', 'Run'], gen: true }
+  gen_berserker: { file: 'gen_berserker', height: 1.95, yaw: 0, walk: ['x', 'walk'], run: ['x', 'run'], gen: true },
+  gen_berserker2: { file: 'gen_berserker2', height: 1.95, yaw: 0, walk: ['x', 'walk'], run: ['x', 'run'], gen: true }
 };
 const K = { Attack1H: '1H_Melee_Attack_Chop', Slash: '1H_Melee_Attack_Slice_Diagonal', SlashH: '1H_Melee_Attack_Slice_Horizontal', Stab: '1H_Melee_Attack_Stab',
   Attack2H: '2H_Melee_Attack_Chop', Slice2H: '2H_Melee_Attack_Slice', Spin: '2H_Melee_Attack_Spin', Shoot: '1H_Ranged_Shoot', Bow: '2H_Ranged_Shoot', Aim: '2H_Ranged_Aiming',
