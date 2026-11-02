@@ -9,10 +9,10 @@ export const CLASSES = {
       { id: 'power', n: 'Потужний удар', i: '💥', mp: 8, cd: 5, kind: 'melee', mult: 2.3, anim: 'Attack2H' },
       { id: 'cry', n: 'Бойовий клич', i: '📯', mp: 14, cd: 22, kind: 'buff', buff: { atk: .35 }, dur: 12, anim: 'Cheer' },
       { id: 'whirl', n: 'Вихор', i: '🌀', mp: 20, cd: 11, kind: 'aoe', mult: 1.6, radius: 3.6, anim: 'Spin' }] },
-  berserker: { n: 'Берсерк', i: '🪓', d: 'Дворучна сокира, шалений урон, мало захисту. Чим гірше — тим лютіше.', type: 'melee', main: 'str',
+  berserker: { n: 'Берсерк', i: '⚒️', d: 'Дворучна сокира, шалений урон, мало захисту. Чим гірше — тим лютіше.', type: 'melee', main: 'str',
     base: { str: 12, agi: 5, int: 1, vit: 8 }, grow: { str: 3, agi: 1, int: 0, vit: 1 }, wpn: 'axe2', look: { top: '#5a2a1e', bottom: '#2a2018', cape: '#3a2a1a' },
     atk: ['Attack2H', 'Slice2H'], skills: [
-      { id: 'rage', n: 'Лютий удар', i: '🩸', mp: 10, cd: 6, kind: 'melee', mult: 2.8, anim: 'Attack2H' },
+      { id: 'rage', n: 'Лютий удар', i: '💉', mp: 10, cd: 6, kind: 'melee', mult: 2.8, anim: 'Attack2H' },
       { id: 'blood', n: 'Кровожерність', i: '🍷', mp: 15, cd: 24, kind: 'buff', buff: { leech: .25, atk: .15 }, dur: 12, anim: 'Cheer' },
       { id: 'spin', n: 'Вихор смерті', i: '🌪️', mp: 24, cd: 12, kind: 'aoe', mult: 2.1, radius: 4, anim: 'Spin' }] },
   paladin: { n: 'Паладин', i: '🛡️', d: 'Святий лицар: булава, щит, лікування й божественний захист.', type: 'melee', main: 'str',
@@ -48,8 +48,8 @@ export const CLASSES = {
   necro: { n: 'Некромант', i: '💀', d: 'Темна магія: висмоктує життя і підіймає кістяних слуг.', type: 'magic', main: 'int', range: 12,
     base: { str: 3, agi: 4, int: 12, vit: 6 }, grow: { str: 0, agi: 1, int: 3, vit: 1 }, wpn: 'skullstaff', look: { top: '#1a1420', bottom: '#120e16', cape: '#24102e', hat: 'wizard', hatColor: '#140c18' },
     atk: ['Cast'], bolt: { color: '#b46aff', speed: 20 }, skills: [
-      { id: 'shadowbolt', n: 'Тіньова стріла', i: '🟣', mp: 9, cd: 3.5, kind: 'proj', mult: 2.2, color: '#a050ff', anim: 'Cast' },
-      { id: 'drain', n: 'Висмоктування', i: '🩸', mp: 14, cd: 8, kind: 'proj', mult: 1.8, drain: .6, color: '#ff3a6a', anim: 'Cast' },
+      { id: 'shadowbolt', n: 'Тіньова стріла', i: '💜', mp: 9, cd: 3.5, kind: 'proj', mult: 2.2, color: '#a050ff', anim: 'Cast' },
+      { id: 'drain', n: 'Висмоктування', i: '💉', mp: 14, cd: 8, kind: 'proj', mult: 1.8, drain: .6, color: '#ff3a6a', anim: 'Cast' },
       { id: 'raise', n: 'Підняти скелета', i: '🦴', mp: 28, cd: 30, kind: 'summon', dur: 40, anim: 'CastLong' }] }
 };
 export const CLASS_ORDER = ['warrior', 'berserker', 'paladin', 'mage', 'archer', 'rogue', 'cleric', 'necro'];
@@ -74,9 +74,9 @@ export const RARITY = [
 // weapon kinds -> classes that can use them
 export const WEAPONS = {
   sword: { n: 'меч', i: '🗡️', cls: ['warrior', 'paladin'], tiers: ['Іржавий меч', 'Сталевий меч', 'Лицарський меч', 'Міфриловий клинок', 'Клинок Світанку'] },
-  axe2: { n: 'сокира', i: '🪓', cls: ['berserker'], tiers: ['Лісова сокира', 'Бойова сокира', 'Секира вовка', 'Руйнівниця', 'Сокира Перуна'] },
+  axe2: { n: 'сокира', i: '⚒️', cls: ['berserker'], tiers: ['Лісова сокира', 'Бойова сокира', 'Секира вовка', 'Руйнівниця', 'Сокира Перуна'] },
   mace: { n: 'булава', i: '🔨', cls: ['paladin', 'cleric'], tiers: ['Дубова булава', 'Залізна булава', 'Булава присяги', 'Сонячний моргенштерн', 'Молот Тора'] },
-  staff: { n: 'посох', i: '🪄', cls: ['mage'], tiers: ['Посох учня', 'Дубовий посох', 'Кришталевий посох', 'Посох архимага', 'Око Одіна'] },
+  staff: { n: 'посох', i: '✨', cls: ['mage'], tiers: ['Посох учня', 'Дубовий посох', 'Кришталевий посох', 'Посох архимага', 'Око Одіна'] },
   skullstaff: { n: 'посох', i: '☠️', cls: ['necro'], tiers: ['Кістяний жезл', 'Посох могил', 'Посох жнеця', 'Корона смерті', 'Посох Чорнобога'] },
   bow: { n: 'лук', i: '🏹', cls: ['archer'], tiers: ['Мисливський лук', 'Тисовий лук', 'Ельфійський лук', 'Лук бурі', 'Лук Артеміди'] },
   dagger: { n: 'кинджали', i: '🔪', cls: ['rogue'], tiers: ['Ржаві ножі', 'Сталеві кинджали', 'Тіньові леза', 'Ікла гадюки', 'Кинджали Гермеса'] },
@@ -91,18 +91,18 @@ export const ARMORS = {
 };
 export const SLOTS = [['weapon', 'Зброя'], ['shield', 'Щит'], ['helm', 'Шолом'], ['armor', 'Броня'], ['amulet', 'Амулет'], ['ring', 'Кільце']];
 export const MATERIALS = {
-  jelly: { n: 'Желе слизу', i: '🟢', price: 3 }, core: { n: 'Ядро слизу', i: '🔵', price: 12 }, ear: { n: 'Вухо гобліна', i: '👂', price: 6 }, totem: { n: 'Тотем шамана', i: '🪆', price: 15 },
-  tusk: { n: 'Ікло орка', i: '🦷', price: 12 }, hide: { n: 'Шкура варга', i: '🟫', price: 9 }, bone: { n: 'Стара кістка', i: '🦴', price: 10 }, soul: { n: 'Уламок душі', i: '💠', price: 40 },
+  jelly: { n: 'Желе слизу', i: '💚', price: 3 }, core: { n: 'Ядро слизу', i: '🔵', price: 12 }, ear: { n: 'Вухо гобліна', i: '👂', price: 6 }, totem: { n: 'Тотем шамана', i: '🎎', price: 15 },
+  tusk: { n: 'Ікло орка', i: '🦷', price: 12 }, hide: { n: 'Шкура варга', i: '🐾', price: 9 }, bone: { n: 'Стара кістка', i: '🦴', price: 10 }, soul: { n: 'Уламок душі', i: '💠', price: 40 },
   crown: { n: 'Корона слизів', i: '👑', price: 120 }, banner: { n: 'Прапор вождя', i: '🚩', price: 220 }, phylactery: { n: 'Філактерій', i: '⚱️', price: 400 }, gchief: { n: 'Ніж ватажка', i: '🗡️', price: 90 },
   // dungeon
-  venom: { n: 'Отруйне желе', i: '🟣', price: 14 }, kscale: { n: 'Луска кобольда', i: '🦎', price: 16 }, kfang: { n: 'Ікло вождя кобольдів', i: '🐲', price: 160 },
-  nail: { n: 'Кіготь упиря', i: '🪝', price: 24 }, ecto: { n: 'Ектоплазма', i: '👻', price: 30 }, kseal: { n: 'Печать Кістяного лицаря', i: '🔱', price: 420 },
+  venom: { n: 'Отруйне желе', i: '💜', price: 14 }, kscale: { n: 'Луска кобольда', i: '🦎', price: 16 }, kfang: { n: 'Ікло вождя кобольдів', i: '🐲', price: 160 },
+  nail: { n: 'Кіготь упиря', i: '⚓', price: 24 }, ecto: { n: 'Ектоплазма', i: '👻', price: 30 }, kseal: { n: 'Печать Кістяного лицаря', i: '🔱', price: 420 },
   dsteel: { n: 'Темна сталь', i: '⚫', price: 42 }, sigil: { n: 'Знак культу Безодні', i: '🔺', price: 38 }, mhorn: { n: 'Ріг Мінотавра', i: '📯', price: 1200 },
   // the wide world
   pelt: { n: 'Шкура вовкулака', i: '🐺', price: 18 }, fang: { n: 'Ікло Сірого Ікла', i: '🦷', price: 260 },
-  pearl: { n: 'Річкова перлина', i: '🦪', price: 30 }, vcrown: { n: 'Корона Водяника', i: '🔱', price: 420 },
-  badge: { n: 'Бляха розбійника', i: '🏷️', price: 20 }, ravenf: { n: 'Перо Чорного Ворона', i: '🪶', price: 520 },
-  herb: { n: 'Болотяна трава', i: '🌿', price: 16 }, bogscale: { n: 'Луска болотяника', i: '🐊', price: 26 }, mstaff: { n: 'Палиця відьми Мари', i: '🪄', price: 680 },
+  pearl: { n: 'Річкова перлина', i: '🐚', price: 30 }, vcrown: { n: 'Корона Водяника', i: '🔱', price: 420 },
+  badge: { n: 'Бляха розбійника', i: '🏷️', price: 20 }, ravenf: { n: 'Перо Чорного Ворона', i: '🕊️', price: 520 },
+  herb: { n: 'Болотяна трава', i: '🌿', price: 16 }, bogscale: { n: 'Луска болотяника', i: '🐊', price: 26 }, mstaff: { n: 'Палиця відьми Мари', i: '✨', price: 680 },
   ore: { n: 'Зоряна руда', i: '💎', price: 60 }, gcore: { n: 'Серце Колоса', i: '🧡', price: 1500 }
 };
 export const CONSUMABLES = {

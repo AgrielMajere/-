@@ -136,10 +136,20 @@ export function createLife(A){
   }
   function dismount(){ if(!horse.on) return; horse.on = false; if(horse.hold) A.heroObj.remove(horse.hold); const hi = A.heroInst(); if(hi){ hi.obj.position.y = 0; resetLegs(hi); } bHorse.classList.remove('on'); }
   const _q = new THREE.Quaternion(), _e = new THREE.Euler();
+  const _pq = new THREE.Quaternion(), _bq = new THREE.Quaternion(), _rq = new THREE.Quaternion(), _hq = new THREE.Quaternion(), _ax = new THREE.Vector3(), _fw = new THREE.Vector3();
+  function rotW(b, axis, ang){ // rotate a bone about a world-space axis (works for every rig, whatever its bone axes)
+    b.parent.getWorldQuaternion(_pq); b.getWorldQuaternion(_bq);
+    _rq.setFromAxisAngle(axis, ang).multiply(_bq); b.quaternion.copy(_pq.invert().multiply(_rq)); b.updateMatrixWorld(true);
+  }
   function seatPose(hi){
-    // hero sits astride: pose the legs over the animated idle
-    const set = (k, x, y, z) => { const b = F.findBoneOf(hi, k); if(b){ _e.set(x, y, z); _q.setFromEuler(_e); b.quaternion.multiply(_q); } };
-    set('LeftUpLeg', -1.25, 0, -.45); set('RightUpLeg', -1.25, 0, .45); set('LeftLeg', 1.35, 0, 0); set('RightLeg', 1.35, 0, 0);
+    // hero sits astride: thighs forward and apart, shins down — in world space, so Mixamo and auto-rigged bodies sit too
+    hi.obj.updateMatrixWorld(true); hi.obj.getWorldQuaternion(_hq);
+    _ax.set(1, 0, 0).applyQuaternion(_hq); _fw.set(0, 0, 1).applyQuaternion(_hq);
+    [['Left', 1], ['Right', -1]].forEach(([s, sg]) => {
+      const up = F.findBoneOf(hi, s + 'UpLeg'), kn = F.findBoneOf(hi, s + 'Leg');
+      if(up){ rotW(up, _ax, -1.35); rotW(up, _fw, sg*.42); }
+      if(kn) rotW(kn, _ax, 1.45);
+    });
   }
   function resetLegs(){}
 
@@ -313,12 +323,12 @@ export function createLife(A){
     const price = g => Math.max(1, Math.round(g.price*(1 - disc)));
     const render = () => {
       const tier = S.faction ? tierOf(L.rep[S.faction]) : 9;
-      let h = '<p style="font-size:12px;opacity:.75;margin:0 0 6px">У вас: 🪙 ' + P.gold + (S.faction ? ' · ' + FACTIONS[S.faction].i + ' «' + REP_TIERS[tierOf(L.rep[S.faction])][1] + '» (' + L.rep[S.faction] + ')' : '') + (disc ? ' · знижка ' + Math.round(disc*100) + '%' : '') + '</p>';
+      let h = '<p style="font-size:12px;opacity:.75;margin:0 0 6px">У вас: 💰 ' + P.gold + (S.faction ? ' · ' + FACTIONS[S.faction].i + ' «' + REP_TIERS[tierOf(L.rep[S.faction])][1] + '» (' + L.rep[S.faction] + ')' : '') + (disc ? ' · знижка ' + Math.round(disc*100) + '%' : '') + '</p>';
       h += S.goods.map((g, i) => {
         const nm = g.mat ? RPG.MATERIALS[g.mat].i + ' ' + RPG.MATERIALS[g.mat].n + ' ×' + g.q : g.use ? RPG.CONSUMABLES[g.use].i + ' ' + RPG.CONSUMABLES[g.use].n : g.i + ' ' + g.n;
         const lock = g.rep && tier < g.rep; const owned = g.kind === 'rod' && L.rod >= g.rod;
         const extra = g.bonus ? '<br><small>' + Object.entries(g.bonus).map(([k, v]) => '+' + v + ' ' + (RPG.BONUS_N[k] || k)).join(', ') + '</small>' : '';
-        return '<div class="lf-row"><div>' + esc(nm) + extra + (lock ? '<br><small>🔒 потрібна репутація «' + REP_TIERS[g.rep][1] + '»</small>' : '') + '</div><button class="gm-btn' + (lock || owned ? '' : ' primary') + '" data-b="' + i + '"' + (lock || owned || P.gold < price(g) ? ' disabled' : '') + '>' + (owned ? 'Є' : price(g) + ' 🪙') + '</button></div>'; }).join('');
+        return '<div class="lf-row"><div>' + esc(nm) + extra + (lock ? '<br><small>🔒 потрібна репутація «' + REP_TIERS[g.rep][1] + '»</small>' : '') + '</div><button class="gm-btn' + (lock || owned ? '' : ' primary') + '" data-b="' + i + '"' + (lock || owned || P.gold < price(g) ? ' disabled' : '') + '>' + (owned ? 'Є' : price(g) + ' 💰') + '</button></div>'; }).join('');
       A.sheet({ title: S.n, html: h, buttons: [{ label: 'Продати речі', fn: () => ui.inventory('sell') }, { label: 'Закрити', fn: A.hide }], after: s => {
         s.querySelectorAll('[data-b]').forEach(b => b.onclick = () => {
           const g = S.goods[+b.dataset.b], pr = price(g); if(P.gold < pr) return;
@@ -336,7 +346,7 @@ export function createLife(A){
   function sellFish(){
     let gold = 0, n = 0; P.inv.slice().forEach(it => { if(it.k === 'mat' && FISH_IDS.has(it.id)){ gold += RPG.MATERIALS[it.id].price*(it.q || 1); n += it.q || 1; P.inv.splice(P.inv.indexOf(it), 1); } });
     if(!n){ ui.toast('У вас немає риби'); return; }
-    P.gold += gold; ui.toast('🐟 Продано ' + n + ' риб за ' + gold + ' 🪙'); sfx('coin'); save(); ui.hud();
+    P.gold += gold; ui.toast('🐟 Продано ' + n + ' риб за ' + gold + ' 💰'); sfx('coin'); save(); ui.hud();
   }
 
   // =====================================================================
@@ -376,7 +386,7 @@ export function createLife(A){
     const ms = raidMons(); if(!ms.length) return;
     if(!EV.raidOn){ EV.raidOn = true; EV.raidWon = false; EV.raidKills = 0; ms.forEach(m => { m.dormant = false; m.deadT = 1e6; }); }
     else if(!EV.raidWon && ms.every(m => m.dead) && EV.raidKills > 0){ EV.raidWon = true; ms.forEach(m => { m.dormant = true; });
-      if(EV.raidKills >= 2){ L.raids = (L.raids || 0) + 1; P.gold += 150; ui.toast('🏆 Набіг відбито! Фермер Петро дякує: +150 🪙', 'big'); addRep('beasts', 20); save(); ui.hud(); } }
+      if(EV.raidKills >= 2){ L.raids = (L.raids || 0) + 1; P.gold += 150; ui.toast('🏆 Набіг відбито! Фермер Петро дякує: +150 💰', 'big'); addRep('beasts', 20); save(); ui.hud(); } }
   }
   function raidStop(){ EV.raidOn = false; raidMons().forEach(m => { m.dormant = true; if(!m.dead){ m.dead = true; m.hp = 0; m.deadT = 0; if(m.fig) m.fig.obj.visible = false; } }); }
   function mods(){ return EV.cur === 'moon' ? { matk: 1.3, xp: 1.5, loot: 1.5 } : { matk: 1, xp: 1, loot: 1 }; }
@@ -448,7 +458,7 @@ export function createLife(A){
       if(!inc) return;
       a.prog = Math.min(Q.need, a.prog + inc);
       if(a.prog >= Q.need){ a.done = true; L.dailyDone = (L.dailyDone || 0) + 1; P.gold += Q.gold; C() && C().gainXp(Q.xp); if(Q.rep) addRep(Q.rep[0], Q.rep[1]);
-        ui.toast('📜 Доручення «' + Q.n + '» виконано: +' + Q.gold + ' 🪙', 'big'); sfx('quest'); ui.hud(); }
+        ui.toast('📜 Доручення «' + Q.n + '» виконано: +' + Q.gold + ' 💰', 'big'); sfx('quest'); ui.hud(); }
       save();
     });
   }
@@ -550,7 +560,7 @@ export function createLife(A){
     let h = '<div class="lf-tabs">' + T.map(([k, n]) => '<button class="gm-btn' + (k === tab ? ' primary' : '') + '" data-t="' + k + '">' + n + '</button>').join('') + '</div>';
     if(tab === 'daily'){
       h += '<p style="opacity:.75;font-size:13px">Нові доручення щодня. Погода зараз: ' + W_N[W.kind] + '.' + (EV.cur ? '<br><b>Подія: ' + EV_N[EV.cur] + '</b>' : '') + '</p>';
-      h += dailyList().map(({ a, Q }) => '<div class="lf-row"><div style="flex:1"><b>' + (a.done ? '✅ ' : '') + esc(Q.n) + '</b><br><small>' + esc(Q.d) + ' · ' + Q.gold + ' 🪙, ' + Q.xp + ' XP' + (Q.rep ? ', ' + FACTIONS[Q.rep[0]].i + '+' + Q.rep[1] : '') + '</small><div class="lf-bar"><i style="width:' + (a.prog/Q.need*100) + '%"></i></div></div><small>' + a.prog + '/' + Q.need + '</small></div>').join('');
+      h += dailyList().map(({ a, Q }) => '<div class="lf-row"><div style="flex:1"><b>' + (a.done ? '✅ ' : '') + esc(Q.n) + '</b><br><small>' + esc(Q.d) + ' · ' + Q.gold + ' 💰, ' + Q.xp + ' XP' + (Q.rep ? ', ' + FACTIONS[Q.rep[0]].i + '+' + Q.rep[1] : '') + '</small><div class="lf-bar"><i style="width:' + (a.prog/Q.need*100) + '%"></i></div></div><small>' + a.prog + '/' + Q.need + '</small></div>').join('');
     } else if(tab === 'rep'){
       h += Object.entries(FACTIONS).map(([k, f]) => { const v = L.rep[k], t = tierOf(v), nx = REP_TIERS[t + 1]; return '<div class="lf-row"><div style="flex:1"><b>' + f.i + ' ' + f.n + '</b><br><small>«' + REP_TIERS[t][1] + '» · знижка ' + Math.round(REP_TIERS[t][2]*100) + '%' + (nx ? ' · до «' + nx[1] + '» ще ' + (nx[0] - v) : '') + '</small><div class="lf-bar"><i style="width:' + (nx ? (v - REP_TIERS[t][0])/(nx[0] - REP_TIERS[t][0])*100 : 100) + '%"></i></div></div><small>' + v + '</small></div>'; }).join('');
       h += '<p class="gm-note">Репутацію дають: доручення, покупки в їхніх крамницях, розмови й допомога, а також бої з монстрами поблизу їхніх земель. Ельфи цінують захист Гаю й Темного лісу, гноми — шахт і руїн, звіролюди — Вовчих пагорбів.</p>';
@@ -562,7 +572,7 @@ export function createLife(A){
     } else if(tab === 'ach'){
       const got = ACHIEVEMENTS.filter(a => L.ach[a.id]).length;
       h += '<p style="opacity:.75;font-size:13px">Здобуто ' + got + ' з ' + ACHIEVEMENTS.length + '</p>' + ACHIEVEMENTS.map(a => { const v = Math.min(a.goal, a.c(L, P) || 0), ok = !!L.ach[a.id];
-        return '<div class="lf-row" style="' + (ok ? '' : 'opacity:.75') + '"><div style="flex:1"><b>' + (ok ? '🏆 ' : '🔸 ') + esc(a.n) + '</b><br><small>' + esc(a.d) + ' · ' + [a.gold ? a.gold + ' 🪙' : '', a.sparks ? a.sparks + ' ✦' : ''].filter(Boolean).join(' ') + '</small>' + (ok ? '' : '<div class="lf-bar"><i style="width:' + (v/a.goal*100) + '%"></i></div>') + '</div><small>' + (ok ? '✔' : v + '/' + a.goal) + '</small></div>'; }).join('');
+        return '<div class="lf-row" style="' + (ok ? '' : 'opacity:.75') + '"><div style="flex:1"><b>' + (ok ? '🏆 ' : '🔸 ') + esc(a.n) + '</b><br><small>' + esc(a.d) + ' · ' + [a.gold ? a.gold + ' 💰' : '', a.sparks ? a.sparks + ' ✦' : ''].filter(Boolean).join(' ') + '</small>' + (ok ? '' : '<div class="lf-bar"><i style="width:' + (v/a.goal*100) + '%"></i></div>') + '</div><small>' + (ok ? '✔' : v + '/' + a.goal) + '</small></div>'; }).join('');
     }
     A.sheet({ title: 'Книга пригод', html: h, buttons: [{ label: 'Закрити', fn: A.hide }], after: s => s.querySelectorAll('[data-t]').forEach(b => b.onclick = () => book(b.dataset.t)) });
   }
@@ -570,7 +580,7 @@ export function createLife(A){
   function achTick(dt){
     achT -= dt; if(achT > 0) return; achT = 2;
     ACHIEVEMENTS.forEach(a => { if(L.ach[a.id]) return; let v = 0; try{ v = a.c(L, P) || 0; }catch(e){} if(v >= a.goal){ L.ach[a.id] = today(); if(a.gold) P.gold += a.gold; if(a.sparks){ const S = saveGet(); S.sparks = (S.sparks || 0) + a.sparks; saveCommit(); }
-      ui.toast('🏆 Досягнення: «' + a.n + '»' + (a.gold ? ' +' + a.gold + ' 🪙' : '') + (a.sparks ? ' +' + a.sparks + ' ✦' : ''), 'big'); save(); ui.hud(); } });
+      ui.toast('🏆 Досягнення: «' + a.n + '»' + (a.gold ? ' +' + a.gold + ' 💰' : '') + (a.sparks ? ' +' + a.sparks + ' ✦' : ''), 'big'); save(); ui.hud(); } });
     // zone visits for errands
     const z = zoneAt(A.agent.x, A.agent.z); if(z) daily('visit', z.id);
   }
@@ -591,7 +601,7 @@ export function createLife(A){
   }
   function effect(fx, n){
     if(fx.give){ const [id, q] = fx.give; if(have(id) < q){ ui.toast('Не вистачає: ' + RPG.MATERIALS[id].i + ' ' + RPG.MATERIALS[id].n + ' ' + have(id) + '/' + q); return 'stay'; } RPG.takeItem(P, id, q); }
-    if(fx.gold){ if(fx.gold < 0 && P.gold < -fx.gold){ ui.toast('Не вистачає золота'); return 'stay'; } P.gold += fx.gold; if(fx.gold > 0) ui.toast('+' + fx.gold + ' 🪙'); }
+    if(fx.gold){ if(fx.gold < 0 && P.gold < -fx.gold){ ui.toast('Не вистачає золота'); return 'stay'; } P.gold += fx.gold; if(fx.gold > 0) ui.toast('+' + fx.gold + ' 💰'); }
     if(fx.item){ RPG.addItem(P, Object.assign({}, fx.item)); ui.toast('Отримано: ' + RPG.itemIcon(fx.item) + ' ' + RPG.itemName(fx.item)); }
     if(fx.rep) addRep(fx.rep[0], fx.rep[1]);
     if(fx.buff){ addBuff(fx.buff); ui.toast(fx.buff.i + ' ' + (fx.buff.n || 'Благословення')); }
@@ -617,7 +627,7 @@ export function createLife(A){
   let tutEl = null; const tutStart = { x: A.agent.x, z: A.agent.z, yaw: null };
   const totalKills = () => Object.values(P.kills || {}).reduce((a, b) => a + b, 0);
   if(L.tut === 0 && (totalKills() > 3 || P.lvl > 2)) L.tut = 99; // veterans skip it
-  function tut(k){ if(L.tut >= TUT.length) return; if(TUT[L.tut].k === k){ L.tut++; save(); drawTut(); if(L.tut >= TUT.length){ P.gold += 50; ui.toast('🎓 Навчання завершено! +50 🪙 на дорогу', 'big'); ui.hud(); } } }
+  function tut(k){ if(L.tut >= TUT.length) return; if(TUT[L.tut].k === k){ L.tut++; save(); drawTut(); if(L.tut >= TUT.length){ P.gold += 50; ui.toast('🎓 Навчання завершено! +50 💰 на дорогу', 'big'); ui.hud(); } } }
   function drawTut(){
     if(L.tut >= TUT.length){ if(tutEl){ tutEl.remove(); tutEl = null; } return; }
     if(!tutEl){ tutEl = document.createElement('div'); tutEl.className = 'lf-tut'; root.appendChild(tutEl); }

@@ -136,7 +136,7 @@ export function createCombat(o){
     if(m.fig){ m.fig.oneShot(Math.random() < .5 ? 'Death' : 'DeathB', { keep: true, fade: .1 }); }
     if(!m.hitByMe || performance.now() - m.hitByMe > 45000){
       const sh = o.partyShare && o.partyShare(m); // a party member's kill near me
-      if(sh){ const lk = Math.max(.25, Math.min(1.6, 1 + (m.lvl - P.lvl)*.12)); gainXp(Math.round(m.def.xp*lk*sh.xp*D.mods.xp)); const g = Math.round(m.def.gold[0]*sh.gold); if(g > 0){ P.gold += g; ui.float('+' + g + ' 🪙 (загін)', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold'); } RPG.save(); ui.hud(); }
+      if(sh){ const lk = Math.max(.25, Math.min(1.6, 1 + (m.lvl - P.lvl)*.12)); gainXp(Math.round(m.def.xp*lk*sh.xp*D.mods.xp)); const g = Math.round(m.def.gold[0]*sh.gold); if(g > 0){ P.gold += g; ui.float('+' + g + ' 💰 (загін)', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold'); } RPG.save(); ui.hud(); }
       return;
     }
     m.hitByMe = 0;
@@ -145,7 +145,7 @@ export function createCombat(o){
     const lvlK = Math.max(.25, Math.min(1.6, 1 + (m.lvl - P.lvl)*.12));
     gainXp(Math.round(def.xp*(1 + (m.lvl - def.lvl[0])*.15)*lvlK*D.mods.xp*WM.xp));
     const gold = Math.round((def.gold[0] + Math.random()*(def.gold[1] - def.gold[0]))*D.mods.gold);
-    P.gold += gold; ui.float('+' + gold + ' 🪙', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold');
+    P.gold += gold; ui.float('+' + gold + ' 💰', m.x, heightAt(m.x, m.z) + 2.2, m.z, 'gold');
     P.kills[m.type] = (P.kills[m.type] || 0) + 1;
     P.quests.forEach(q => { const Q = RPG.QUEST_POOL.find(x => x.id === q.id); if(Q && Q.type === 'kill' && Q.target.includes(m.type) && q.prog < Q.need){ q.prog++; if(q.prog >= Q.need) ui.toast('📜 Завдання «' + Q.n + '» виконано — поверніться до Гільдії'); } });
     if(def.boss){ P.bosses[m.type] = (P.bosses[m.type] || 0) + 1; ui.toast('👑 Переможено боса: ' + def.n + '!', 'big'); shake = .6; }

@@ -142,7 +142,7 @@ export function createUI(o){
       hud.querySelector('.rp-buffs').innerHTML = H.buffs.map(b => '<span title="' + esc(b.n) + '">' + b.i + ' ' + Math.ceil(b.t) + '</span>').join('');
     }
     const S = saveGet();
-    hud.querySelector('.rp-coins').innerHTML = '🪙 ' + P.gold + ' &nbsp; ✦ ' + (S.sparks || 0) + (P.reg ? ' &nbsp; 🏅 ' + P.gp : '');
+    hud.querySelector('.rp-coins').innerHTML = '💰 ' + P.gold + ' &nbsp; ✦ ' + (S.sparks || 0) + (P.reg ? ' &nbsp; 🏅 ' + P.gp : '');
     const cnt = ids => P.inv.filter(x => x.k === 'use' && ids.includes(x.id)).reduce((a, x) => a + x.q, 0);
     if(B.hp){ B.hp.querySelector('.q').textContent = cnt(['hp1', 'hp2', 'hp3']); B.mp.querySelector('.q').textContent = cnt(['mp1', 'mp2']); }
   }
@@ -231,7 +231,7 @@ export function createUI(o){
   // ---------------- sheets ----------------
   const sheet = o.sheet, hide = o.hide;
   const itemStats = it => {
-    if(it.k === 'mat') return '<p>Матеріал. Ціна продажу: ' + RPG.itemValue(it) + ' 🪙</p>';
+    if(it.k === 'mat') return '<p>Матеріал. Ціна продажу: ' + RPG.itemValue(it) + ' 💰</p>';
     if(it.k === 'use'){ const c = RPG.CONSUMABLES[it.id]; return '<p>' + (c.heal ? 'Відновлює ' + (c.heal > 5000 ? 'усе' : c.heal) + ' здоров\'я. ' : '') + (c.mana ? 'Відновлює ' + (c.mana > 5000 ? 'всю' : c.mana) + ' мани.' : '') + '</p>'; }
     const pm = 1 + (it.plus || 0)*.1;
     let h = '<div style="color:' + RPG.itemColor(it) + ';font-size:11.5px">' + RPG.RARITY[it.rar].n + ' · рівень предмета ' + (it.tier + 1) + '</div>';
@@ -262,7 +262,7 @@ export function createUI(o){
         (sel.slot ? '<button class="gm-btn" data-a="unequip">Зняти</button>' : '') +
         (!sel.slot && it.k !== 'mat' && it.k !== 'use' && canEquip(it) ? '<button class="gm-btn primary" data-a="equip">Одягнути</button>' : '') +
         (it.k === 'use' ? '<button class="gm-btn primary" data-a="use">Використати</button>' : '') +
-        (mode === 'sell' && !sel.slot ? '<button class="gm-btn primary" data-a="sell">Продати за ' + RPG.itemValue(it) + ' 🪙</button>' : '') +
+        (mode === 'sell' && !sel.slot ? '<button class="gm-btn primary" data-a="sell">Продати за ' + RPG.itemValue(it) + ' 💰</button>' : '') +
         (!sel.slot && mode !== 'sell' ? '<button class="gm-btn ghost" data-a="drop">Викинути</button>' : '') + '</div></div>'; }
       h += '<p style="margin:0;font-size:12px;opacity:.7">Рюкзак ' + P.inv.length + '/40 · торкніться предмета</p><div class="rp-grid">' + P.inv.map((it, i) => '<div class="rp-tile' + (sel && sel.it === it ? ' sel' : '') + '" data-i="' + i + '" style="border-color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + (it.q > 1 ? '<small>' + it.q + '</small>' : '') + (it.plus ? '<span class="pl">+' + it.plus + '</span>' : '') + '</div>').join('') + '</div>';
       sheet({ title: mode === 'sell' ? 'Продаж · Крамниця' : 'Рюкзак і спорядження', html: h, buttons: [{ label: 'Закрити', fn: hide }], after: s => {
@@ -273,7 +273,7 @@ export function createUI(o){
           if(a === 'equip'){ const sl = slotOf(it); const old = P.eq[sl]; P.eq[sl] = it; P.inv.splice(P.inv.indexOf(it), 1); if(old) P.inv.push(old); toast('Одягнено: ' + RPG.itemName(it)); sel = null; o.onGear(); }
           else if(a === 'unequip'){ if(P.inv.length >= 40){ toast('Рюкзак переповнений'); return; } P.inv.push(it); P.eq[sel.slot] = null; sel = null; o.onGear(); }
           else if(a === 'use'){ o.combat().consume(it); if(!P.inv.includes(it)) sel = null; }
-          else if(a === 'sell'){ const v = RPG.itemValue(it); P.gold += v; P.inv.splice(P.inv.indexOf(it), 1); toast('Продано за ' + v + ' 🪙'); sel = null; }
+          else if(a === 'sell'){ const v = RPG.itemValue(it); P.gold += v; P.inv.splice(P.inv.indexOf(it), 1); toast('Продано за ' + v + ' 💰'); sel = null; }
           else if(a === 'drop'){ P.inv.splice(P.inv.indexOf(it), 1); sel = null; }
           RPG.save(); updHud(); render();
         });
@@ -293,7 +293,7 @@ export function createUI(o){
       for(let t = 0; t <= maxTier; t++){ goods.push({ type: 'eq', kind: C.wpn, t, n: RPG.WEAPONS[C.wpn].tiers[t], i: RPG.WEAPONS[C.wpn].i }); ['armor', 'helm'].concat(C.off ? ['shield'] : []).forEach(k => goods.push({ type: 'eq', kind: k, t, n: RPG.ARMORS[k].tiers[t], i: RPG.ARMORS[k].i })); }
       goods.forEach(g => { if(g.type === 'eq') g.price = Math.round((25 + g.t*55)*(1 + g.t*.6)); });
       const S = saveGet();
-      const h = '<div class="rp-tabs"><button class="on">Купити</button><button data-t="sell">Продати</button></div><p style="font-size:12px;opacity:.75;margin:0 0 6px">У вас: 🪙 ' + P.gold + ' · ✦ ' + (S.sparks || 0) + '. Кращі товари відкриваються з вищим рангом.</p><div class="rp-shop">' + goods.map((g, i) => '<div><i>' + g.i + '</i><span>' + esc(g.n) + '</span><button data-b="' + i + '"' + ((g.sparks ? (S.sparks || 0) < g.sparks : P.gold < g.price) ? ' disabled' : '') + '>' + (g.sparks ? g.sparks + ' ✦' : g.price + ' 🪙') + '</button></div>').join('') + '</div>';
+      const h = '<div class="rp-tabs"><button class="on">Купити</button><button data-t="sell">Продати</button></div><p style="font-size:12px;opacity:.75;margin:0 0 6px">У вас: 💰 ' + P.gold + ' · ✦ ' + (S.sparks || 0) + '. Кращі товари відкриваються з вищим рангом.</p><div class="rp-shop">' + goods.map((g, i) => '<div><i>' + g.i + '</i><span>' + esc(g.n) + '</span><button data-b="' + i + '"' + ((g.sparks ? (S.sparks || 0) < g.sparks : P.gold < g.price) ? ' disabled' : '') + '>' + (g.sparks ? g.sparks + ' ✦' : g.price + ' 💰') + '</button></div>').join('') + '</div>';
       sheet({ title: 'Крамниця Ореста', html: h, buttons: [{ label: 'Закрити', fn: hide }], after: s => {
         s.querySelector('[data-t]').onclick = () => { tab = 'sell'; render(); };
         s.querySelectorAll('[data-b]').forEach(b => b.onclick = () => { const g = goods[+b.dataset.b];
@@ -314,7 +314,7 @@ export function createUI(o){
       let h = '<p>Коваль Назар заточує спорядження. Кожне «+» дає +10% атаки чи захисту. Після +4 можлива невдача: матеріали згорять, а предмет лишиться цілим.</p><div class="rp-grid">' + items.map((x, i) => '<div class="rp-tile' + (sel && sel.it === x.it ? ' sel' : '') + '" data-i="' + i + '" style="border-color:' + RPG.itemColor(x.it) + '">' + x.it.i + (x.it.plus ? '<span class="pl">+' + x.it.plus + '</span>' : '') + (x.slot ? '<small>✓</small>' : '') + '</div>').join('') + '</div>';
       let cost = null;
       if(sel){ const it = sel.it; const p = it.plus || 0; const mat = MAT_BY_TIER[Math.min(4, it.tier + Math.floor(p/4))]; cost = { gold: Math.round((30 + it.tier*45)*(p + 1)*(1 + p*.2)), mat, q: 1 + Math.floor(p/2), ch: p < 4 ? 1 : [0, 0, 0, 0, .85, .7, .55, .4, .3, .2][p] || .15 };
-        h += '<div class="rp-detail"><h4 style="color:' + RPG.itemColor(it) + '">' + it.i + ' ' + esc(RPG.itemName(it)) + '</h4>' + itemStats(it) + (p >= 10 ? '<p>Максимальна заточка.</p>' : '<div style="margin-top:6px">Ціна: <b>' + cost.gold + ' 🪙</b> + ' + RPG.MATERIALS[cost.mat].i + ' ' + RPG.MATERIALS[cost.mat].n + ' ×' + cost.q + ' (є ' + RPG.countItem(P, cost.mat) + ') · шанс ' + Math.round(cost.ch*100) + '%</div><div class="rp-row"><button class="gm-btn primary" data-up="1">Заточити до +' + (p + 1) + '</button></div>') + '</div>'; }
+        h += '<div class="rp-detail"><h4 style="color:' + RPG.itemColor(it) + '">' + it.i + ' ' + esc(RPG.itemName(it)) + '</h4>' + itemStats(it) + (p >= 10 ? '<p>Максимальна заточка.</p>' : '<div style="margin-top:6px">Ціна: <b>' + cost.gold + ' 💰</b> + ' + RPG.MATERIALS[cost.mat].i + ' ' + RPG.MATERIALS[cost.mat].n + ' ×' + cost.q + ' (є ' + RPG.countItem(P, cost.mat) + ') · шанс ' + Math.round(cost.ch*100) + '%</div><div class="rp-row"><button class="gm-btn primary" data-up="1">Заточити до +' + (p + 1) + '</button></div>') + '</div>'; }
       sheet({ title: 'Кузня Назара', html: h, buttons: [{ label: 'Закрити', fn: hide }], after: s => {
         s.querySelectorAll('[data-i]').forEach(t => t.onclick = () => { sel = items[+t.dataset.i]; render(); });
         const up = s.querySelector('[data-up]'); if(up) up.onclick = () => {
@@ -345,8 +345,8 @@ export function createUI(o){
     const active = P.quests.map(a => ({ a, Q: RPG.QUEST_POOL.find(q => q.id === a.id) })).filter(x => x.Q && !x.Q.giver);
     const prog = x => x.Q.type === 'collect' ? Math.min(RPG.countItem(P, x.Q.item), x.Q.need) : Math.min(x.a.prog, x.Q.need);
     let h = '<p>Активні завдання: ' + active.length + '/3. Виконані здавайте у Гільдії.</p>';
-    h += active.map((x, i) => '<div class="rp-q"><b>' + esc(x.Q.n) + '</b> · ' + prog(x) + '/' + x.Q.need + '<div>' + esc(x.Q.d) + '</div><div class="rw">Нагорода: ' + x.Q.gold + ' 🪙 · ' + x.Q.xp + ' XP · ' + x.Q.gp + ' 🏅</div><button class="gm-btn ghost" data-ab="' + i + '">Відмовитися</button></div>').join('');
-    h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">Доступні</h4>' + (avail.length ? avail.map((q, i) => '<div class="rp-q"><b>' + esc(q.n) + '</b> <span style="opacity:.6;font-size:11px">ранг ' + RPG.RANKS[q.rank].r + '</span><div>' + esc(q.d) + ' (' + (q.type === 'kill' ? 'перемогти ' : 'зібрати ') + q.need + ')</div><div class="rw">' + q.gold + ' 🪙 · ' + q.xp + ' XP · ' + q.gp + ' 🏅</div><button class="gm-btn primary" data-ac="' + i + '"' + (active.length >= 3 ? ' disabled' : '') + '>Взяти</button></div>').join('') : '<p>Нових завдань для вашого рангу поки немає.</p>');
+    h += active.map((x, i) => '<div class="rp-q"><b>' + esc(x.Q.n) + '</b> · ' + prog(x) + '/' + x.Q.need + '<div>' + esc(x.Q.d) + '</div><div class="rw">Нагорода: ' + x.Q.gold + ' 💰 · ' + x.Q.xp + ' XP · ' + x.Q.gp + ' 🏅</div><button class="gm-btn ghost" data-ab="' + i + '">Відмовитися</button></div>').join('');
+    h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">Доступні</h4>' + (avail.length ? avail.map((q, i) => '<div class="rp-q"><b>' + esc(q.n) + '</b> <span style="opacity:.6;font-size:11px">ранг ' + RPG.RANKS[q.rank].r + '</span><div>' + esc(q.d) + ' (' + (q.type === 'kill' ? 'перемогти ' : 'зібрати ') + q.need + ')</div><div class="rw">' + q.gold + ' 💰 · ' + q.xp + ' XP · ' + q.gp + ' 🏅</div><button class="gm-btn primary" data-ac="' + i + '"' + (active.length >= 3 ? ' disabled' : '') + '>Взяти</button></div>').join('') : '<p>Нових завдань для вашого рангу поки немає.</p>');
     sheet({ title: 'Дошка завдань', html: h, buttons: [{ label: 'Закрити', fn: hide }], after: s => {
       s.querySelectorAll('[data-ac]').forEach(b => b.onclick = () => { if(P.quests.filter(a => { const Q = RPG.QUEST_POOL.find(q => q.id === a.id); return Q && !Q.giver; }).length >= 3) return; P.quests.push({ id: avail[+b.dataset.ac].id, prog: 0 }); RPG.save(); toast('📜 Завдання прийнято'); questBoard(); });
       s.querySelectorAll('[data-ab]').forEach(b => b.onclick = () => { P.quests.splice(+b.dataset.ab, 1); RPG.save(); questBoard(); });
@@ -360,7 +360,7 @@ export function createUI(o){
       if(!ok) return true;
       if(Q.type === 'collect') RPG.takeItem(P, Q.item, Q.need);
       P.gold += Q.gold; P.gp += Q.gp; P.done[Q.id] = (P.done[Q.id] || 0) + 1; o.combat().gainXp ? o.combat().gainXp(Q.xp) : (P.xp += Q.xp); n++;
-      toast('✅ «' + Q.n + '»: +' + Q.gold + ' 🪙, +' + Q.xp + ' XP, +' + Q.gp + ' 🏅', 'loot'); return false; });
+      toast('✅ «' + Q.n + '»: +' + Q.gold + ' 💰, +' + Q.xp + ' XP, +' + Q.gp + ' 🏅', 'loot'); return false; });
     RPG.save(); updHud(); return n;
   }
   // side quests offered and taken back by people around the world
@@ -373,7 +373,7 @@ export function createUI(o){
     const pr = x => x.Q.type === 'collect' ? Math.min(RPG.countItem(P, x.Q.item), x.Q.need) : Math.min(x.a.prog, x.Q.need);
     let h = '<p class="gm-quote">«' + esc(line || 'Маєте хвилинку, авантюристе?') + '»</p>';
     if(act.length) h += act.map(x => '<div class="rp-q"><b>' + esc(x.Q.n) + '</b> · ' + pr(x) + '/' + x.Q.need + '<div>' + esc(x.Q.d) + '</div></div>').join('');
-    if(avail.length) h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">Прохання</h4>' + avail.map((q, i) => '<div class="rp-q"><b>' + esc(q.n) + '</b><div>' + esc(q.d) + '</div><div class="rw">' + q.gold + ' 🪙 · ' + q.xp + ' XP · ' + q.gp + ' 🏅</div><button class="gm-btn primary" data-sq="' + i + '"' + (sideN >= 4 ? ' disabled' : '') + '>Взятися</button></div>').join('');
+    if(avail.length) h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">Прохання</h4>' + avail.map((q, i) => '<div class="rp-q"><b>' + esc(q.n) + '</b><div>' + esc(q.d) + '</div><div class="rw">' + q.gold + ' 💰 · ' + q.xp + ' XP · ' + q.gp + ' 🏅</div><button class="gm-btn primary" data-sq="' + i + '"' + (sideN >= 4 ? ' disabled' : '') + '>Взятися</button></div>').join('');
     if(!act.length && !avail.length) h += '<p>Поки що нічого не треба. Дякую, що зайшли!</p>';
     if(sideN >= 4 && avail.length) h += '<p class="gm-note">Можна мати до 4 доручень від людей одночасно.</p>';
     const btns = [];
@@ -389,7 +389,7 @@ export function createUI(o){
       { label: '📜 Дошка завдань', primary: !ready, fn: questBoard },
       { label: '✅ Здати завдання' + (ready ? ' (' + ready + ')' : ''), primary: !!ready, fn: () => { const n = turnIn(); if(!n) toast('Немає виконаних завдань'); guild(); } },
       canRank ? { label: '🏅 Іспит на ранг ' + N.r, primary: true, fn: () => rankUp() } : { label: N ? '🏅 Ранг ' + N.r + ': потрібно ' + N.gp + ' очок і рівень ' + N.lvl : '🏅 Найвищий ранг', fn: () => {} },
-      { label: '🔁 Змінити клас (100 🪙)', fn: () => register(true) },
+      { label: '🔁 Змінити клас (100 💰)', fn: () => register(true) },
       { label: 'Закрити', ghost: true, fn: hide }] });
   }
   function rankUp(){
@@ -400,7 +400,7 @@ export function createUI(o){
     let pick = P.cls || 'warrior'; let nameDraft = saveGet().heroName || '';
     const render = () => {
       const C = RPG.CLASSES[pick];
-      const h = (change ? '<p>Зміна класу коштує 100 🪙. Рівень, ранг і речі зберігаються.</p>' : '<p class="gm-quote">«Ласкаво просимо до Гільдії авантюристів! Заповніть картку й оберіть свій шлях.»</p><p style="font-size:12px;opacity:.8">Ви щойно опинилися в цьому світі. Гільдія видасть картку рангу F, стартову зброю та зілля.</p>') +
+      const h = (change ? '<p>Зміна класу коштує 100 💰. Рівень, ранг і речі зберігаються.</p>' : '<p class="gm-quote">«Ласкаво просимо до Гільдії авантюристів! Заповніть картку й оберіть свій шлях.»</p><p style="font-size:12px;opacity:.8">Ви щойно опинилися в цьому світі. Гільдія видасть картку рангу F, стартову зброю та зілля.</p>') +
         '<div class="rp-cls">' + RPG.CLASS_ORDER.map(k => { const c = RPG.CLASSES[k]; return '<button data-c="' + k + '"' + (k === pick ? ' class="on"' : '') + '><i>' + c.i + '</i><b>' + c.n + '</b><small>' + esc(c.d) + '</small></button>'; }).join('') + '</div>' +
         (change ? '' : '<label style="display:block;font-size:12px;opacity:.85;margin:4px 0 4px" for="rp-name">Ім\'я авантюриста (його бачитимуть інші гравці)</label><input id="rp-name" maxlength="20" autocomplete="off" style="width:100%;box-sizing:border-box;border-radius:10px;border:1px solid rgba(255,230,180,.3);background:rgba(255,255,255,.06);color:#fff;padding:9px 11px;font:14px inherit;margin-bottom:10px" value="' + esc(nameDraft) + '" placeholder="Напр.: Ярослав">') +
         '<div class="rp-detail"><h4>' + C.i + ' ' + C.n + '</h4><div style="font-size:12px">Сила ' + C.base.str + ' · Спритність ' + C.base.agi + ' · Інтелект ' + C.base.int + ' · Живучість ' + C.base.vit + '</div><div style="margin-top:6px">' + C.skills.map(s => s.i + ' ' + s.n).join(' &nbsp;·&nbsp; ') + '</div></div>';
@@ -416,7 +416,7 @@ export function createUI(o){
   function tavern(){
     const rumors = ['Кажуть, Король слизів носить справжню золоту корону.', 'Ватажок гоблінів б\'ється щитом — заходьте збоку.', 'Вождь орків лютує, коли поранений. Тримайте зілля напоготові.', 'Лич підіймає мертвих. Спершу розберіться зі скелетами.', 'Клірики й паладини б\'ють нежить світлом — удвічі болючіше.', 'Руна дня з Кола Рун справді діє в боях.', 'Покровитель із Пантеону додає +3 до вашої головної характеристики.', 'У Підземеллі Авантюристів три яруси. На дні — Мінотавр, і його скриня повна золота.', 'Мінотавр перед ривком рие копитом. Побачите червону смугу — відходьте вбік!', 'Червоне коло під босом — тікайте з нього, поки не вдарило.', 'Кістяний лицар Морен підіймає скелетів. Розберіться спершу з ними.'];
     sheet({ title: 'Таверна «Лимонний Дракон»', html: '<p>Тепло, пахне смаженим м\'ясом і медовухою. Тут можна перепочити й почути чутки.</p><p class="gm-quote">«' + rumors[Math.floor(Math.random()*rumors.length)] + '»</p>', buttons: [
-      { label: '🛏️ Відпочити (10 🪙) — повне відновлення', primary: true, fn: () => { if(P.gold < 10){ toast('Не вистачає золота'); return; } P.gold -= 10; o.combat().fullHeal(); RPG.save(); toast('Ви відпочили. Сили повернулися.'); hide(); } },
+      { label: '🛏️ Відпочити (10 💰) — повне відновлення', primary: true, fn: () => { if(P.gold < 10){ toast('Не вистачає золота'); return; } P.gold -= 10; o.combat().fullHeal(); RPG.save(); toast('Ви відпочили. Сили повернулися.'); hide(); } },
       { label: '🍺 Ще одна чутка', fn: tavern }, { label: 'Закрити', ghost: true, fn: hide }] });
   }
   function gate(){
@@ -438,7 +438,7 @@ export function createUI(o){
       { label: 'Залишитися в місті', ghost: true, fn: hide }] });
   }
   function death(src, lost, done){
-    sheet({ title: 'Ви знепритомніли', html: '<p>' + esc(src || 'Монстр') + ' виявився сильнішим. Вартові принесли вас до Гільдії, а цілителі поставили на ноги.</p><p class="gm-note">Втрачено ' + lost + ' 🪙. Порада: беріть більше зілля в Крамниці й заточуйте спорядження в Кузні.</p>', buttons: [{ label: 'Повернутися до справ', primary: true, fn: () => { hide(); done(); } }] });
+    sheet({ title: 'Ви знепритомніли', html: '<p>' + esc(src || 'Монстр') + ' виявився сильнішим. Вартові принесли вас до Гільдії, а цілителі поставили на ноги.</p><p class="gm-note">Втрачено ' + lost + ' 💰. Порада: беріть більше зілля в Крамниці й заточуйте спорядження в Кузні.</p>', buttons: [{ label: 'Повернутися до справ', primary: true, fn: () => { hide(); done(); } }] });
   }
 
   return { npcQuests, hud: updHud, target: setTarget, float, toast, hurt, frame, inventory, shop, forge, guild, questBoard, showCard, tavern, gate, death, register, buildActions, zoneBanner };

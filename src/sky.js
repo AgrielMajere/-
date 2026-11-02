@@ -137,8 +137,8 @@ export function createSky(renderer, scene){
   function underground(){
     sky.visible = false; clouds.visible = false; stars.visible = false; moon.visible = false;
     sun.intensity = 0; sun.castShadow = false;
-    hemi.color.set('#8c98ba'); hemi.groundColor.set('#3a2e24'); hemi.intensity = .85;
-    scene.fog.color.set('#0b0a09'); scene.fog.density = .02;
+    hemi.color.set('#a8b2cc'); hemi.groundColor.set('#5a4a3a'); hemi.intensity = 1.7;
+    scene.fog.color.set('#1a1714'); scene.fog.density = .011;
     state.lampLevel = 0;
   }
 
@@ -152,7 +152,7 @@ export function createSky(renderer, scene){
     envRT = pmrem.fromScene(envScene, 0, .1, 300);
     renderer.toneMappingExposure = prevExp;
     scene.environment = envRT.texture;
-    scene.environmentIntensity = state.under ? .06 : .3 + .45*state.day - .15*(state.golden || 0) + .5*state.night;
+    scene.environmentIntensity = state.under ? .16 : .3 + .45*state.day - .15*(state.golden || 0) + .5*state.night;
     state.dirty = false;
   }
 
@@ -179,6 +179,6 @@ export function createSky(renderer, scene){
       stars.position.copy(focus); stars.rotation.y = t*.004;
       clouds.position.set(focus.x, 0, focus.z);
     },
-    exposure(){ return state.under ? 1.35 : 0.95 + .35*state.night; }
+    exposure(){ return state.under ? 1.65 : 0.95 + .35*state.night; }
   };
 }

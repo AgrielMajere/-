@@ -6,11 +6,11 @@
 // ---------- new materials (merged into RPG.MATERIALS at start) ----------
 export const LIFE_MATS = {
   chamomile: { n: 'Цілюща ромашка', i: '🌼', price: 6 }, cornflower: { n: 'Синя волошка', i: '💠', price: 8 }, mushroom: { n: 'Лісовий гриб', i: '🍄', price: 7 },
-  mandrake: { n: 'Корінь мандрагори', i: '🥕', price: 22 }, iron: { n: 'Залізна руда', i: '🪨', price: 10 }, silver: { n: 'Срібна руда', i: '🥈', price: 24 },
+  mandrake: { n: 'Корінь мандрагори', i: '🥕', price: 22 }, iron: { n: 'Залізна руда', i: '⛰️', price: 10 }, silver: { n: 'Срібна руда', i: '🥈', price: 24 },
   moonstone: { n: 'Місячний камінь', i: '🌙', price: 55 },
   // fish
   roach: { n: 'Плітка', i: '🐟', price: 5 }, perch: { n: 'Окунь', i: '🐠', price: 8 }, carp: { n: 'Короп', i: '🐟', price: 12 }, pike: { n: 'Щука', i: '🐊', price: 20 },
-  catfish: { n: 'Сом', i: '🐋', price: 34 }, eel: { n: 'Нічний вугор', i: '🪱', price: 28 }, goldfish: { n: 'Золота рибка', i: '✨', price: 150 }, boot: { n: 'Старий чобіт', i: '🥾', price: 1 }
+  catfish: { n: 'Сом', i: '🐋', price: 34 }, eel: { n: 'Нічний вугор', i: '🐛', price: 28 }, goldfish: { n: 'Золота рибка', i: '✨', price: 150 }, boot: { n: 'Старий чобіт', i: '🥾', price: 1 }
 };
 // fish table: [id, weight, needs]  needs: night | rain | rare
 export const FISH = [['roach', 34], ['perch', 26], ['carp', 16], ['pike', 9], ['catfish', 5, 'night'], ['eel', 6, 'night'], ['goldfish', .8, 'rare'], ['boot', 5]];
@@ -40,7 +40,7 @@ export const RECIPES = [
   { id: 'r_mp1', n: 'Мале зілля мани', st: 'alchemy', need: [['cornflower', 2]], out: { k: 'use', id: 'mp1', q: 2 } },
   { id: 'r_mp2', n: 'Зілля мани', st: 'alchemy', need: [['cornflower', 3], ['moonstone', 1]], out: { k: 'use', id: 'mp2', q: 2 } },
   { id: 'r_rage', n: 'Відвар люті (+15% шкоди, 5 хв)', st: 'alchemy', need: [['mandrake', 1], ['tusk', 1]], out: { k: 'buff', id: 'rage', dur: 300, buff: { atk: .15 }, i: '🔥' } },
-  { id: 'r_skin', n: 'Кам\'яна шкіра (−15% шкоди, 5 хв)', st: 'alchemy', need: [['iron', 2], ['mushroom', 2]], out: { k: 'buff', id: 'skin', dur: 300, buff: { dr: .15 }, i: '🪨' } },
+  { id: 'r_skin', n: 'Кам\'яна шкіра (−15% шкоди, 5 хв)', st: 'alchemy', need: [['iron', 2], ['mushroom', 2]], out: { k: 'buff', id: 'skin', dur: 300, buff: { dr: .15 }, i: '⛰️' } },
   { id: 'r_soup', n: 'Рибна юшка (лікує поступово)', st: 'cook', need: [['roach', 2], ['mushroom', 1]], out: { k: 'buff', id: 'soup', dur: 120, regen: .012, i: '🍲' } },
   { id: 'r_pike', n: 'Запечена щука (+10% криту, 5 хв)', st: 'cook', need: [['pike', 1], ['chamomile', 1]], out: { k: 'buff', id: 'pike', dur: 300, buff: { crit: 10 }, i: '🍽️' } },
   { id: 'r_ring', n: 'Срібна обручка', st: 'forge', need: [['silver', 3], ['pearl', 1]], out: { k: 'eq', kind: 'ring', tier: 2, rar: 2 } },
@@ -61,12 +61,12 @@ export const SHOPS = {
     { n: 'Ельфійський лук Світанку', i: '🏹', kind: 'bow', tier: 2, rar: 2, bonus: { agi: 8, crit: 4 }, price: 520, rep: 1 },
     { n: 'Плащ лісового слідопита', i: '🧥', kind: 'armor', tier: 2, rar: 2, bonus: { agi: 6 }, price: 480, rep: 1 },
     { n: 'Лук Сріблястого Місяця', i: '🌙', kind: 'bow', tier: 3, rar: 3, bonus: { agi: 14, crit: 8 }, price: 1600, rep: 3 },
-    { n: 'Посох зі Світлого Ясена', i: '🪄', kind: 'staff', tier: 3, rar: 3, bonus: { int: 14, mp: 60 }, price: 1600, rep: 3 },
+    { n: 'Посох зі Світлого Ясена', i: '✨', kind: 'staff', tier: 3, rar: 3, bonus: { int: 14, mp: 60 }, price: 1600, rep: 3 },
     { mat: 'cornflower', q: 5, price: 45 }, { mat: 'chamomile', q: 5, price: 32 } ] },
   dwarves: { n: 'Кузня Двадіна · Залізний Кряж', faction: 'dwarves', goods: [
-    { n: 'Сокира з гномської сталі', i: '🪓', kind: 'axe2', tier: 2, rar: 2, bonus: { str: 8 }, price: 560, rep: 1 },
+    { n: 'Сокира з гномської сталі', i: '⚒️', kind: 'axe2', tier: 2, rar: 2, bonus: { str: 8 }, price: 560, rep: 1 },
     { n: 'Гномський щит-брама', i: '🛡️', kind: 'shield', tier: 2, rar: 2, bonus: { vit: 8, hp: 80 }, price: 520, rep: 1 },
-    { n: 'Лати Залізнобородих', i: '🦺', kind: 'armor', tier: 3, rar: 3, bonus: { vit: 14, hp: 160 }, price: 1700, rep: 3 },
+    { n: 'Лати Залізнобородих', i: '🎽', kind: 'armor', tier: 3, rar: 3, bonus: { vit: 14, hp: 160 }, price: 1700, rep: 3 },
     { n: 'Молот Предків', i: '🔨', kind: 'mace', tier: 3, rar: 3, bonus: { str: 12, vit: 6 }, price: 1700, rep: 3 },
     { mat: 'iron', q: 5, price: 60 }, { mat: 'silver', q: 2, price: 70 } ] },
   beasts: { n: 'Міняйло Фіра · Пухнасті Пагорби', faction: 'beasts', goods: [
@@ -176,6 +176,6 @@ export const DIALOGS = {
   beastshop: { s: { t: 'Хутра, кігті, амулети — усе чесно виміняне!', a: [{ t: 'Покажи.', fx: { shop: 'beasts' } }, { t: 'Пізніше.', go: 'end' }] } },
   fishwife: { s: { t: 'Риба свіжа, сьогоднішня! Чи може продаєте?', a: [{ t: 'Покажи товар.', fx: { shop: 'fishing' } }, { t: 'Продати рибу.', fx: { sellFish: true } }, { t: 'Бувайте.', go: 'end' }] } },
   bard: { s: { t: 'Заспівати баладу?', a: [{ t: 'Про Титана!', go: 'titan' }, { t: 'Про кохання.', go: 'love' }, { t: 'Іншим разом.', go: 'end' }] },
-    titan: { t: '«Встав Титан із каменю, гори в нім — кістки… Хто піде до Висей, не поверне ні руки…» Ну як?', a: [{ t: 'Моторошно! (дати 5 🪙)', fx: { gold: -5, say: 'Щедрий слухач!' } }, { t: 'Краще про кохання.', go: 'love' }] },
+    titan: { t: '«Встав Титан із каменю, гори в нім — кістки… Хто піде до Висей, не поверне ні руки…» Ну як?', a: [{ t: 'Моторошно! (дати 5 💰)', fx: { gold: -5, say: 'Щедрий слухач!' } }, { t: 'Краще про кохання.', go: 'love' }] },
     love: { t: '«Ельфійка співала над тихим ставком, а гном їй приносив руду…» Ну, далі сумно.', a: [{ t: 'Гарно.', go: 'end' }] } }
 };

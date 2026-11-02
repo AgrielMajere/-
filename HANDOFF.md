@@ -66,3 +66,4 @@ npm i            # + trystero@0.26.0 (є в package.json)
 - Екран «Автори моделей» (Налаштування): src/credits.json з asset.extras Sketchfab-оригіналів (CC BY 4.0).
 - Тести: test/labidle.mjs (поза «Стоїть» у Лабораторії); у грі на якості low NPC з розстановки проріджені (кожен 4-й).
 - Гардероб (main.js wardrobe): 17 додаткових тіл nm_mx_* для гравця; колір одягу діє лише на man/woman/soldier.
+- Емодзі: лише до Emoji 11 (Windows 10 не має 🪙🪓🪨🟣 тощо — показує квадрати). Посадка на коня: seatPose у life.js обертає кістки у світових осях.

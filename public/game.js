@@ -47094,11 +47094,11 @@ void main(){
       moon.visible = false;
       sun.intensity = 0;
       sun.castShadow = false;
-      hemi.color.set("#8c98ba");
-      hemi.groundColor.set("#3a2e24");
-      hemi.intensity = 0.85;
-      scene.fog.color.set("#0b0a09");
-      scene.fog.density = 0.02;
+      hemi.color.set("#a8b2cc");
+      hemi.groundColor.set("#5a4a3a");
+      hemi.intensity = 1.7;
+      scene.fog.color.set("#1a1714");
+      scene.fog.density = 0.011;
       state3.lampLevel = 0;
     }
     function updateEnv() {
@@ -47110,7 +47110,7 @@ void main(){
       envRT = pmrem.fromScene(envScene, 0, 0.1, 300);
       renderer.toneMappingExposure = prevExp;
       scene.environment = envRT.texture;
-      scene.environmentIntensity = state3.under ? 0.06 : 0.3 + 0.45 * state3.day - 0.15 * (state3.golden || 0) + 0.5 * state3.night;
+      scene.environmentIntensity = state3.under ? 0.16 : 0.3 + 0.45 * state3.day - 0.15 * (state3.golden || 0) + 0.5 * state3.night;
       state3.dirty = false;
     }
     apply();
@@ -47169,7 +47169,7 @@ void main(){
         clouds.position.set(focus.x, 0, focus.z);
       },
       exposure() {
-        return state3.under ? 1.35 : 0.95 + 0.35 * state3.night;
+        return state3.under ? 1.65 : 0.95 + 0.35 * state3.night;
       }
     };
   }
@@ -52477,7 +52477,7 @@ ${candidateLine}`;
     { id: "mokosh", n: "\u041C\u043E\u043A\u043E\u0448", e: "\u{1F33E}", d: "\u0413\u043E\u0441\u043F\u043E\u0434\u0438\u043D\u044F \u0434\u043E\u043B\u0456 \u0439 \u0432\u0440\u043E\u0436\u0430\u044E", st: "\u0416\u0438\u0432\u0443\u0447\u0456\u0441\u0442\u044C", t: "\u041F\u0440\u044F\u0434e \u043D\u0438\u0442\u043A\u0438 \u0434\u043E\u043B\u0456 \u0442\u0430 \u0431\u0435\u0440\u0435\u0436\u0435 \u0442\u0438\u0445, \u0445\u0442\u043E \u0431\u0435\u0440\u0435\u0436\u0435 \u0441\u0435\u0431\u0435." },
     { id: "dazhbog", n: "\u0414\u0430\u0436\u0431\u043E\u0433", e: "\u2600\uFE0F", d: "\u041F\u043E\u0434\u0430\u0432\u0435\u0446\u044C \u0441\u0432\u0456\u0442\u043B\u0430", st: "\u0414\u0443\u0445\u043E\u0432\u043D\u0430 \u0441\u0438\u043B\u0430", t: "\u0421\u043E\u043D\u044F\u0447\u043D\u0438\u0439 \u0431\u043E\u0433, \u0449\u043E \u0434\u0430\u0440\u0443\u0454 \u044F\u0441\u043D\u0456\u0441\u0442\u044C \u0456 \u043D\u0430\u0434\u0456\u044E." },
     { id: "athena", n: "\u0410\u0444\u0456\u043D\u0430", e: "\u{1F989}", d: "\u041C\u0443\u0434\u0440\u0456\u0441\u0442\u044C \u0456 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0456\u044F", st: "\u0406\u043D\u0442\u0435\u043B\u0435\u043A\u0442", t: "\u0411\u043E\u0433\u0438\u043D\u044F \u0440\u043E\u0437\u0432\u0430\u0436\u043B\u0438\u0432\u043E\u0457 \u0437\u0432\u0438\u0442\u044F\u0433\u0438: \u043D\u0435 \u043B\u0438\u0448\u0435 \u0441\u0438\u043B\u0430, \u0430 \u0439 \u0440\u043E\u0437\u0443\u043C." },
-    { id: "hermes", n: "\u0413\u0435\u0440\u043C\u0435\u0441", e: "\u{1FABD}", d: "\u0412\u0456\u0441\u043D\u0438\u043A \u0456 \u043C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A", st: "\u0414\u0443\u0445\u043E\u0432\u043D\u0430 \u0441\u0438\u043B\u0430", t: "\u041F\u043E\u043A\u0440\u043E\u0432\u0438\u0442\u0435\u043B\u044C \u0434\u043E\u0440\u0456\u0433, \u0442\u043E\u0440\u0433\u0456\u0432\u043B\u0456 \u0442\u0430 \u0448\u0432\u0438\u0434\u043A\u0438\u0445 \u0440\u0456\u0448\u0435\u043D\u044C." },
+    { id: "hermes", n: "\u0413\u0435\u0440\u043C\u0435\u0441", e: "\u{1F985}", d: "\u0412\u0456\u0441\u043D\u0438\u043A \u0456 \u043C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A", st: "\u0414\u0443\u0445\u043E\u0432\u043D\u0430 \u0441\u0438\u043B\u0430", t: "\u041F\u043E\u043A\u0440\u043E\u0432\u0438\u0442\u0435\u043B\u044C \u0434\u043E\u0440\u0456\u0433, \u0442\u043E\u0440\u0433\u0456\u0432\u043B\u0456 \u0442\u0430 \u0448\u0432\u0438\u0434\u043A\u0438\u0445 \u0440\u0456\u0448\u0435\u043D\u044C." },
     { id: "odin", n: "\u041E\u0434\u0438\u043D", e: "\u{1F441}", d: "\u0428\u0443\u043A\u0430\u0447 \u0437\u043D\u0430\u043D\u044C", st: "\u0406\u043D\u0442\u0435\u043B\u0435\u043A\u0442", t: "\u0412\u0456\u0434\u0434\u0430\u0432 \u043E\u043A\u043E \u0437\u0430 \u043C\u0443\u0434\u0440\u0456\u0441\u0442\u044C \u2014 \u0456 \u043D\u0435 \u043F\u043E\u0448\u043A\u043E\u0434\u0443\u0432\u0430\u0432." },
     { id: "thor", n: "\u0422\u043E\u0440", e: "\u{1F528}", d: "\u0417\u0430\u0445\u0438\u0441\u043D\u0438\u043A \u043B\u044E\u0434\u0435\u0439", st: "\u0421\u0438\u043B\u0430", t: "\u041C\u0456\u0446\u043D\u0438\u0439, \u043F\u0440\u044F\u043C\u0438\u0439 \u0456 \u0432\u0456\u0434\u0434\u0430\u043D\u0438\u0439 \u0442\u0438\u043C, \u043A\u043E\u0433\u043E \u0431\u0435\u0440\u0435\u0436\u0435." }
   ];
@@ -52680,7 +52680,7 @@ ${candidateLine}`;
     },
     berserker: {
       n: "\u0411\u0435\u0440\u0441\u0435\u0440\u043A",
-      i: "\u{1FA93}",
+      i: "\u2692\uFE0F",
       d: "\u0414\u0432\u043E\u0440\u0443\u0447\u043D\u0430 \u0441\u043E\u043A\u0438\u0440\u0430, \u0448\u0430\u043B\u0435\u043D\u0438\u0439 \u0443\u0440\u043E\u043D, \u043C\u0430\u043B\u043E \u0437\u0430\u0445\u0438\u0441\u0442\u0443. \u0427\u0438\u043C \u0433\u0456\u0440\u0448\u0435 \u2014 \u0442\u0438\u043C \u043B\u044E\u0442\u0456\u0448\u0435.",
       type: "melee",
       main: "str",
@@ -52690,7 +52690,7 @@ ${candidateLine}`;
       look: { top: "#5a2a1e", bottom: "#2a2018", cape: "#3a2a1a" },
       atk: ["Attack2H", "Slice2H"],
       skills: [
-        { id: "rage", n: "\u041B\u044E\u0442\u0438\u0439 \u0443\u0434\u0430\u0440", i: "\u{1FA78}", mp: 10, cd: 6, kind: "melee", mult: 2.8, anim: "Attack2H" },
+        { id: "rage", n: "\u041B\u044E\u0442\u0438\u0439 \u0443\u0434\u0430\u0440", i: "\u{1F489}", mp: 10, cd: 6, kind: "melee", mult: 2.8, anim: "Attack2H" },
         { id: "blood", n: "\u041A\u0440\u043E\u0432\u043E\u0436\u0435\u0440\u043D\u0456\u0441\u0442\u044C", i: "\u{1F377}", mp: 15, cd: 24, kind: "buff", buff: { leech: 0.25, atk: 0.15 }, dur: 12, anim: "Cheer" },
         { id: "spin", n: "\u0412\u0438\u0445\u043E\u0440 \u0441\u043C\u0435\u0440\u0442\u0456", i: "\u{1F32A}\uFE0F", mp: 24, cd: 12, kind: "aoe", mult: 2.1, radius: 4, anim: "Spin" }
       ]
@@ -52803,8 +52803,8 @@ ${candidateLine}`;
       atk: ["Cast"],
       bolt: { color: "#b46aff", speed: 20 },
       skills: [
-        { id: "shadowbolt", n: "\u0422\u0456\u043D\u044C\u043E\u0432\u0430 \u0441\u0442\u0440\u0456\u043B\u0430", i: "\u{1F7E3}", mp: 9, cd: 3.5, kind: "proj", mult: 2.2, color: "#a050ff", anim: "Cast" },
-        { id: "drain", n: "\u0412\u0438\u0441\u043C\u043E\u043A\u0442\u0443\u0432\u0430\u043D\u043D\u044F", i: "\u{1FA78}", mp: 14, cd: 8, kind: "proj", mult: 1.8, drain: 0.6, color: "#ff3a6a", anim: "Cast" },
+        { id: "shadowbolt", n: "\u0422\u0456\u043D\u044C\u043E\u0432\u0430 \u0441\u0442\u0440\u0456\u043B\u0430", i: "\u{1F49C}", mp: 9, cd: 3.5, kind: "proj", mult: 2.2, color: "#a050ff", anim: "Cast" },
+        { id: "drain", n: "\u0412\u0438\u0441\u043C\u043E\u043A\u0442\u0443\u0432\u0430\u043D\u043D\u044F", i: "\u{1F489}", mp: 14, cd: 8, kind: "proj", mult: 1.8, drain: 0.6, color: "#ff3a6a", anim: "Cast" },
         { id: "raise", n: "\u041F\u0456\u0434\u043D\u044F\u0442\u0438 \u0441\u043A\u0435\u043B\u0435\u0442\u0430", i: "\u{1F9B4}", mp: 28, cd: 30, kind: "summon", dur: 40, anim: "CastLong" }
       ]
     }
@@ -52831,9 +52831,9 @@ ${candidateLine}`;
   ];
   var WEAPONS = {
     sword: { n: "\u043C\u0435\u0447", i: "\u{1F5E1}\uFE0F", cls: ["warrior", "paladin"], tiers: ["\u0406\u0440\u0436\u0430\u0432\u0438\u0439 \u043C\u0435\u0447", "\u0421\u0442\u0430\u043B\u0435\u0432\u0438\u0439 \u043C\u0435\u0447", "\u041B\u0438\u0446\u0430\u0440\u0441\u044C\u043A\u0438\u0439 \u043C\u0435\u0447", "\u041C\u0456\u0444\u0440\u0438\u043B\u043E\u0432\u0438\u0439 \u043A\u043B\u0438\u043D\u043E\u043A", "\u041A\u043B\u0438\u043D\u043E\u043A \u0421\u0432\u0456\u0442\u0430\u043D\u043A\u0443"] },
-    axe2: { n: "\u0441\u043E\u043A\u0438\u0440\u0430", i: "\u{1FA93}", cls: ["berserker"], tiers: ["\u041B\u0456\u0441\u043E\u0432\u0430 \u0441\u043E\u043A\u0438\u0440\u0430", "\u0411\u043E\u0439\u043E\u0432\u0430 \u0441\u043E\u043A\u0438\u0440\u0430", "\u0421\u0435\u043A\u0438\u0440\u0430 \u0432\u043E\u0432\u043A\u0430", "\u0420\u0443\u0439\u043D\u0456\u0432\u043D\u0438\u0446\u044F", "\u0421\u043E\u043A\u0438\u0440\u0430 \u041F\u0435\u0440\u0443\u043D\u0430"] },
+    axe2: { n: "\u0441\u043E\u043A\u0438\u0440\u0430", i: "\u2692\uFE0F", cls: ["berserker"], tiers: ["\u041B\u0456\u0441\u043E\u0432\u0430 \u0441\u043E\u043A\u0438\u0440\u0430", "\u0411\u043E\u0439\u043E\u0432\u0430 \u0441\u043E\u043A\u0438\u0440\u0430", "\u0421\u0435\u043A\u0438\u0440\u0430 \u0432\u043E\u0432\u043A\u0430", "\u0420\u0443\u0439\u043D\u0456\u0432\u043D\u0438\u0446\u044F", "\u0421\u043E\u043A\u0438\u0440\u0430 \u041F\u0435\u0440\u0443\u043D\u0430"] },
     mace: { n: "\u0431\u0443\u043B\u0430\u0432\u0430", i: "\u{1F528}", cls: ["paladin", "cleric"], tiers: ["\u0414\u0443\u0431\u043E\u0432\u0430 \u0431\u0443\u043B\u0430\u0432\u0430", "\u0417\u0430\u043B\u0456\u0437\u043D\u0430 \u0431\u0443\u043B\u0430\u0432\u0430", "\u0411\u0443\u043B\u0430\u0432\u0430 \u043F\u0440\u0438\u0441\u044F\u0433\u0438", "\u0421\u043E\u043D\u044F\u0447\u043D\u0438\u0439 \u043C\u043E\u0440\u0433\u0435\u043D\u0448\u0442\u0435\u0440\u043D", "\u041C\u043E\u043B\u043E\u0442 \u0422\u043E\u0440\u0430"] },
-    staff: { n: "\u043F\u043E\u0441\u043E\u0445", i: "\u{1FA84}", cls: ["mage"], tiers: ["\u041F\u043E\u0441\u043E\u0445 \u0443\u0447\u043D\u044F", "\u0414\u0443\u0431\u043E\u0432\u0438\u0439 \u043F\u043E\u0441\u043E\u0445", "\u041A\u0440\u0438\u0448\u0442\u0430\u043B\u0435\u0432\u0438\u0439 \u043F\u043E\u0441\u043E\u0445", "\u041F\u043E\u0441\u043E\u0445 \u0430\u0440\u0445\u0438\u043C\u0430\u0433\u0430", "\u041E\u043A\u043E \u041E\u0434\u0456\u043D\u0430"] },
+    staff: { n: "\u043F\u043E\u0441\u043E\u0445", i: "\u2728", cls: ["mage"], tiers: ["\u041F\u043E\u0441\u043E\u0445 \u0443\u0447\u043D\u044F", "\u0414\u0443\u0431\u043E\u0432\u0438\u0439 \u043F\u043E\u0441\u043E\u0445", "\u041A\u0440\u0438\u0448\u0442\u0430\u043B\u0435\u0432\u0438\u0439 \u043F\u043E\u0441\u043E\u0445", "\u041F\u043E\u0441\u043E\u0445 \u0430\u0440\u0445\u0438\u043C\u0430\u0433\u0430", "\u041E\u043A\u043E \u041E\u0434\u0456\u043D\u0430"] },
     skullstaff: { n: "\u043F\u043E\u0441\u043E\u0445", i: "\u2620\uFE0F", cls: ["necro"], tiers: ["\u041A\u0456\u0441\u0442\u044F\u043D\u0438\u0439 \u0436\u0435\u0437\u043B", "\u041F\u043E\u0441\u043E\u0445 \u043C\u043E\u0433\u0438\u043B", "\u041F\u043E\u0441\u043E\u0445 \u0436\u043D\u0435\u0446\u044F", "\u041A\u043E\u0440\u043E\u043D\u0430 \u0441\u043C\u0435\u0440\u0442\u0456", "\u041F\u043E\u0441\u043E\u0445 \u0427\u043E\u0440\u043D\u043E\u0431\u043E\u0433\u0430"] },
     bow: { n: "\u043B\u0443\u043A", i: "\u{1F3F9}", cls: ["archer"], tiers: ["\u041C\u0438\u0441\u043B\u0438\u0432\u0441\u044C\u043A\u0438\u0439 \u043B\u0443\u043A", "\u0422\u0438\u0441\u043E\u0432\u0438\u0439 \u043B\u0443\u043A", "\u0415\u043B\u044C\u0444\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043B\u0443\u043A", "\u041B\u0443\u043A \u0431\u0443\u0440\u0456", "\u041B\u0443\u043A \u0410\u0440\u0442\u0435\u043C\u0456\u0434\u0438"] },
     dagger: { n: "\u043A\u0438\u043D\u0434\u0436\u0430\u043B\u0438", i: "\u{1F52A}", cls: ["rogue"], tiers: ["\u0420\u0436\u0430\u0432\u0456 \u043D\u043E\u0436\u0456", "\u0421\u0442\u0430\u043B\u0435\u0432\u0456 \u043A\u0438\u043D\u0434\u0436\u0430\u043B\u0438", "\u0422\u0456\u043D\u044C\u043E\u0432\u0456 \u043B\u0435\u0437\u0430", "\u0406\u043A\u043B\u0430 \u0433\u0430\u0434\u044E\u043A\u0438", "\u041A\u0438\u043D\u0434\u0436\u0430\u043B\u0438 \u0413\u0435\u0440\u043C\u0435\u0441\u0430"] },
@@ -52848,12 +52848,12 @@ ${candidateLine}`;
   };
   var SLOTS = [["weapon", "\u0417\u0431\u0440\u043E\u044F"], ["shield", "\u0429\u0438\u0442"], ["helm", "\u0428\u043E\u043B\u043E\u043C"], ["armor", "\u0411\u0440\u043E\u043D\u044F"], ["amulet", "\u0410\u043C\u0443\u043B\u0435\u0442"], ["ring", "\u041A\u0456\u043B\u044C\u0446\u0435"]];
   var MATERIALS = {
-    jelly: { n: "\u0416\u0435\u043B\u0435 \u0441\u043B\u0438\u0437\u0443", i: "\u{1F7E2}", price: 3 },
+    jelly: { n: "\u0416\u0435\u043B\u0435 \u0441\u043B\u0438\u0437\u0443", i: "\u{1F49A}", price: 3 },
     core: { n: "\u042F\u0434\u0440\u043E \u0441\u043B\u0438\u0437\u0443", i: "\u{1F535}", price: 12 },
     ear: { n: "\u0412\u0443\u0445\u043E \u0433\u043E\u0431\u043B\u0456\u043D\u0430", i: "\u{1F442}", price: 6 },
-    totem: { n: "\u0422\u043E\u0442\u0435\u043C \u0448\u0430\u043C\u0430\u043D\u0430", i: "\u{1FA86}", price: 15 },
+    totem: { n: "\u0422\u043E\u0442\u0435\u043C \u0448\u0430\u043C\u0430\u043D\u0430", i: "\u{1F38E}", price: 15 },
     tusk: { n: "\u0406\u043A\u043B\u043E \u043E\u0440\u043A\u0430", i: "\u{1F9B7}", price: 12 },
-    hide: { n: "\u0428\u043A\u0443\u0440\u0430 \u0432\u0430\u0440\u0433\u0430", i: "\u{1F7EB}", price: 9 },
+    hide: { n: "\u0428\u043A\u0443\u0440\u0430 \u0432\u0430\u0440\u0433\u0430", i: "\u{1F43E}", price: 9 },
     bone: { n: "\u0421\u0442\u0430\u0440\u0430 \u043A\u0456\u0441\u0442\u043A\u0430", i: "\u{1F9B4}", price: 10 },
     soul: { n: "\u0423\u043B\u0430\u043C\u043E\u043A \u0434\u0443\u0448\u0456", i: "\u{1F4A0}", price: 40 },
     crown: { n: "\u041A\u043E\u0440\u043E\u043D\u0430 \u0441\u043B\u0438\u0437\u0456\u0432", i: "\u{1F451}", price: 120 },
@@ -52861,10 +52861,10 @@ ${candidateLine}`;
     phylactery: { n: "\u0424\u0456\u043B\u0430\u043A\u0442\u0435\u0440\u0456\u0439", i: "\u26B1\uFE0F", price: 400 },
     gchief: { n: "\u041D\u0456\u0436 \u0432\u0430\u0442\u0430\u0436\u043A\u0430", i: "\u{1F5E1}\uFE0F", price: 90 },
     // dungeon
-    venom: { n: "\u041E\u0442\u0440\u0443\u0439\u043D\u0435 \u0436\u0435\u043B\u0435", i: "\u{1F7E3}", price: 14 },
+    venom: { n: "\u041E\u0442\u0440\u0443\u0439\u043D\u0435 \u0436\u0435\u043B\u0435", i: "\u{1F49C}", price: 14 },
     kscale: { n: "\u041B\u0443\u0441\u043A\u0430 \u043A\u043E\u0431\u043E\u043B\u044C\u0434\u0430", i: "\u{1F98E}", price: 16 },
     kfang: { n: "\u0406\u043A\u043B\u043E \u0432\u043E\u0436\u0434\u044F \u043A\u043E\u0431\u043E\u043B\u044C\u0434\u0456\u0432", i: "\u{1F432}", price: 160 },
-    nail: { n: "\u041A\u0456\u0433\u043E\u0442\u044C \u0443\u043F\u0438\u0440\u044F", i: "\u{1FA9D}", price: 24 },
+    nail: { n: "\u041A\u0456\u0433\u043E\u0442\u044C \u0443\u043F\u0438\u0440\u044F", i: "\u2693", price: 24 },
     ecto: { n: "\u0415\u043A\u0442\u043E\u043F\u043B\u0430\u0437\u043C\u0430", i: "\u{1F47B}", price: 30 },
     kseal: { n: "\u041F\u0435\u0447\u0430\u0442\u044C \u041A\u0456\u0441\u0442\u044F\u043D\u043E\u0433\u043E \u043B\u0438\u0446\u0430\u0440\u044F", i: "\u{1F531}", price: 420 },
     dsteel: { n: "\u0422\u0435\u043C\u043D\u0430 \u0441\u0442\u0430\u043B\u044C", i: "\u26AB", price: 42 },
@@ -52873,13 +52873,13 @@ ${candidateLine}`;
     // the wide world
     pelt: { n: "\u0428\u043A\u0443\u0440\u0430 \u0432\u043E\u0432\u043A\u0443\u043B\u0430\u043A\u0430", i: "\u{1F43A}", price: 18 },
     fang: { n: "\u0406\u043A\u043B\u043E \u0421\u0456\u0440\u043E\u0433\u043E \u0406\u043A\u043B\u0430", i: "\u{1F9B7}", price: 260 },
-    pearl: { n: "\u0420\u0456\u0447\u043A\u043E\u0432\u0430 \u043F\u0435\u0440\u043B\u0438\u043D\u0430", i: "\u{1F9AA}", price: 30 },
+    pearl: { n: "\u0420\u0456\u0447\u043A\u043E\u0432\u0430 \u043F\u0435\u0440\u043B\u0438\u043D\u0430", i: "\u{1F41A}", price: 30 },
     vcrown: { n: "\u041A\u043E\u0440\u043E\u043D\u0430 \u0412\u043E\u0434\u044F\u043D\u0438\u043A\u0430", i: "\u{1F531}", price: 420 },
     badge: { n: "\u0411\u043B\u044F\u0445\u0430 \u0440\u043E\u0437\u0431\u0456\u0439\u043D\u0438\u043A\u0430", i: "\u{1F3F7}\uFE0F", price: 20 },
-    ravenf: { n: "\u041F\u0435\u0440\u043E \u0427\u043E\u0440\u043D\u043E\u0433\u043E \u0412\u043E\u0440\u043E\u043D\u0430", i: "\u{1FAB6}", price: 520 },
+    ravenf: { n: "\u041F\u0435\u0440\u043E \u0427\u043E\u0440\u043D\u043E\u0433\u043E \u0412\u043E\u0440\u043E\u043D\u0430", i: "\u{1F54A}\uFE0F", price: 520 },
     herb: { n: "\u0411\u043E\u043B\u043E\u0442\u044F\u043D\u0430 \u0442\u0440\u0430\u0432\u0430", i: "\u{1F33F}", price: 16 },
     bogscale: { n: "\u041B\u0443\u0441\u043A\u0430 \u0431\u043E\u043B\u043E\u0442\u044F\u043D\u0438\u043A\u0430", i: "\u{1F40A}", price: 26 },
-    mstaff: { n: "\u041F\u0430\u043B\u0438\u0446\u044F \u0432\u0456\u0434\u044C\u043C\u0438 \u041C\u0430\u0440\u0438", i: "\u{1FA84}", price: 680 },
+    mstaff: { n: "\u041F\u0430\u043B\u0438\u0446\u044F \u0432\u0456\u0434\u044C\u043C\u0438 \u041C\u0430\u0440\u0438", i: "\u2728", price: 680 },
     ore: { n: "\u0417\u043E\u0440\u044F\u043D\u0430 \u0440\u0443\u0434\u0430", i: "\u{1F48E}", price: 60 },
     gcore: { n: "\u0421\u0435\u0440\u0446\u0435 \u041A\u043E\u043B\u043E\u0441\u0430", i: "\u{1F9E1}", price: 1500 }
   };
@@ -53428,7 +53428,7 @@ ${candidateLine}`;
     fade.className = "nv-fade";
     root.appendChild(fade);
     const cv = map.querySelector("canvas"), cx = cv.getContext("2d"), pop = map.querySelector(".nv-pop");
-    map.querySelector(".nv-mbot").innerHTML = ["\u{1F3F0} \u043C\u0456\u0441\u0442\u043E", "\u{1F3D8} \u043F\u043E\u0441\u0435\u043B\u0435\u043D\u043D\u044F", "\u{1F4A0} \u043A\u0430\u043C\u0456\u043D\u044C \u0448\u043B\u044F\u0445\u0443", "\u{1F573} \u043F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u044F", "\u2620 \u041A\u0430\u0442\u0430\u0441\u0442\u0440\u043E\u0444\u0430", "\u2757 \u043C\u0435\u0442\u0430 \u043A\u0432\u0435\u0441\u0442\u0443", "\u{1F535} \u0434\u0440\u0443\u0437\u0456", "\u{1F7E1} \u0437\u0430\u0433\u043E\u043D\u0438 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432"].map((t) => "<span>" + t + "</span>").join("");
+    map.querySelector(".nv-mbot").innerHTML = ["\u{1F3F0} \u043C\u0456\u0441\u0442\u043E", "\u{1F3D8} \u043F\u043E\u0441\u0435\u043B\u0435\u043D\u043D\u044F", "\u{1F4A0} \u043A\u0430\u043C\u0456\u043D\u044C \u0448\u043B\u044F\u0445\u0443", "\u{1F573} \u043F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u044F", "\u2620 \u041A\u0430\u0442\u0430\u0441\u0442\u0440\u043E\u0444\u0430", "\u2757 \u043C\u0435\u0442\u0430 \u043A\u0432\u0435\u0441\u0442\u0443", "\u{1F535} \u0434\u0440\u0443\u0437\u0456", "\u{1F49B} \u0437\u0430\u0433\u043E\u043D\u0438 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432"].map((t) => "<span>" + t + "</span>").join("");
     let terrainImg = null, fogImg = null, fogN = -1;
     function buildTerrain() {
       const N2 = 420, c = document.createElement("canvas");
@@ -56249,7 +56249,7 @@ ${candidateLine}`;
           const g = Math.round(m2.def.gold[0] * sh.gold);
           if (g > 0) {
             P2.gold += g;
-            ui.float("+" + g + " \u{1FA99} (\u0437\u0430\u0433\u0456\u043D)", m2.x, heightAt(m2.x, m2.z) + 2.2, m2.z, "gold");
+            ui.float("+" + g + " \u{1F4B0} (\u0437\u0430\u0433\u0456\u043D)", m2.x, heightAt(m2.x, m2.z) + 2.2, m2.z, "gold");
           }
           save();
           ui.hud();
@@ -56263,7 +56263,7 @@ ${candidateLine}`;
       gainXp(Math.round(def2.xp * (1 + (m2.lvl - def2.lvl[0]) * 0.15) * lvlK * D.mods.xp * WM.xp));
       const gold = Math.round((def2.gold[0] + Math.random() * (def2.gold[1] - def2.gold[0])) * D.mods.gold);
       P2.gold += gold;
-      ui.float("+" + gold + " \u{1FA99}", m2.x, heightAt(m2.x, m2.z) + 2.2, m2.z, "gold");
+      ui.float("+" + gold + " \u{1F4B0}", m2.x, heightAt(m2.x, m2.z) + 2.2, m2.z, "gold");
       P2.kills[m2.type] = (P2.kills[m2.type] || 0) + 1;
       P2.quests.forEach((q) => {
         const Q = QUEST_POOL.find((x) => x.id === q.id);
@@ -57809,7 +57809,7 @@ ${candidateLine}`;
         hud.querySelector(".rp-buffs").innerHTML = H.buffs.map((b) => '<span title="' + esc3(b.n) + '">' + b.i + " " + Math.ceil(b.t) + "</span>").join("");
       }
       const S = get();
-      hud.querySelector(".rp-coins").innerHTML = "\u{1FA99} " + P2.gold + " &nbsp; \u2726 " + (S.sparks || 0) + (P2.reg ? " &nbsp; \u{1F3C5} " + P2.gp : "");
+      hud.querySelector(".rp-coins").innerHTML = "\u{1F4B0} " + P2.gold + " &nbsp; \u2726 " + (S.sparks || 0) + (P2.reg ? " &nbsp; \u{1F3C5} " + P2.gp : "");
       const cnt = (ids) => P2.inv.filter((x) => x.k === "use" && ids.includes(x.id)).reduce((a, x) => a + x.q, 0);
       if (B.hp) {
         B.hp.querySelector(".q").textContent = cnt(["hp1", "hp2", "hp3"]);
@@ -58112,7 +58112,7 @@ ${candidateLine}`;
     }
     const sheet = o.sheet, hide = o.hide;
     const itemStats = (it) => {
-      if (it.k === "mat") return "<p>\u041C\u0430\u0442\u0435\u0440\u0456\u0430\u043B. \u0426\u0456\u043D\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0443: " + itemValue(it) + " \u{1FA99}</p>";
+      if (it.k === "mat") return "<p>\u041C\u0430\u0442\u0435\u0440\u0456\u0430\u043B. \u0426\u0456\u043D\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0443: " + itemValue(it) + " \u{1F4B0}</p>";
       if (it.k === "use") {
         const c = CONSUMABLES[it.id];
         return "<p>" + (c.heal ? "\u0412\u0456\u0434\u043D\u043E\u0432\u043B\u044E\u0454 " + (c.heal > 5e3 ? "\u0443\u0441\u0435" : c.heal) + " \u0437\u0434\u043E\u0440\u043E\u0432'\u044F. " : "") + (c.mana ? "\u0412\u0456\u0434\u043D\u043E\u0432\u043B\u044E\u0454 " + (c.mana > 5e3 ? "\u0432\u0441\u044E" : c.mana) + " \u043C\u0430\u043D\u0438." : "") + "</p>";
@@ -58172,7 +58172,7 @@ ${candidateLine}`;
         }).join("") + "</div>";
         if (sel) {
           const it = sel.it;
-          h += '<div class="rp-detail"><h4 style="color:' + itemColor(it) + '">' + itemIcon(it) + " " + esc3(itemName(it)) + (it.q > 1 ? " \xD7" + it.q : "") + "</h4>" + itemStats(it) + (!sel.slot && it.k !== "mat" && it.k !== "use" && canEquip(it) ? compareTo(it) : "") + '<div class="rp-row">' + (sel.slot ? '<button class="gm-btn" data-a="unequip">\u0417\u043D\u044F\u0442\u0438</button>' : "") + (!sel.slot && it.k !== "mat" && it.k !== "use" && canEquip(it) ? '<button class="gm-btn primary" data-a="equip">\u041E\u0434\u044F\u0433\u043D\u0443\u0442\u0438</button>' : "") + (it.k === "use" ? '<button class="gm-btn primary" data-a="use">\u0412\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u0430\u0442\u0438</button>' : "") + (mode === "sell" && !sel.slot ? '<button class="gm-btn primary" data-a="sell">\u041F\u0440\u043E\u0434\u0430\u0442\u0438 \u0437\u0430 ' + itemValue(it) + " \u{1FA99}</button>" : "") + (!sel.slot && mode !== "sell" ? '<button class="gm-btn ghost" data-a="drop">\u0412\u0438\u043A\u0438\u043D\u0443\u0442\u0438</button>' : "") + "</div></div>";
+          h += '<div class="rp-detail"><h4 style="color:' + itemColor(it) + '">' + itemIcon(it) + " " + esc3(itemName(it)) + (it.q > 1 ? " \xD7" + it.q : "") + "</h4>" + itemStats(it) + (!sel.slot && it.k !== "mat" && it.k !== "use" && canEquip(it) ? compareTo(it) : "") + '<div class="rp-row">' + (sel.slot ? '<button class="gm-btn" data-a="unequip">\u0417\u043D\u044F\u0442\u0438</button>' : "") + (!sel.slot && it.k !== "mat" && it.k !== "use" && canEquip(it) ? '<button class="gm-btn primary" data-a="equip">\u041E\u0434\u044F\u0433\u043D\u0443\u0442\u0438</button>' : "") + (it.k === "use" ? '<button class="gm-btn primary" data-a="use">\u0412\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u0430\u0442\u0438</button>' : "") + (mode === "sell" && !sel.slot ? '<button class="gm-btn primary" data-a="sell">\u041F\u0440\u043E\u0434\u0430\u0442\u0438 \u0437\u0430 ' + itemValue(it) + " \u{1F4B0}</button>" : "") + (!sel.slot && mode !== "sell" ? '<button class="gm-btn ghost" data-a="drop">\u0412\u0438\u043A\u0438\u043D\u0443\u0442\u0438</button>' : "") + "</div></div>";
         }
         h += '<p style="margin:0;font-size:12px;opacity:.7">\u0420\u044E\u043A\u0437\u0430\u043A ' + P2.inv.length + '/40 \xB7 \u0442\u043E\u0440\u043A\u043D\u0456\u0442\u044C\u0441\u044F \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u0430</p><div class="rp-grid">' + P2.inv.map((it, i) => '<div class="rp-tile' + (sel && sel.it === it ? " sel" : "") + '" data-i="' + i + '" style="border-color:' + itemColor(it) + '">' + itemIcon(it) + (it.q > 1 ? "<small>" + it.q + "</small>" : "") + (it.plus ? '<span class="pl">+' + it.plus + "</span>" : "") + "</div>").join("") + "</div>";
         sheet({ title: mode === "sell" ? "\u041F\u0440\u043E\u0434\u0430\u0436 \xB7 \u041A\u0440\u0430\u043C\u043D\u0438\u0446\u044F" : "\u0420\u044E\u043A\u0437\u0430\u043A \u0456 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F", html: h, buttons: [{ label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: hide }], after: (s) => {
@@ -58212,7 +58212,7 @@ ${candidateLine}`;
               const v = itemValue(it);
               P2.gold += v;
               P2.inv.splice(P2.inv.indexOf(it), 1);
-              toast("\u041F\u0440\u043E\u0434\u0430\u043D\u043E \u0437\u0430 " + v + " \u{1FA99}");
+              toast("\u041F\u0440\u043E\u0434\u0430\u043D\u043E \u0437\u0430 " + v + " \u{1F4B0}");
               sel = null;
             } else if (a === "drop") {
               P2.inv.splice(P2.inv.indexOf(it), 1);
@@ -58245,7 +58245,7 @@ ${candidateLine}`;
           if (g.type === "eq") g.price = Math.round((25 + g.t * 55) * (1 + g.t * 0.6));
         });
         const S = get();
-        const h = '<div class="rp-tabs"><button class="on">\u041A\u0443\u043F\u0438\u0442\u0438</button><button data-t="sell">\u041F\u0440\u043E\u0434\u0430\u0442\u0438</button></div><p style="font-size:12px;opacity:.75;margin:0 0 6px">\u0423 \u0432\u0430\u0441: \u{1FA99} ' + P2.gold + " \xB7 \u2726 " + (S.sparks || 0) + '. \u041A\u0440\u0430\u0449\u0456 \u0442\u043E\u0432\u0430\u0440\u0438 \u0432\u0456\u0434\u043A\u0440\u0438\u0432\u0430\u044E\u0442\u044C\u0441\u044F \u0437 \u0432\u0438\u0449\u0438\u043C \u0440\u0430\u043D\u0433\u043E\u043C.</p><div class="rp-shop">' + goods.map((g, i) => "<div><i>" + g.i + "</i><span>" + esc3(g.n) + '</span><button data-b="' + i + '"' + ((g.sparks ? (S.sparks || 0) < g.sparks : P2.gold < g.price) ? " disabled" : "") + ">" + (g.sparks ? g.sparks + " \u2726" : g.price + " \u{1FA99}") + "</button></div>").join("") + "</div>";
+        const h = '<div class="rp-tabs"><button class="on">\u041A\u0443\u043F\u0438\u0442\u0438</button><button data-t="sell">\u041F\u0440\u043E\u0434\u0430\u0442\u0438</button></div><p style="font-size:12px;opacity:.75;margin:0 0 6px">\u0423 \u0432\u0430\u0441: \u{1F4B0} ' + P2.gold + " \xB7 \u2726 " + (S.sparks || 0) + '. \u041A\u0440\u0430\u0449\u0456 \u0442\u043E\u0432\u0430\u0440\u0438 \u0432\u0456\u0434\u043A\u0440\u0438\u0432\u0430\u044E\u0442\u044C\u0441\u044F \u0437 \u0432\u0438\u0449\u0438\u043C \u0440\u0430\u043D\u0433\u043E\u043C.</p><div class="rp-shop">' + goods.map((g, i) => "<div><i>" + g.i + "</i><span>" + esc3(g.n) + '</span><button data-b="' + i + '"' + ((g.sparks ? (S.sparks || 0) < g.sparks : P2.gold < g.price) ? " disabled" : "") + ">" + (g.sparks ? g.sparks + " \u2726" : g.price + " \u{1F4B0}") + "</button></div>").join("") + "</div>";
         sheet({ title: "\u041A\u0440\u0430\u043C\u043D\u0438\u0446\u044F \u041E\u0440\u0435\u0441\u0442\u0430", html: h, buttons: [{ label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: hide }], after: (s) => {
           s.querySelector("[data-t]").onclick = () => {
             tab = "sell";
@@ -58287,7 +58287,7 @@ ${candidateLine}`;
           const p = it.plus || 0;
           const mat2 = MAT_BY_TIER[Math.min(4, it.tier + Math.floor(p / 4))];
           cost = { gold: Math.round((30 + it.tier * 45) * (p + 1) * (1 + p * 0.2)), mat: mat2, q: 1 + Math.floor(p / 2), ch: p < 4 ? 1 : [0, 0, 0, 0, 0.85, 0.7, 0.55, 0.4, 0.3, 0.2][p] || 0.15 };
-          h += '<div class="rp-detail"><h4 style="color:' + itemColor(it) + '">' + it.i + " " + esc3(itemName(it)) + "</h4>" + itemStats(it) + (p >= 10 ? "<p>\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430 \u0437\u0430\u0442\u043E\u0447\u043A\u0430.</p>" : '<div style="margin-top:6px">\u0426\u0456\u043D\u0430: <b>' + cost.gold + " \u{1FA99}</b> + " + MATERIALS[cost.mat].i + " " + MATERIALS[cost.mat].n + " \xD7" + cost.q + " (\u0454 " + countItem(P2, cost.mat) + ") \xB7 \u0448\u0430\u043D\u0441 " + Math.round(cost.ch * 100) + '%</div><div class="rp-row"><button class="gm-btn primary" data-up="1">\u0417\u0430\u0442\u043E\u0447\u0438\u0442\u0438 \u0434\u043E +' + (p + 1) + "</button></div>") + "</div>";
+          h += '<div class="rp-detail"><h4 style="color:' + itemColor(it) + '">' + it.i + " " + esc3(itemName(it)) + "</h4>" + itemStats(it) + (p >= 10 ? "<p>\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430 \u0437\u0430\u0442\u043E\u0447\u043A\u0430.</p>" : '<div style="margin-top:6px">\u0426\u0456\u043D\u0430: <b>' + cost.gold + " \u{1F4B0}</b> + " + MATERIALS[cost.mat].i + " " + MATERIALS[cost.mat].n + " \xD7" + cost.q + " (\u0454 " + countItem(P2, cost.mat) + ") \xB7 \u0448\u0430\u043D\u0441 " + Math.round(cost.ch * 100) + '%</div><div class="rp-row"><button class="gm-btn primary" data-up="1">\u0417\u0430\u0442\u043E\u0447\u0438\u0442\u0438 \u0434\u043E +' + (p + 1) + "</button></div>") + "</div>";
         }
         sheet({ title: "\u041A\u0443\u0437\u043D\u044F \u041D\u0430\u0437\u0430\u0440\u0430", html: h, buttons: [{ label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: hide }], after: (s) => {
           s.querySelectorAll("[data-i]").forEach((t) => t.onclick = () => {
@@ -58335,8 +58335,8 @@ ${candidateLine}`;
       const active = P2.quests.map((a) => ({ a, Q: QUEST_POOL.find((q) => q.id === a.id) })).filter((x) => x.Q && !x.Q.giver);
       const prog = (x) => x.Q.type === "collect" ? Math.min(countItem(P2, x.Q.item), x.Q.need) : Math.min(x.a.prog, x.Q.need);
       let h = "<p>\u0410\u043A\u0442\u0438\u0432\u043D\u0456 \u0437\u0430\u0432\u0434\u0430\u043D\u043D\u044F: " + active.length + "/3. \u0412\u0438\u043A\u043E\u043D\u0430\u043D\u0456 \u0437\u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0443 \u0413\u0456\u043B\u044C\u0434\u0456\u0457.</p>";
-      h += active.map((x, i) => '<div class="rp-q"><b>' + esc3(x.Q.n) + "</b> \xB7 " + prog(x) + "/" + x.Q.need + "<div>" + esc3(x.Q.d) + '</div><div class="rw">\u041D\u0430\u0433\u043E\u0440\u043E\u0434\u0430: ' + x.Q.gold + " \u{1FA99} \xB7 " + x.Q.xp + " XP \xB7 " + x.Q.gp + ' \u{1F3C5}</div><button class="gm-btn ghost" data-ab="' + i + '">\u0412\u0456\u0434\u043C\u043E\u0432\u0438\u0442\u0438\u0441\u044F</button></div>').join("");
-      h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u0456</h4>' + (avail.length ? avail.map((q, i) => '<div class="rp-q"><b>' + esc3(q.n) + '</b> <span style="opacity:.6;font-size:11px">\u0440\u0430\u043D\u0433 ' + RANKS[q.rank].r + "</span><div>" + esc3(q.d) + " (" + (q.type === "kill" ? "\u043F\u0435\u0440\u0435\u043C\u043E\u0433\u0442\u0438 " : "\u0437\u0456\u0431\u0440\u0430\u0442\u0438 ") + q.need + ')</div><div class="rw">' + q.gold + " \u{1FA99} \xB7 " + q.xp + " XP \xB7 " + q.gp + ' \u{1F3C5}</div><button class="gm-btn primary" data-ac="' + i + '"' + (active.length >= 3 ? " disabled" : "") + ">\u0412\u0437\u044F\u0442\u0438</button></div>").join("") : "<p>\u041D\u043E\u0432\u0438\u0445 \u0437\u0430\u0432\u0434\u0430\u043D\u044C \u0434\u043B\u044F \u0432\u0430\u0448\u043E\u0433\u043E \u0440\u0430\u043D\u0433\u0443 \u043F\u043E\u043A\u0438 \u043D\u0435\u043C\u0430\u0454.</p>");
+      h += active.map((x, i) => '<div class="rp-q"><b>' + esc3(x.Q.n) + "</b> \xB7 " + prog(x) + "/" + x.Q.need + "<div>" + esc3(x.Q.d) + '</div><div class="rw">\u041D\u0430\u0433\u043E\u0440\u043E\u0434\u0430: ' + x.Q.gold + " \u{1F4B0} \xB7 " + x.Q.xp + " XP \xB7 " + x.Q.gp + ' \u{1F3C5}</div><button class="gm-btn ghost" data-ab="' + i + '">\u0412\u0456\u0434\u043C\u043E\u0432\u0438\u0442\u0438\u0441\u044F</button></div>').join("");
+      h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u0456</h4>' + (avail.length ? avail.map((q, i) => '<div class="rp-q"><b>' + esc3(q.n) + '</b> <span style="opacity:.6;font-size:11px">\u0440\u0430\u043D\u0433 ' + RANKS[q.rank].r + "</span><div>" + esc3(q.d) + " (" + (q.type === "kill" ? "\u043F\u0435\u0440\u0435\u043C\u043E\u0433\u0442\u0438 " : "\u0437\u0456\u0431\u0440\u0430\u0442\u0438 ") + q.need + ')</div><div class="rw">' + q.gold + " \u{1F4B0} \xB7 " + q.xp + " XP \xB7 " + q.gp + ' \u{1F3C5}</div><button class="gm-btn primary" data-ac="' + i + '"' + (active.length >= 3 ? " disabled" : "") + ">\u0412\u0437\u044F\u0442\u0438</button></div>").join("") : "<p>\u041D\u043E\u0432\u0438\u0445 \u0437\u0430\u0432\u0434\u0430\u043D\u044C \u0434\u043B\u044F \u0432\u0430\u0448\u043E\u0433\u043E \u0440\u0430\u043D\u0433\u0443 \u043F\u043E\u043A\u0438 \u043D\u0435\u043C\u0430\u0454.</p>");
       sheet({ title: "\u0414\u043E\u0448\u043A\u0430 \u0437\u0430\u0432\u0434\u0430\u043D\u044C", html: h, buttons: [{ label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: hide }], after: (s) => {
         s.querySelectorAll("[data-ac]").forEach((b) => b.onclick = () => {
           if (P2.quests.filter((a) => {
@@ -58369,7 +58369,7 @@ ${candidateLine}`;
         P2.done[Q.id] = (P2.done[Q.id] || 0) + 1;
         o.combat().gainXp ? o.combat().gainXp(Q.xp) : P2.xp += Q.xp;
         n++;
-        toast("\u2705 \xAB" + Q.n + "\xBB: +" + Q.gold + " \u{1FA99}, +" + Q.xp + " XP, +" + Q.gp + " \u{1F3C5}", "loot");
+        toast("\u2705 \xAB" + Q.n + "\xBB: +" + Q.gold + " \u{1F4B0}, +" + Q.xp + " XP, +" + Q.gp + " \u{1F3C5}", "loot");
         return false;
       });
       save();
@@ -58388,7 +58388,7 @@ ${candidateLine}`;
       const pr = (x) => x.Q.type === "collect" ? Math.min(countItem(P2, x.Q.item), x.Q.need) : Math.min(x.a.prog, x.Q.need);
       let h = '<p class="gm-quote">\xAB' + esc3(line || "\u041C\u0430\u0454\u0442\u0435 \u0445\u0432\u0438\u043B\u0438\u043D\u043A\u0443, \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0435?") + "\xBB</p>";
       if (act.length) h += act.map((x) => '<div class="rp-q"><b>' + esc3(x.Q.n) + "</b> \xB7 " + pr(x) + "/" + x.Q.need + "<div>" + esc3(x.Q.d) + "</div></div>").join("");
-      if (avail.length) h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">\u041F\u0440\u043E\u0445\u0430\u043D\u043D\u044F</h4>' + avail.map((q, i) => '<div class="rp-q"><b>' + esc3(q.n) + "</b><div>" + esc3(q.d) + '</div><div class="rw">' + q.gold + " \u{1FA99} \xB7 " + q.xp + " XP \xB7 " + q.gp + ' \u{1F3C5}</div><button class="gm-btn primary" data-sq="' + i + '"' + (sideN >= 4 ? " disabled" : "") + ">\u0412\u0437\u044F\u0442\u0438\u0441\u044F</button></div>").join("");
+      if (avail.length) h += '<h4 style="margin:12px 0 6px;font-family:Georgia,serif">\u041F\u0440\u043E\u0445\u0430\u043D\u043D\u044F</h4>' + avail.map((q, i) => '<div class="rp-q"><b>' + esc3(q.n) + "</b><div>" + esc3(q.d) + '</div><div class="rw">' + q.gold + " \u{1F4B0} \xB7 " + q.xp + " XP \xB7 " + q.gp + ' \u{1F3C5}</div><button class="gm-btn primary" data-sq="' + i + '"' + (sideN >= 4 ? " disabled" : "") + ">\u0412\u0437\u044F\u0442\u0438\u0441\u044F</button></div>").join("");
       if (!act.length && !avail.length) h += "<p>\u041F\u043E\u043A\u0438 \u0449\u043E \u043D\u0456\u0447\u043E\u0433\u043E \u043D\u0435 \u0442\u0440\u0435\u0431\u0430. \u0414\u044F\u043A\u0443\u044E, \u0449\u043E \u0437\u0430\u0439\u0448\u043B\u0438!</p>";
       if (sideN >= 4 && avail.length) h += '<p class="gm-note">\u041C\u043E\u0436\u043D\u0430 \u043C\u0430\u0442\u0438 \u0434\u043E 4 \u0434\u043E\u0440\u0443\u0447\u0435\u043D\u044C \u0432\u0456\u0434 \u043B\u044E\u0434\u0435\u0439 \u043E\u0434\u043D\u043E\u0447\u0430\u0441\u043D\u043E.</p>';
       const btns = [];
@@ -58422,7 +58422,7 @@ ${candidateLine}`;
         } },
         canRank ? { label: "\u{1F3C5} \u0406\u0441\u043F\u0438\u0442 \u043D\u0430 \u0440\u0430\u043D\u0433 " + N2.r, primary: true, fn: () => rankUp() } : { label: N2 ? "\u{1F3C5} \u0420\u0430\u043D\u0433 " + N2.r + ": \u043F\u043E\u0442\u0440\u0456\u0431\u043D\u043E " + N2.gp + " \u043E\u0447\u043E\u043A \u0456 \u0440\u0456\u0432\u0435\u043D\u044C " + N2.lvl : "\u{1F3C5} \u041D\u0430\u0439\u0432\u0438\u0449\u0438\u0439 \u0440\u0430\u043D\u0433", fn: () => {
         } },
-        { label: "\u{1F501} \u0417\u043C\u0456\u043D\u0438\u0442\u0438 \u043A\u043B\u0430\u0441 (100 \u{1FA99})", fn: () => register(true) },
+        { label: "\u{1F501} \u0417\u043C\u0456\u043D\u0438\u0442\u0438 \u043A\u043B\u0430\u0441 (100 \u{1F4B0})", fn: () => register(true) },
         { label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", ghost: true, fn: hide }
       ] });
     }
@@ -58439,7 +58439,7 @@ ${candidateLine}`;
       let nameDraft = get().heroName || "";
       const render = () => {
         const C = CLASSES[pick2];
-        const h = (change ? "<p>\u0417\u043C\u0456\u043D\u0430 \u043A\u043B\u0430\u0441\u0443 \u043A\u043E\u0448\u0442\u0443\u0454 100 \u{1FA99}. \u0420\u0456\u0432\u0435\u043D\u044C, \u0440\u0430\u043D\u0433 \u0456 \u0440\u0435\u0447\u0456 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u044E\u0442\u044C\u0441\u044F.</p>" : '<p class="gm-quote">\xAB\u041B\u0430\u0441\u043A\u0430\u0432\u043E \u043F\u0440\u043E\u0441\u0438\u043C\u043E \u0434\u043E \u0413\u0456\u043B\u044C\u0434\u0456\u0457 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432! \u0417\u0430\u043F\u043E\u0432\u043D\u0456\u0442\u044C \u043A\u0430\u0440\u0442\u043A\u0443 \u0439 \u043E\u0431\u0435\u0440\u0456\u0442\u044C \u0441\u0432\u0456\u0439 \u0448\u043B\u044F\u0445.\xBB</p><p style="font-size:12px;opacity:.8">\u0412\u0438 \u0449\u043E\u0439\u043D\u043E \u043E\u043F\u0438\u043D\u0438\u043B\u0438\u0441\u044F \u0432 \u0446\u044C\u043E\u043C\u0443 \u0441\u0432\u0456\u0442\u0456. \u0413\u0456\u043B\u044C\u0434\u0456\u044F \u0432\u0438\u0434\u0430\u0441\u0442\u044C \u043A\u0430\u0440\u0442\u043A\u0443 \u0440\u0430\u043D\u0433\u0443 F, \u0441\u0442\u0430\u0440\u0442\u043E\u0432\u0443 \u0437\u0431\u0440\u043E\u044E \u0442\u0430 \u0437\u0456\u043B\u043B\u044F.</p>') + '<div class="rp-cls">' + CLASS_ORDER.map((k) => {
+        const h = (change ? "<p>\u0417\u043C\u0456\u043D\u0430 \u043A\u043B\u0430\u0441\u0443 \u043A\u043E\u0448\u0442\u0443\u0454 100 \u{1F4B0}. \u0420\u0456\u0432\u0435\u043D\u044C, \u0440\u0430\u043D\u0433 \u0456 \u0440\u0435\u0447\u0456 \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u044E\u0442\u044C\u0441\u044F.</p>" : '<p class="gm-quote">\xAB\u041B\u0430\u0441\u043A\u0430\u0432\u043E \u043F\u0440\u043E\u0441\u0438\u043C\u043E \u0434\u043E \u0413\u0456\u043B\u044C\u0434\u0456\u0457 \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432! \u0417\u0430\u043F\u043E\u0432\u043D\u0456\u0442\u044C \u043A\u0430\u0440\u0442\u043A\u0443 \u0439 \u043E\u0431\u0435\u0440\u0456\u0442\u044C \u0441\u0432\u0456\u0439 \u0448\u043B\u044F\u0445.\xBB</p><p style="font-size:12px;opacity:.8">\u0412\u0438 \u0449\u043E\u0439\u043D\u043E \u043E\u043F\u0438\u043D\u0438\u043B\u0438\u0441\u044F \u0432 \u0446\u044C\u043E\u043C\u0443 \u0441\u0432\u0456\u0442\u0456. \u0413\u0456\u043B\u044C\u0434\u0456\u044F \u0432\u0438\u0434\u0430\u0441\u0442\u044C \u043A\u0430\u0440\u0442\u043A\u0443 \u0440\u0430\u043D\u0433\u0443 F, \u0441\u0442\u0430\u0440\u0442\u043E\u0432\u0443 \u0437\u0431\u0440\u043E\u044E \u0442\u0430 \u0437\u0456\u043B\u043B\u044F.</p>') + '<div class="rp-cls">' + CLASS_ORDER.map((k) => {
           const c = CLASSES[k];
           return '<button data-c="' + k + '"' + (k === pick2 ? ' class="on"' : "") + "><i>" + c.i + "</i><b>" + c.n + "</b><small>" + esc3(c.d) + "</small></button>";
         }).join("") + "</div>" + (change ? "" : `<label style="display:block;font-size:12px;opacity:.85;margin:4px 0 4px" for="rp-name">\u0406\u043C'\u044F \u0430\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0430 (\u0439\u043E\u0433\u043E \u0431\u0430\u0447\u0438\u0442\u0438\u043C\u0443\u0442\u044C \u0456\u043D\u0448\u0456 \u0433\u0440\u0430\u0432\u0446\u0456)</label><input id="rp-name" maxlength="20" autocomplete="off" style="width:100%;box-sizing:border-box;border-radius:10px;border:1px solid rgba(255,230,180,.3);background:rgba(255,255,255,.06);color:#fff;padding:9px 11px;font:14px inherit;margin-bottom:10px" value="` + esc3(nameDraft) + '" placeholder="\u041D\u0430\u043F\u0440.: \u042F\u0440\u043E\u0441\u043B\u0430\u0432">') + '<div class="rp-detail"><h4>' + C.i + " " + C.n + '</h4><div style="font-size:12px">\u0421\u0438\u043B\u0430 ' + C.base.str + " \xB7 \u0421\u043F\u0440\u0438\u0442\u043D\u0456\u0441\u0442\u044C " + C.base.agi + " \xB7 \u0406\u043D\u0442\u0435\u043B\u0435\u043A\u0442 " + C.base.int + " \xB7 \u0416\u0438\u0432\u0443\u0447\u0456\u0441\u0442\u044C " + C.base.vit + '</div><div style="margin-top:6px">' + C.skills.map((s) => s.i + " " + s.n).join(" &nbsp;\xB7&nbsp; ") + "</div></div>";
@@ -58501,7 +58501,7 @@ ${candidateLine}`;
     function tavern() {
       const rumors = ["\u041A\u0430\u0436\u0443\u0442\u044C, \u041A\u043E\u0440\u043E\u043B\u044C \u0441\u043B\u0438\u0437\u0456\u0432 \u043D\u043E\u0441\u0438\u0442\u044C \u0441\u043F\u0440\u0430\u0432\u0436\u043D\u044E \u0437\u043E\u043B\u043E\u0442\u0443 \u043A\u043E\u0440\u043E\u043D\u0443.", "\u0412\u0430\u0442\u0430\u0436\u043E\u043A \u0433\u043E\u0431\u043B\u0456\u043D\u0456\u0432 \u0431'\u0454\u0442\u044C\u0441\u044F \u0449\u0438\u0442\u043E\u043C \u2014 \u0437\u0430\u0445\u043E\u0434\u044C\u0442\u0435 \u0437\u0431\u043E\u043A\u0443.", "\u0412\u043E\u0436\u0434\u044C \u043E\u0440\u043A\u0456\u0432 \u043B\u044E\u0442\u0443\u0454, \u043A\u043E\u043B\u0438 \u043F\u043E\u0440\u0430\u043D\u0435\u043D\u0438\u0439. \u0422\u0440\u0438\u043C\u0430\u0439\u0442\u0435 \u0437\u0456\u043B\u043B\u044F \u043D\u0430\u043F\u043E\u0433\u043E\u0442\u043E\u0432\u0456.", "\u041B\u0438\u0447 \u043F\u0456\u0434\u0456\u0439\u043C\u0430\u0454 \u043C\u0435\u0440\u0442\u0432\u0438\u0445. \u0421\u043F\u0435\u0440\u0448\u0443 \u0440\u043E\u0437\u0431\u0435\u0440\u0456\u0442\u044C\u0441\u044F \u0437\u0456 \u0441\u043A\u0435\u043B\u0435\u0442\u0430\u043C\u0438.", "\u041A\u043B\u0456\u0440\u0438\u043A\u0438 \u0439 \u043F\u0430\u043B\u0430\u0434\u0438\u043D\u0438 \u0431'\u044E\u0442\u044C \u043D\u0435\u0436\u0438\u0442\u044C \u0441\u0432\u0456\u0442\u043B\u043E\u043C \u2014 \u0443\u0434\u0432\u0456\u0447\u0456 \u0431\u043E\u043B\u044E\u0447\u0456\u0448\u0435.", "\u0420\u0443\u043D\u0430 \u0434\u043D\u044F \u0437 \u041A\u043E\u043B\u0430 \u0420\u0443\u043D \u0441\u043F\u0440\u0430\u0432\u0434\u0456 \u0434\u0456\u0454 \u0432 \u0431\u043E\u044F\u0445.", "\u041F\u043E\u043A\u0440\u043E\u0432\u0438\u0442\u0435\u043B\u044C \u0456\u0437 \u041F\u0430\u043D\u0442\u0435\u043E\u043D\u0443 \u0434\u043E\u0434\u0430\u0454 +3 \u0434\u043E \u0432\u0430\u0448\u043E\u0457 \u0433\u043E\u043B\u043E\u0432\u043D\u043E\u0457 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438.", "\u0423 \u041F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u0456 \u0410\u0432\u0430\u043D\u0442\u044E\u0440\u0438\u0441\u0442\u0456\u0432 \u0442\u0440\u0438 \u044F\u0440\u0443\u0441\u0438. \u041D\u0430 \u0434\u043D\u0456 \u2014 \u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440, \u0456 \u0439\u043E\u0433\u043E \u0441\u043A\u0440\u0438\u043D\u044F \u043F\u043E\u0432\u043D\u0430 \u0437\u043E\u043B\u043E\u0442\u0430.", "\u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440 \u043F\u0435\u0440\u0435\u0434 \u0440\u0438\u0432\u043A\u043E\u043C \u0440\u0438\u0435 \u043A\u043E\u043F\u0438\u0442\u043E\u043C. \u041F\u043E\u0431\u0430\u0447\u0438\u0442\u0435 \u0447\u0435\u0440\u0432\u043E\u043D\u0443 \u0441\u043C\u0443\u0433\u0443 \u2014 \u0432\u0456\u0434\u0445\u043E\u0434\u044C\u0442\u0435 \u0432\u0431\u0456\u043A!", "\u0427\u0435\u0440\u0432\u043E\u043D\u0435 \u043A\u043E\u043B\u043E \u043F\u0456\u0434 \u0431\u043E\u0441\u043E\u043C \u2014 \u0442\u0456\u043A\u0430\u0439\u0442\u0435 \u0437 \u043D\u044C\u043E\u0433\u043E, \u043F\u043E\u043A\u0438 \u043D\u0435 \u0432\u0434\u0430\u0440\u0438\u043B\u043E.", "\u041A\u0456\u0441\u0442\u044F\u043D\u0438\u0439 \u043B\u0438\u0446\u0430\u0440 \u041C\u043E\u0440\u0435\u043D \u043F\u0456\u0434\u0456\u0439\u043C\u0430\u0454 \u0441\u043A\u0435\u043B\u0435\u0442\u0456\u0432. \u0420\u043E\u0437\u0431\u0435\u0440\u0456\u0442\u044C\u0441\u044F \u0441\u043F\u0435\u0440\u0448\u0443 \u0437 \u043D\u0438\u043C\u0438."];
       sheet({ title: "\u0422\u0430\u0432\u0435\u0440\u043D\u0430 \xAB\u041B\u0438\u043C\u043E\u043D\u043D\u0438\u0439 \u0414\u0440\u0430\u043A\u043E\u043D\xBB", html: `<p>\u0422\u0435\u043F\u043B\u043E, \u043F\u0430\u0445\u043D\u0435 \u0441\u043C\u0430\u0436\u0435\u043D\u0438\u043C \u043C'\u044F\u0441\u043E\u043C \u0456 \u043C\u0435\u0434\u043E\u0432\u0443\u0445\u043E\u044E. \u0422\u0443\u0442 \u043C\u043E\u0436\u043D\u0430 \u043F\u0435\u0440\u0435\u043F\u043E\u0447\u0438\u0442\u0438 \u0439 \u043F\u043E\u0447\u0443\u0442\u0438 \u0447\u0443\u0442\u043A\u0438.</p><p class="gm-quote">\xAB` + rumors[Math.floor(Math.random() * rumors.length)] + "\xBB</p>", buttons: [
-        { label: "\u{1F6CF}\uFE0F \u0412\u0456\u0434\u043F\u043E\u0447\u0438\u0442\u0438 (10 \u{1FA99}) \u2014 \u043F\u043E\u0432\u043D\u0435 \u0432\u0456\u0434\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u044F", primary: true, fn: () => {
+        { label: "\u{1F6CF}\uFE0F \u0412\u0456\u0434\u043F\u043E\u0447\u0438\u0442\u0438 (10 \u{1F4B0}) \u2014 \u043F\u043E\u0432\u043D\u0435 \u0432\u0456\u0434\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u044F", primary: true, fn: () => {
           if (P2.gold < 10) {
             toast("\u041D\u0435 \u0432\u0438\u0441\u0442\u0430\u0447\u0430\u0454 \u0437\u043E\u043B\u043E\u0442\u0430");
             return;
@@ -58552,7 +58552,7 @@ ${candidateLine}`;
       ] });
     }
     function death(src, lost, done) {
-      sheet({ title: "\u0412\u0438 \u0437\u043D\u0435\u043F\u0440\u0438\u0442\u043E\u043C\u043D\u0456\u043B\u0438", html: "<p>" + esc3(src || "\u041C\u043E\u043D\u0441\u0442\u0440") + ' \u0432\u0438\u044F\u0432\u0438\u0432\u0441\u044F \u0441\u0438\u043B\u044C\u043D\u0456\u0448\u0438\u043C. \u0412\u0430\u0440\u0442\u043E\u0432\u0456 \u043F\u0440\u0438\u043D\u0435\u0441\u043B\u0438 \u0432\u0430\u0441 \u0434\u043E \u0413\u0456\u043B\u044C\u0434\u0456\u0457, \u0430 \u0446\u0456\u043B\u0438\u0442\u0435\u043B\u0456 \u043F\u043E\u0441\u0442\u0430\u0432\u0438\u043B\u0438 \u043D\u0430 \u043D\u043E\u0433\u0438.</p><p class="gm-note">\u0412\u0442\u0440\u0430\u0447\u0435\u043D\u043E ' + lost + " \u{1FA99}. \u041F\u043E\u0440\u0430\u0434\u0430: \u0431\u0435\u0440\u0456\u0442\u044C \u0431\u0456\u043B\u044C\u0448\u0435 \u0437\u0456\u043B\u043B\u044F \u0432 \u041A\u0440\u0430\u043C\u043D\u0438\u0446\u0456 \u0439 \u0437\u0430\u0442\u043E\u0447\u0443\u0439\u0442\u0435 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F \u0432 \u041A\u0443\u0437\u043D\u0456.</p>", buttons: [{ label: "\u041F\u043E\u0432\u0435\u0440\u043D\u0443\u0442\u0438\u0441\u044F \u0434\u043E \u0441\u043F\u0440\u0430\u0432", primary: true, fn: () => {
+      sheet({ title: "\u0412\u0438 \u0437\u043D\u0435\u043F\u0440\u0438\u0442\u043E\u043C\u043D\u0456\u043B\u0438", html: "<p>" + esc3(src || "\u041C\u043E\u043D\u0441\u0442\u0440") + ' \u0432\u0438\u044F\u0432\u0438\u0432\u0441\u044F \u0441\u0438\u043B\u044C\u043D\u0456\u0448\u0438\u043C. \u0412\u0430\u0440\u0442\u043E\u0432\u0456 \u043F\u0440\u0438\u043D\u0435\u0441\u043B\u0438 \u0432\u0430\u0441 \u0434\u043E \u0413\u0456\u043B\u044C\u0434\u0456\u0457, \u0430 \u0446\u0456\u043B\u0438\u0442\u0435\u043B\u0456 \u043F\u043E\u0441\u0442\u0430\u0432\u0438\u043B\u0438 \u043D\u0430 \u043D\u043E\u0433\u0438.</p><p class="gm-note">\u0412\u0442\u0440\u0430\u0447\u0435\u043D\u043E ' + lost + " \u{1F4B0}. \u041F\u043E\u0440\u0430\u0434\u0430: \u0431\u0435\u0440\u0456\u0442\u044C \u0431\u0456\u043B\u044C\u0448\u0435 \u0437\u0456\u043B\u043B\u044F \u0432 \u041A\u0440\u0430\u043C\u043D\u0438\u0446\u0456 \u0439 \u0437\u0430\u0442\u043E\u0447\u0443\u0439\u0442\u0435 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F \u0432 \u041A\u0443\u0437\u043D\u0456.</p>", buttons: [{ label: "\u041F\u043E\u0432\u0435\u0440\u043D\u0443\u0442\u0438\u0441\u044F \u0434\u043E \u0441\u043F\u0440\u0430\u0432", primary: true, fn: () => {
         hide();
         done();
       } }] });
@@ -58878,7 +58878,7 @@ ${candidateLine}`;
     cornflower: { n: "\u0421\u0438\u043D\u044F \u0432\u043E\u043B\u043E\u0448\u043A\u0430", i: "\u{1F4A0}", price: 8 },
     mushroom: { n: "\u041B\u0456\u0441\u043E\u0432\u0438\u0439 \u0433\u0440\u0438\u0431", i: "\u{1F344}", price: 7 },
     mandrake: { n: "\u041A\u043E\u0440\u0456\u043D\u044C \u043C\u0430\u043D\u0434\u0440\u0430\u0433\u043E\u0440\u0438", i: "\u{1F955}", price: 22 },
-    iron: { n: "\u0417\u0430\u043B\u0456\u0437\u043D\u0430 \u0440\u0443\u0434\u0430", i: "\u{1FAA8}", price: 10 },
+    iron: { n: "\u0417\u0430\u043B\u0456\u0437\u043D\u0430 \u0440\u0443\u0434\u0430", i: "\u26F0\uFE0F", price: 10 },
     silver: { n: "\u0421\u0440\u0456\u0431\u043D\u0430 \u0440\u0443\u0434\u0430", i: "\u{1F948}", price: 24 },
     moonstone: { n: "\u041C\u0456\u0441\u044F\u0447\u043D\u0438\u0439 \u043A\u0430\u043C\u0456\u043D\u044C", i: "\u{1F319}", price: 55 },
     // fish
@@ -58887,7 +58887,7 @@ ${candidateLine}`;
     carp: { n: "\u041A\u043E\u0440\u043E\u043F", i: "\u{1F41F}", price: 12 },
     pike: { n: "\u0429\u0443\u043A\u0430", i: "\u{1F40A}", price: 20 },
     catfish: { n: "\u0421\u043E\u043C", i: "\u{1F40B}", price: 34 },
-    eel: { n: "\u041D\u0456\u0447\u043D\u0438\u0439 \u0432\u0443\u0433\u043E\u0440", i: "\u{1FAB1}", price: 28 },
+    eel: { n: "\u041D\u0456\u0447\u043D\u0438\u0439 \u0432\u0443\u0433\u043E\u0440", i: "\u{1F41B}", price: 28 },
     goldfish: { n: "\u0417\u043E\u043B\u043E\u0442\u0430 \u0440\u0438\u0431\u043A\u0430", i: "\u2728", price: 150 },
     boot: { n: "\u0421\u0442\u0430\u0440\u0438\u0439 \u0447\u043E\u0431\u0456\u0442", i: "\u{1F97E}", price: 1 }
   };
@@ -58920,7 +58920,7 @@ ${candidateLine}`;
     { id: "r_mp1", n: "\u041C\u0430\u043B\u0435 \u0437\u0456\u043B\u043B\u044F \u043C\u0430\u043D\u0438", st: "alchemy", need: [["cornflower", 2]], out: { k: "use", id: "mp1", q: 2 } },
     { id: "r_mp2", n: "\u0417\u0456\u043B\u043B\u044F \u043C\u0430\u043D\u0438", st: "alchemy", need: [["cornflower", 3], ["moonstone", 1]], out: { k: "use", id: "mp2", q: 2 } },
     { id: "r_rage", n: "\u0412\u0456\u0434\u0432\u0430\u0440 \u043B\u044E\u0442\u0456 (+15% \u0448\u043A\u043E\u0434\u0438, 5 \u0445\u0432)", st: "alchemy", need: [["mandrake", 1], ["tusk", 1]], out: { k: "buff", id: "rage", dur: 300, buff: { atk: 0.15 }, i: "\u{1F525}" } },
-    { id: "r_skin", n: "\u041A\u0430\u043C'\u044F\u043D\u0430 \u0448\u043A\u0456\u0440\u0430 (\u221215% \u0448\u043A\u043E\u0434\u0438, 5 \u0445\u0432)", st: "alchemy", need: [["iron", 2], ["mushroom", 2]], out: { k: "buff", id: "skin", dur: 300, buff: { dr: 0.15 }, i: "\u{1FAA8}" } },
+    { id: "r_skin", n: "\u041A\u0430\u043C'\u044F\u043D\u0430 \u0448\u043A\u0456\u0440\u0430 (\u221215% \u0448\u043A\u043E\u0434\u0438, 5 \u0445\u0432)", st: "alchemy", need: [["iron", 2], ["mushroom", 2]], out: { k: "buff", id: "skin", dur: 300, buff: { dr: 0.15 }, i: "\u26F0\uFE0F" } },
     { id: "r_soup", n: "\u0420\u0438\u0431\u043D\u0430 \u044E\u0448\u043A\u0430 (\u043B\u0456\u043A\u0443\u0454 \u043F\u043E\u0441\u0442\u0443\u043F\u043E\u0432\u043E)", st: "cook", need: [["roach", 2], ["mushroom", 1]], out: { k: "buff", id: "soup", dur: 120, regen: 0.012, i: "\u{1F372}" } },
     { id: "r_pike", n: "\u0417\u0430\u043F\u0435\u0447\u0435\u043D\u0430 \u0449\u0443\u043A\u0430 (+10% \u043A\u0440\u0438\u0442\u0443, 5 \u0445\u0432)", st: "cook", need: [["pike", 1], ["chamomile", 1]], out: { k: "buff", id: "pike", dur: 300, buff: { crit: 10 }, i: "\u{1F37D}\uFE0F" } },
     { id: "r_ring", n: "\u0421\u0440\u0456\u0431\u043D\u0430 \u043E\u0431\u0440\u0443\u0447\u043A\u0430", st: "forge", need: [["silver", 3], ["pearl", 1]], out: { k: "eq", kind: "ring", tier: 2, rar: 2 } },
@@ -58936,14 +58936,14 @@ ${candidateLine}`;
       { n: "\u0415\u043B\u044C\u0444\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043B\u0443\u043A \u0421\u0432\u0456\u0442\u0430\u043D\u043A\u0443", i: "\u{1F3F9}", kind: "bow", tier: 2, rar: 2, bonus: { agi: 8, crit: 4 }, price: 520, rep: 1 },
       { n: "\u041F\u043B\u0430\u0449 \u043B\u0456\u0441\u043E\u0432\u043E\u0433\u043E \u0441\u043B\u0456\u0434\u043E\u043F\u0438\u0442\u0430", i: "\u{1F9E5}", kind: "armor", tier: 2, rar: 2, bonus: { agi: 6 }, price: 480, rep: 1 },
       { n: "\u041B\u0443\u043A \u0421\u0440\u0456\u0431\u043B\u044F\u0441\u0442\u043E\u0433\u043E \u041C\u0456\u0441\u044F\u0446\u044F", i: "\u{1F319}", kind: "bow", tier: 3, rar: 3, bonus: { agi: 14, crit: 8 }, price: 1600, rep: 3 },
-      { n: "\u041F\u043E\u0441\u043E\u0445 \u0437\u0456 \u0421\u0432\u0456\u0442\u043B\u043E\u0433\u043E \u042F\u0441\u0435\u043D\u0430", i: "\u{1FA84}", kind: "staff", tier: 3, rar: 3, bonus: { int: 14, mp: 60 }, price: 1600, rep: 3 },
+      { n: "\u041F\u043E\u0441\u043E\u0445 \u0437\u0456 \u0421\u0432\u0456\u0442\u043B\u043E\u0433\u043E \u042F\u0441\u0435\u043D\u0430", i: "\u2728", kind: "staff", tier: 3, rar: 3, bonus: { int: 14, mp: 60 }, price: 1600, rep: 3 },
       { mat: "cornflower", q: 5, price: 45 },
       { mat: "chamomile", q: 5, price: 32 }
     ] },
     dwarves: { n: "\u041A\u0443\u0437\u043D\u044F \u0414\u0432\u0430\u0434\u0456\u043D\u0430 \xB7 \u0417\u0430\u043B\u0456\u0437\u043D\u0438\u0439 \u041A\u0440\u044F\u0436", faction: "dwarves", goods: [
-      { n: "\u0421\u043E\u043A\u0438\u0440\u0430 \u0437 \u0433\u043D\u043E\u043C\u0441\u044C\u043A\u043E\u0457 \u0441\u0442\u0430\u043B\u0456", i: "\u{1FA93}", kind: "axe2", tier: 2, rar: 2, bonus: { str: 8 }, price: 560, rep: 1 },
+      { n: "\u0421\u043E\u043A\u0438\u0440\u0430 \u0437 \u0433\u043D\u043E\u043C\u0441\u044C\u043A\u043E\u0457 \u0441\u0442\u0430\u043B\u0456", i: "\u2692\uFE0F", kind: "axe2", tier: 2, rar: 2, bonus: { str: 8 }, price: 560, rep: 1 },
       { n: "\u0413\u043D\u043E\u043C\u0441\u044C\u043A\u0438\u0439 \u0449\u0438\u0442-\u0431\u0440\u0430\u043C\u0430", i: "\u{1F6E1}\uFE0F", kind: "shield", tier: 2, rar: 2, bonus: { vit: 8, hp: 80 }, price: 520, rep: 1 },
-      { n: "\u041B\u0430\u0442\u0438 \u0417\u0430\u043B\u0456\u0437\u043D\u043E\u0431\u043E\u0440\u043E\u0434\u0438\u0445", i: "\u{1F9BA}", kind: "armor", tier: 3, rar: 3, bonus: { vit: 14, hp: 160 }, price: 1700, rep: 3 },
+      { n: "\u041B\u0430\u0442\u0438 \u0417\u0430\u043B\u0456\u0437\u043D\u043E\u0431\u043E\u0440\u043E\u0434\u0438\u0445", i: "\u{1F3BD}", kind: "armor", tier: 3, rar: 3, bonus: { vit: 14, hp: 160 }, price: 1700, rep: 3 },
       { n: "\u041C\u043E\u043B\u043E\u0442 \u041F\u0440\u0435\u0434\u043A\u0456\u0432", i: "\u{1F528}", kind: "mace", tier: 3, rar: 3, bonus: { str: 12, vit: 6 }, price: 1700, rep: 3 },
       { mat: "iron", q: 5, price: 60 },
       { mat: "silver", q: 2, price: 70 }
@@ -59084,7 +59084,7 @@ ${candidateLine}`;
     fishwife: { s: { t: "\u0420\u0438\u0431\u0430 \u0441\u0432\u0456\u0436\u0430, \u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456\u0448\u043D\u044F! \u0427\u0438 \u043C\u043E\u0436\u0435 \u043F\u0440\u043E\u0434\u0430\u0454\u0442\u0435?", a: [{ t: "\u041F\u043E\u043A\u0430\u0436\u0438 \u0442\u043E\u0432\u0430\u0440.", fx: { shop: "fishing" } }, { t: "\u041F\u0440\u043E\u0434\u0430\u0442\u0438 \u0440\u0438\u0431\u0443.", fx: { sellFish: true } }, { t: "\u0411\u0443\u0432\u0430\u0439\u0442\u0435.", go: "end" }] } },
     bard: {
       s: { t: "\u0417\u0430\u0441\u043F\u0456\u0432\u0430\u0442\u0438 \u0431\u0430\u043B\u0430\u0434\u0443?", a: [{ t: "\u041F\u0440\u043E \u0422\u0438\u0442\u0430\u043D\u0430!", go: "titan" }, { t: "\u041F\u0440\u043E \u043A\u043E\u0445\u0430\u043D\u043D\u044F.", go: "love" }, { t: "\u0406\u043D\u0448\u0438\u043C \u0440\u0430\u0437\u043E\u043C.", go: "end" }] },
-      titan: { t: "\xAB\u0412\u0441\u0442\u0430\u0432 \u0422\u0438\u0442\u0430\u043D \u0456\u0437 \u043A\u0430\u043C\u0435\u043D\u044E, \u0433\u043E\u0440\u0438 \u0432 \u043D\u0456\u043C \u2014 \u043A\u0456\u0441\u0442\u043A\u0438\u2026 \u0425\u0442\u043E \u043F\u0456\u0434\u0435 \u0434\u043E \u0412\u0438\u0441\u0435\u0439, \u043D\u0435 \u043F\u043E\u0432\u0435\u0440\u043D\u0435 \u043D\u0456 \u0440\u0443\u043A\u0438\u2026\xBB \u041D\u0443 \u044F\u043A?", a: [{ t: "\u041C\u043E\u0442\u043E\u0440\u043E\u0448\u043D\u043E! (\u0434\u0430\u0442\u0438 5 \u{1FA99})", fx: { gold: -5, say: "\u0429\u0435\u0434\u0440\u0438\u0439 \u0441\u043B\u0443\u0445\u0430\u0447!" } }, { t: "\u041A\u0440\u0430\u0449\u0435 \u043F\u0440\u043E \u043A\u043E\u0445\u0430\u043D\u043D\u044F.", go: "love" }] },
+      titan: { t: "\xAB\u0412\u0441\u0442\u0430\u0432 \u0422\u0438\u0442\u0430\u043D \u0456\u0437 \u043A\u0430\u043C\u0435\u043D\u044E, \u0433\u043E\u0440\u0438 \u0432 \u043D\u0456\u043C \u2014 \u043A\u0456\u0441\u0442\u043A\u0438\u2026 \u0425\u0442\u043E \u043F\u0456\u0434\u0435 \u0434\u043E \u0412\u0438\u0441\u0435\u0439, \u043D\u0435 \u043F\u043E\u0432\u0435\u0440\u043D\u0435 \u043D\u0456 \u0440\u0443\u043A\u0438\u2026\xBB \u041D\u0443 \u044F\u043A?", a: [{ t: "\u041C\u043E\u0442\u043E\u0440\u043E\u0448\u043D\u043E! (\u0434\u0430\u0442\u0438 5 \u{1F4B0})", fx: { gold: -5, say: "\u0429\u0435\u0434\u0440\u0438\u0439 \u0441\u043B\u0443\u0445\u0430\u0447!" } }, { t: "\u041A\u0440\u0430\u0449\u0435 \u043F\u0440\u043E \u043A\u043E\u0445\u0430\u043D\u043D\u044F.", go: "love" }] },
       love: { t: "\xAB\u0415\u043B\u044C\u0444\u0456\u0439\u043A\u0430 \u0441\u043F\u0456\u0432\u0430\u043B\u0430 \u043D\u0430\u0434 \u0442\u0438\u0445\u0438\u043C \u0441\u0442\u0430\u0432\u043A\u043E\u043C, \u0430 \u0433\u043D\u043E\u043C \u0457\u0439 \u043F\u0440\u0438\u043D\u043E\u0441\u0438\u0432 \u0440\u0443\u0434\u0443\u2026\xBB \u041D\u0443, \u0434\u0430\u043B\u0456 \u0441\u0443\u043C\u043D\u043E.", a: [{ t: "\u0413\u0430\u0440\u043D\u043E.", go: "end" }] }
     }
   };
@@ -59976,19 +59976,27 @@ ${candidateLine}`;
       bHorse.classList.remove("on");
     }
     const _q3 = new Quaternion(), _e = new Euler();
+    const _pq = new Quaternion(), _bq = new Quaternion(), _rq = new Quaternion(), _hq = new Quaternion(), _ax = new Vector3(), _fw = new Vector3();
+    function rotW(b, axis, ang) {
+      b.parent.getWorldQuaternion(_pq);
+      b.getWorldQuaternion(_bq);
+      _rq.setFromAxisAngle(axis, ang).multiply(_bq);
+      b.quaternion.copy(_pq.invert().multiply(_rq));
+      b.updateMatrixWorld(true);
+    }
     function seatPose(hi) {
-      const set = (k, x, y, z) => {
-        const b = findBoneOf(hi, k);
-        if (b) {
-          _e.set(x, y, z);
-          _q3.setFromEuler(_e);
-          b.quaternion.multiply(_q3);
+      hi.obj.updateMatrixWorld(true);
+      hi.obj.getWorldQuaternion(_hq);
+      _ax.set(1, 0, 0).applyQuaternion(_hq);
+      _fw.set(0, 0, 1).applyQuaternion(_hq);
+      [["Left", 1], ["Right", -1]].forEach(([s, sg]) => {
+        const up = findBoneOf(hi, s + "UpLeg"), kn = findBoneOf(hi, s + "Leg");
+        if (up) {
+          rotW(up, _ax, -1.35);
+          rotW(up, _fw, sg * 0.42);
         }
-      };
-      set("LeftUpLeg", -1.25, 0, -0.45);
-      set("RightUpLeg", -1.25, 0, 0.45);
-      set("LeftLeg", 1.35, 0, 0);
-      set("RightLeg", 1.35, 0, 0);
+        if (kn) rotW(kn, _ax, 1.45);
+      });
     }
     function resetLegs() {
     }
@@ -60336,13 +60344,13 @@ ${candidateLine}`;
       const price = (g) => Math.max(1, Math.round(g.price * (1 - disc)));
       const render = () => {
         const tier = S.faction ? tierOf(L2.rep[S.faction]) : 9;
-        let h = '<p style="font-size:12px;opacity:.75;margin:0 0 6px">\u0423 \u0432\u0430\u0441: \u{1FA99} ' + P2.gold + (S.faction ? " \xB7 " + FACTIONS[S.faction].i + " \xAB" + REP_TIERS[tierOf(L2.rep[S.faction])][1] + "\xBB (" + L2.rep[S.faction] + ")" : "") + (disc ? " \xB7 \u0437\u043D\u0438\u0436\u043A\u0430 " + Math.round(disc * 100) + "%" : "") + "</p>";
+        let h = '<p style="font-size:12px;opacity:.75;margin:0 0 6px">\u0423 \u0432\u0430\u0441: \u{1F4B0} ' + P2.gold + (S.faction ? " \xB7 " + FACTIONS[S.faction].i + " \xAB" + REP_TIERS[tierOf(L2.rep[S.faction])][1] + "\xBB (" + L2.rep[S.faction] + ")" : "") + (disc ? " \xB7 \u0437\u043D\u0438\u0436\u043A\u0430 " + Math.round(disc * 100) + "%" : "") + "</p>";
         h += S.goods.map((g, i) => {
           const nm = g.mat ? MATERIALS[g.mat].i + " " + MATERIALS[g.mat].n + " \xD7" + g.q : g.use ? CONSUMABLES[g.use].i + " " + CONSUMABLES[g.use].n : g.i + " " + g.n;
           const lock = g.rep && tier < g.rep;
           const owned = g.kind === "rod" && L2.rod >= g.rod;
           const extra = g.bonus ? "<br><small>" + Object.entries(g.bonus).map(([k, v]) => "+" + v + " " + (BONUS_N[k] || k)).join(", ") + "</small>" : "";
-          return '<div class="lf-row"><div>' + esc2(nm) + extra + (lock ? "<br><small>\u{1F512} \u043F\u043E\u0442\u0440\u0456\u0431\u043D\u0430 \u0440\u0435\u043F\u0443\u0442\u0430\u0446\u0456\u044F \xAB" + REP_TIERS[g.rep][1] + "\xBB</small>" : "") + '</div><button class="gm-btn' + (lock || owned ? "" : " primary") + '" data-b="' + i + '"' + (lock || owned || P2.gold < price(g) ? " disabled" : "") + ">" + (owned ? "\u0404" : price(g) + " \u{1FA99}") + "</button></div>";
+          return '<div class="lf-row"><div>' + esc2(nm) + extra + (lock ? "<br><small>\u{1F512} \u043F\u043E\u0442\u0440\u0456\u0431\u043D\u0430 \u0440\u0435\u043F\u0443\u0442\u0430\u0446\u0456\u044F \xAB" + REP_TIERS[g.rep][1] + "\xBB</small>" : "") + '</div><button class="gm-btn' + (lock || owned ? "" : " primary") + '" data-b="' + i + '"' + (lock || owned || P2.gold < price(g) ? " disabled" : "") + ">" + (owned ? "\u0404" : price(g) + " \u{1F4B0}") + "</button></div>";
         }).join("");
         A.sheet({ title: S.n, html: h, buttons: [{ label: "\u041F\u0440\u043E\u0434\u0430\u0442\u0438 \u0440\u0435\u0447\u0456", fn: () => ui.inventory("sell") }, { label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: A.hide }], after: (s) => {
           s.querySelectorAll("[data-b]").forEach((b) => b.onclick = () => {
@@ -60390,7 +60398,7 @@ ${candidateLine}`;
         return;
       }
       P2.gold += gold;
-      ui.toast("\u{1F41F} \u041F\u0440\u043E\u0434\u0430\u043D\u043E " + n + " \u0440\u0438\u0431 \u0437\u0430 " + gold + " \u{1FA99}");
+      ui.toast("\u{1F41F} \u041F\u0440\u043E\u0434\u0430\u043D\u043E " + n + " \u0440\u0438\u0431 \u0437\u0430 " + gold + " \u{1F4B0}");
       sfx("coin");
       save2();
       ui.hud();
@@ -60473,7 +60481,7 @@ ${candidateLine}`;
         if (EV.raidKills >= 2) {
           L2.raids = (L2.raids || 0) + 1;
           P2.gold += 150;
-          ui.toast("\u{1F3C6} \u041D\u0430\u0431\u0456\u0433 \u0432\u0456\u0434\u0431\u0438\u0442\u043E! \u0424\u0435\u0440\u043C\u0435\u0440 \u041F\u0435\u0442\u0440\u043E \u0434\u044F\u043A\u0443\u0454: +150 \u{1FA99}", "big");
+          ui.toast("\u{1F3C6} \u041D\u0430\u0431\u0456\u0433 \u0432\u0456\u0434\u0431\u0438\u0442\u043E! \u0424\u0435\u0440\u043C\u0435\u0440 \u041F\u0435\u0442\u0440\u043E \u0434\u044F\u043A\u0443\u0454: +150 \u{1F4B0}", "big");
           addRep("beasts", 20);
           save2();
           ui.hud();
@@ -60614,7 +60622,7 @@ ${candidateLine}`;
           P2.gold += Q.gold;
           C() && C().gainXp(Q.xp);
           if (Q.rep) addRep(Q.rep[0], Q.rep[1]);
-          ui.toast("\u{1F4DC} \u0414\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F \xAB" + Q.n + "\xBB \u0432\u0438\u043A\u043E\u043D\u0430\u043D\u043E: +" + Q.gold + " \u{1FA99}", "big");
+          ui.toast("\u{1F4DC} \u0414\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F \xAB" + Q.n + "\xBB \u0432\u0438\u043A\u043E\u043D\u0430\u043D\u043E: +" + Q.gold + " \u{1F4B0}", "big");
           sfx("quest");
           ui.hud();
         }
@@ -60805,7 +60813,7 @@ ${candidateLine}`;
       let h = '<div class="lf-tabs">' + T2.map(([k, n]) => '<button class="gm-btn' + (k === tab ? " primary" : "") + '" data-t="' + k + '">' + n + "</button>").join("") + "</div>";
       if (tab === "daily") {
         h += '<p style="opacity:.75;font-size:13px">\u041D\u043E\u0432\u0456 \u0434\u043E\u0440\u0443\u0447\u0435\u043D\u043D\u044F \u0449\u043E\u0434\u043D\u044F. \u041F\u043E\u0433\u043E\u0434\u0430 \u0437\u0430\u0440\u0430\u0437: ' + W_N[W.kind] + "." + (EV.cur ? "<br><b>\u041F\u043E\u0434\u0456\u044F: " + EV_N[EV.cur] + "</b>" : "") + "</p>";
-        h += dailyList().map(({ a, Q }) => '<div class="lf-row"><div style="flex:1"><b>' + (a.done ? "\u2705 " : "") + esc2(Q.n) + "</b><br><small>" + esc2(Q.d) + " \xB7 " + Q.gold + " \u{1FA99}, " + Q.xp + " XP" + (Q.rep ? ", " + FACTIONS[Q.rep[0]].i + "+" + Q.rep[1] : "") + '</small><div class="lf-bar"><i style="width:' + a.prog / Q.need * 100 + '%"></i></div></div><small>' + a.prog + "/" + Q.need + "</small></div>").join("");
+        h += dailyList().map(({ a, Q }) => '<div class="lf-row"><div style="flex:1"><b>' + (a.done ? "\u2705 " : "") + esc2(Q.n) + "</b><br><small>" + esc2(Q.d) + " \xB7 " + Q.gold + " \u{1F4B0}, " + Q.xp + " XP" + (Q.rep ? ", " + FACTIONS[Q.rep[0]].i + "+" + Q.rep[1] : "") + '</small><div class="lf-bar"><i style="width:' + a.prog / Q.need * 100 + '%"></i></div></div><small>' + a.prog + "/" + Q.need + "</small></div>").join("");
       } else if (tab === "rep") {
         h += Object.entries(FACTIONS).map(([k, f]) => {
           const v = L2.rep[k], t = tierOf(v), nx = REP_TIERS[t + 1];
@@ -60824,7 +60832,7 @@ ${candidateLine}`;
         const got = ACHIEVEMENTS.filter((a) => L2.ach[a.id]).length;
         h += '<p style="opacity:.75;font-size:13px">\u0417\u0434\u043E\u0431\u0443\u0442\u043E ' + got + " \u0437 " + ACHIEVEMENTS.length + "</p>" + ACHIEVEMENTS.map((a) => {
           const v = Math.min(a.goal, a.c(L2, P2) || 0), ok = !!L2.ach[a.id];
-          return '<div class="lf-row" style="' + (ok ? "" : "opacity:.75") + '"><div style="flex:1"><b>' + (ok ? "\u{1F3C6} " : "\u{1F538} ") + esc2(a.n) + "</b><br><small>" + esc2(a.d) + " \xB7 " + [a.gold ? a.gold + " \u{1FA99}" : "", a.sparks ? a.sparks + " \u2726" : ""].filter(Boolean).join(" ") + "</small>" + (ok ? "" : '<div class="lf-bar"><i style="width:' + v / a.goal * 100 + '%"></i></div>') + "</div><small>" + (ok ? "\u2714" : v + "/" + a.goal) + "</small></div>";
+          return '<div class="lf-row" style="' + (ok ? "" : "opacity:.75") + '"><div style="flex:1"><b>' + (ok ? "\u{1F3C6} " : "\u{1F538} ") + esc2(a.n) + "</b><br><small>" + esc2(a.d) + " \xB7 " + [a.gold ? a.gold + " \u{1F4B0}" : "", a.sparks ? a.sparks + " \u2726" : ""].filter(Boolean).join(" ") + "</small>" + (ok ? "" : '<div class="lf-bar"><i style="width:' + v / a.goal * 100 + '%"></i></div>') + "</div><small>" + (ok ? "\u2714" : v + "/" + a.goal) + "</small></div>";
         }).join("");
       }
       A.sheet({ title: "\u041A\u043D\u0438\u0433\u0430 \u043F\u0440\u0438\u0433\u043E\u0434", html: h, buttons: [{ label: "\u0417\u0430\u043A\u0440\u0438\u0442\u0438", fn: A.hide }], after: (s) => s.querySelectorAll("[data-t]").forEach((b) => b.onclick = () => book(b.dataset.t)) });
@@ -60849,7 +60857,7 @@ ${candidateLine}`;
             S.sparks = (S.sparks || 0) + a.sparks;
             commit();
           }
-          ui.toast("\u{1F3C6} \u0414\u043E\u0441\u044F\u0433\u043D\u0435\u043D\u043D\u044F: \xAB" + a.n + "\xBB" + (a.gold ? " +" + a.gold + " \u{1FA99}" : "") + (a.sparks ? " +" + a.sparks + " \u2726" : ""), "big");
+          ui.toast("\u{1F3C6} \u0414\u043E\u0441\u044F\u0433\u043D\u0435\u043D\u043D\u044F: \xAB" + a.n + "\xBB" + (a.gold ? " +" + a.gold + " \u{1F4B0}" : "") + (a.sparks ? " +" + a.sparks + " \u2726" : ""), "big");
           save2();
           ui.hud();
         }
@@ -60893,7 +60901,7 @@ ${candidateLine}`;
           return "stay";
         }
         P2.gold += fx.gold;
-        if (fx.gold > 0) ui.toast("+" + fx.gold + " \u{1FA99}");
+        if (fx.gold > 0) ui.toast("+" + fx.gold + " \u{1F4B0}");
       }
       if (fx.item) {
         addItem(P2, Object.assign({}, fx.item));
@@ -60941,7 +60949,7 @@ ${candidateLine}`;
         drawTut();
         if (L2.tut >= TUT.length) {
           P2.gold += 50;
-          ui.toast("\u{1F393} \u041D\u0430\u0432\u0447\u0430\u043D\u043D\u044F \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E! +50 \u{1FA99} \u043D\u0430 \u0434\u043E\u0440\u043E\u0433\u0443", "big");
+          ui.toast("\u{1F393} \u041D\u0430\u0432\u0447\u0430\u043D\u043D\u044F \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E! +50 \u{1F4B0} \u043D\u0430 \u0434\u043E\u0440\u043E\u0433\u0443", "big");
           ui.hud();
         }
       }
@@ -61570,7 +61578,7 @@ ${candidateLine}`;
     }
     const root = document.createElement("div");
     root.className = "gm-root";
-    root.innerHTML = '<div class="gm-labels"></div><div class="gm-title">\u041C\u0456\u0441\u0442\u043E \u0428\u043B\u044F\u0445\u0443</div><div class="gm-res"></div><div class="gm-top"><div></div><div class="gm-hero"><b></b><span></span></div></div><div class="gm-net"><button class="gm-btn" data-gm="players">\u{1F465} <span>1</span></button><button class="gm-btn" data-gm="chat">\u{1F4AC}</button></div><div class="gm-chatlog"></div><form class="gm-chatin" hidden><input id="gm-chat-input" maxlength="120" autocomplete="off" placeholder="\u041F\u043E\u0432\u0456\u0434\u043E\u043C\u043B\u0435\u043D\u043D\u044F \u0434\u043B\u044F \u0432\u0441\u0456\u0445 \u043F\u043E\u0440\u0443\u0447\u2026 (Enter)"></form><div class="gm-side"><button class="gm-btn" data-gm="map" title="\u041A\u0430\u0440\u0442\u0430 \u0441\u0432\u0456\u0442\u0443 (M)">\u{1F5FA}</button><button class="gm-btn" data-gm="sound" title="\u0417\u0432\u0443\u043A">\u{1F50A}</button><button class="gm-btn" data-gm="time" title="\u0427\u0430\u0441 \u0434\u043E\u0431\u0438">\u{1F305}</button><button class="gm-btn" data-gm="quality" title="\u042F\u043A\u0456\u0441\u0442\u044C \u0433\u0440\u0430\u0444\u0456\u043A\u0438">\u2699\uFE0F</button><button class="gm-btn" data-gm="cam" title="\u041A\u0430\u043C\u0435\u0440\u0430">\u{1F3A5}</button></div><div class="gm-bottom"><div class="gm-hint">\u0422\u043E\u0440\u043A\u043D\u0456\u0442\u044C\u0441\u044F \u0437\u0435\u043C\u043B\u0456 \u2014 \u0456\u0442\u0438, \u043C\u043E\u043D\u0441\u0442\u0440\u0430 \u2014 \u0430\u0442\u0430\u043A\u0443\u0432\u0430\u0442\u0438 \xB7 \u0442\u044F\u0433\u043D\u0456\u0442\u044C \u2014 \u043A\u0430\u043C\u0435\u0440\u0430 \xB7 WASD \xB7 R \u043F\u0435\u0440\u0435\u043A\u0430\u0442 \xB7 F \u0431\u043B\u043E\u043A \xB7 \u043F\u0440\u043E\u0431\u0456\u043B \u0441\u0442\u0440\u0438\u0431\u043E\u043A \xB7 Tab \u0446\u0456\u043B\u044C \xB7 1\u20133</div><div class="gm-bar"><button class="gm-btn" data-gm="bag"><i>\u{1F392}</i><span>\u0420\u044E\u043A\u0437\u0430\u043A</span></button><button class="gm-btn" data-gm="quests"><i>\u{1F4DC}</i><span>\u041A\u0432\u0435\u0441\u0442\u0438</span></button><button class="gm-btn" data-gm="card"><i>\u{1FAAA}</i><span>\u041A\u0430\u0440\u0442\u043A\u0430</span></button><button class="gm-btn" data-gm="wardrobe"><i>\u{1F9E5}</i><span>\u0412\u0438\u0433\u043B\u044F\u0434</span></button></div></div><div class="gm-sheet"><div class="gm-soon">\u0421\u041A\u041E\u0420\u041E</div><h3></h3><div class="gm-body"></div><div class="gm-btns"></div></div><div class="gm-fps"></div><div class="gm-load"><h2>\u041C\u0456\u0441\u0442\u043E \u0428\u043B\u044F\u0445\u0443</h2><div class="gm-prog"><i></i></div><p>\u0411\u0443\u0434\u0443\u0454\u043C\u043E \u0441\u0432\u0456\u0442\u2026</p></div>';
+    root.innerHTML = '<div class="gm-labels"></div><div class="gm-title">\u041C\u0456\u0441\u0442\u043E \u0428\u043B\u044F\u0445\u0443</div><div class="gm-res"></div><div class="gm-top"><div></div><div class="gm-hero"><b></b><span></span></div></div><div class="gm-net"><button class="gm-btn" data-gm="players">\u{1F465} <span>1</span></button><button class="gm-btn" data-gm="chat">\u{1F4AC}</button></div><div class="gm-chatlog"></div><form class="gm-chatin" hidden><input id="gm-chat-input" maxlength="120" autocomplete="off" placeholder="\u041F\u043E\u0432\u0456\u0434\u043E\u043C\u043B\u0435\u043D\u043D\u044F \u0434\u043B\u044F \u0432\u0441\u0456\u0445 \u043F\u043E\u0440\u0443\u0447\u2026 (Enter)"></form><div class="gm-side"><button class="gm-btn" data-gm="map" title="\u041A\u0430\u0440\u0442\u0430 \u0441\u0432\u0456\u0442\u0443 (M)">\u{1F5FA}</button><button class="gm-btn" data-gm="sound" title="\u0417\u0432\u0443\u043A">\u{1F50A}</button><button class="gm-btn" data-gm="time" title="\u0427\u0430\u0441 \u0434\u043E\u0431\u0438">\u{1F305}</button><button class="gm-btn" data-gm="quality" title="\u042F\u043A\u0456\u0441\u0442\u044C \u0433\u0440\u0430\u0444\u0456\u043A\u0438">\u2699\uFE0F</button><button class="gm-btn" data-gm="cam" title="\u041A\u0430\u043C\u0435\u0440\u0430">\u{1F3A5}</button></div><div class="gm-bottom"><div class="gm-hint">\u0422\u043E\u0440\u043A\u043D\u0456\u0442\u044C\u0441\u044F \u0437\u0435\u043C\u043B\u0456 \u2014 \u0456\u0442\u0438, \u043C\u043E\u043D\u0441\u0442\u0440\u0430 \u2014 \u0430\u0442\u0430\u043A\u0443\u0432\u0430\u0442\u0438 \xB7 \u0442\u044F\u0433\u043D\u0456\u0442\u044C \u2014 \u043A\u0430\u043C\u0435\u0440\u0430 \xB7 WASD \xB7 R \u043F\u0435\u0440\u0435\u043A\u0430\u0442 \xB7 F \u0431\u043B\u043E\u043A \xB7 \u043F\u0440\u043E\u0431\u0456\u043B \u0441\u0442\u0440\u0438\u0431\u043E\u043A \xB7 Tab \u0446\u0456\u043B\u044C \xB7 1\u20133</div><div class="gm-bar"><button class="gm-btn" data-gm="bag"><i>\u{1F392}</i><span>\u0420\u044E\u043A\u0437\u0430\u043A</span></button><button class="gm-btn" data-gm="quests"><i>\u{1F4DC}</i><span>\u041A\u0432\u0435\u0441\u0442\u0438</span></button><button class="gm-btn" data-gm="card"><i>\u{1F4C7}</i><span>\u041A\u0430\u0440\u0442\u043A\u0430</span></button><button class="gm-btn" data-gm="wardrobe"><i>\u{1F9E5}</i><span>\u0412\u0438\u0433\u043B\u044F\u0434</span></button></div></div><div class="gm-sheet"><div class="gm-soon">\u0421\u041A\u041E\u0420\u041E</div><h3></h3><div class="gm-body"></div><div class="gm-btns"></div></div><div class="gm-fps"></div><div class="gm-load"><h2>\u041C\u0456\u0441\u0442\u043E \u0428\u043B\u044F\u0445\u0443</h2><div class="gm-prog"><i></i></div><p>\u0411\u0443\u0434\u0443\u0454\u043C\u043E \u0441\u0432\u0456\u0442\u2026</p></div>';
     (ctx2.container || document.body).appendChild(root);
     root.querySelector("[data-gm=sound]").textContent = soundOn() ? "\u{1F50A}" : "\u{1F507}";
     const hero = ctx2.hero || {};
@@ -62529,12 +62537,12 @@ ${candidateLine}`;
         ["nm_mx_erika", "\u{1F3AF}", "\u0415\u0440\u0456\u043A\u0430"],
         ["nm_mx_arissa", "\u{1F5E1}\uFE0F", "\u0410\u0440\u0456\u0441\u0441\u0430"],
         ["nm_mx_kachujin", "\u2694\uFE0F", "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D"],
-        ["nm_mx_maria", "\u{1FA93}", "\u041C\u0430\u0440\u0456\u044F"],
+        ["nm_mx_maria", "\u2692\uFE0F", "\u041C\u0430\u0440\u0456\u044F"],
         ["nm_mx_maria_w", "\u{1F5E1}\uFE0F", "\u041C\u0430\u0440\u0456\u044F \u0437 \u043C\u0435\u0447\u0435\u043C"],
         ["nm_mx_eve", "\u{1F9ED}", "\u0404\u0432\u0430"],
         ["nm_mx_medea", "\u{1F52E}", "\u041C\u0435\u0434\u0435\u044F"],
         ["nm_mx_brute", "\u{1F4AA}", "\u0413\u0440\u043E\u043C\u0438\u043B\u043E"],
-        ["nm_mx_ch05", "\u{1FA96}", "\u0412\u0435\u0442\u0435\u0440\u0430\u043D"],
+        ["nm_mx_ch05", "\u26D1\uFE0F", "\u0412\u0435\u0442\u0435\u0440\u0430\u043D"],
         ["nm_mx_dreyar", "\u{1F6E1}\uFE0F", "\u0414\u0440\u0435\u044F\u0440"],
         ["nm_mx_ganfaul", "\u{1F9D9}", "\u0413\u0430\u043D\u0444\u0430\u0443\u043B"],
         ["nm_mx_heraklios", "\u{1F3AD}", "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439"],
@@ -62827,7 +62835,7 @@ ${candidateLine}`;
     fadeEl.className = "gm-fade";
     root.appendChild(fadeEl);
     let under = false, curFloor = -1;
-    const lantern = new PointLight("#ffc48a", 0, 16, 2);
+    const lantern = new PointLight("#ffc48a", 0, 24, 2);
     scene.add(lantern);
     function setUnder(on) {
       under = on;
@@ -62836,7 +62844,7 @@ ${candidateLine}`;
       });
       dun.group.visible = on;
       sky.setUnderground(on);
-      lantern.intensity = on ? 16 : 0;
+      lantern.intensity = on ? 28 : 0;
       if (on) {
         cam.tPitch = Math.max(cam.tPitch, 0.62);
         cam.tDist = Math.min(Math.max(cam.tDist, 10.5), 16);
@@ -62928,7 +62936,7 @@ ${candidateLine}`;
         }
         sheetOpts({
           title: "\u{1F5DD}\uFE0F \u0421\u043A\u0430\u0440\u0431\u043D\u0438\u0446\u044F \u0432\u0456\u0434\u0447\u0438\u043D\u0435\u043D\u0430!",
-          html: '<p>\u0417\u043E\u043B\u043E\u0442\u043E, \u0441\u0430\u043C\u043E\u0446\u0432\u0456\u0442\u0438 \u0439 \u0437\u0431\u0440\u043E\u044F \u0434\u0430\u0432\u043D\u0456\u0445 \u0433\u0435\u0440\u043E\u0457\u0432.</p><div class="rp-q"><b>+' + gold + " \u{1FA99}</b>" + got.map((it) => '<div style="color:' + itemColor(it) + '">' + itemIcon(it) + " " + itemName(it) + (it.q > 1 ? " \xD7" + it.q : "") + "</div>").join("") + (got.length < items.length ? '<div class="gm-note">\u0420\u044E\u043A\u0437\u0430\u043A \u043F\u0435\u0440\u0435\u043F\u043E\u0432\u043D\u0435\u043D\u0438\u0439 \u2014 \u0447\u0430\u0441\u0442\u0438\u043D\u0430 \u0441\u043A\u0430\u0440\u0431\u0456\u0432 \u043B\u0438\u0448\u0438\u043B\u0430\u0441\u044F.</div>' : "") + "</div>",
+          html: '<p>\u0417\u043E\u043B\u043E\u0442\u043E, \u0441\u0430\u043C\u043E\u0446\u0432\u0456\u0442\u0438 \u0439 \u0437\u0431\u0440\u043E\u044F \u0434\u0430\u0432\u043D\u0456\u0445 \u0433\u0435\u0440\u043E\u0457\u0432.</p><div class="rp-q"><b>+' + gold + " \u{1F4B0}</b>" + got.map((it) => '<div style="color:' + itemColor(it) + '">' + itemIcon(it) + " " + itemName(it) + (it.q > 1 ? " \xD7" + it.q : "") + "</div>").join("") + (got.length < items.length ? '<div class="gm-note">\u0420\u044E\u043A\u0437\u0430\u043A \u043F\u0435\u0440\u0435\u043F\u043E\u0432\u043D\u0435\u043D\u0438\u0439 \u2014 \u0447\u0430\u0441\u0442\u0438\u043D\u0430 \u0441\u043A\u0430\u0440\u0431\u0456\u0432 \u043B\u0438\u0448\u0438\u043B\u0430\u0441\u044F.</div>' : "") + "</div>",
           buttons: [{ label: "\u0427\u0443\u0434\u043E\u0432\u043E!", primary: true, fn: () => {
             hideSheet();
             setTimeout(() => {

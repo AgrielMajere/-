@@ -111,7 +111,7 @@ export function open(ctx){
     '<div class="gm-chatlog"></div><form class="gm-chatin" hidden><input id="gm-chat-input" maxlength="120" autocomplete="off" placeholder="Повідомлення для всіх поруч… (Enter)"></form>' +
     '<div class="gm-side"><button class="gm-btn" data-gm="map" title="Карта світу (M)">🗺</button><button class="gm-btn" data-gm="sound" title="Звук">🔊</button><button class="gm-btn" data-gm="time" title="Час доби">🌅</button><button class="gm-btn" data-gm="quality" title="Якість графіки">⚙️</button><button class="gm-btn" data-gm="cam" title="Камера">🎥</button></div>' +
     '<div class="gm-bottom"><div class="gm-hint">Торкніться землі — іти, монстра — атакувати · тягніть — камера · WASD · R перекат · F блок · пробіл стрибок · Tab ціль · 1–3</div>' +
-    '<div class="gm-bar"><button class="gm-btn" data-gm="bag"><i>🎒</i><span>Рюкзак</span></button><button class="gm-btn" data-gm="quests"><i>📜</i><span>Квести</span></button><button class="gm-btn" data-gm="card"><i>🪪</i><span>Картка</span></button><button class="gm-btn" data-gm="wardrobe"><i>🧥</i><span>Вигляд</span></button></div></div>' +
+    '<div class="gm-bar"><button class="gm-btn" data-gm="bag"><i>🎒</i><span>Рюкзак</span></button><button class="gm-btn" data-gm="quests"><i>📜</i><span>Квести</span></button><button class="gm-btn" data-gm="card"><i>📇</i><span>Картка</span></button><button class="gm-btn" data-gm="wardrobe"><i>🧥</i><span>Вигляд</span></button></div></div>' +
     '<div class="gm-sheet"><div class="gm-soon">СКОРО</div><h3></h3><div class="gm-body"></div><div class="gm-btns"></div></div>' +
     '<div class="gm-fps"></div>' +
     '<div class="gm-load"><h2>Місто Шляху</h2><div class="gm-prog"><i></i></div><p>Будуємо світ…</p></div>';
@@ -565,8 +565,8 @@ export function open(ctx){
   function wardrobe(){
     const S = saveGet(); S.look3d = S.look3d || { kind: 'man', outfit: 0 };
     const kinds = [['man', '🧔', 'Чоловік'], ['woman', '👩', 'Жінка'], ['soldier', '🛡️', 'У латах'], ['nm_catfig', '🐱', 'Котяча шапка'],
-      ['nm_mx_akai', '🏹', 'Акай'], ['nm_mx_erika', '🎯', 'Еріка'], ['nm_mx_arissa', '🗡️', 'Арісса'], ['nm_mx_kachujin', '⚔️', 'Качуджин'], ['nm_mx_maria', '🪓', 'Марія'], ['nm_mx_maria_w', '🗡️', 'Марія з мечем'],
-      ['nm_mx_eve', '🧭', 'Єва'], ['nm_mx_medea', '🔮', 'Медея'], ['nm_mx_brute', '💪', 'Громило'], ['nm_mx_ch05', '🪖', 'Ветеран'], ['nm_mx_dreyar', '🛡️', 'Дреяр'], ['nm_mx_ganfaul', '🧙', 'Ганфаул'],
+      ['nm_mx_akai', '🏹', 'Акай'], ['nm_mx_erika', '🎯', 'Еріка'], ['nm_mx_arissa', '🗡️', 'Арісса'], ['nm_mx_kachujin', '⚔️', 'Качуджин'], ['nm_mx_maria', '⚒️', 'Марія'], ['nm_mx_maria_w', '🗡️', 'Марія з мечем'],
+      ['nm_mx_eve', '🧭', 'Єва'], ['nm_mx_medea', '🔮', 'Медея'], ['nm_mx_brute', '💪', 'Громило'], ['nm_mx_ch05', '⛑️', 'Ветеран'], ['nm_mx_dreyar', '🛡️', 'Дреяр'], ['nm_mx_ganfaul', '🧙', 'Ганфаул'],
       ['nm_mx_heraklios', '🎭', 'Гераклій'], ['nm_mx_paladin', '✝️', 'Паладин'], ['nm_mx_uriel', '👑', 'Уріель'], ['nm_mx_peasant_m', '🌾', 'Селянин'], ['nm_mx_peasant_f', '🧺', 'Селянка']];
     const html = '<p>Оберіть тіло героя й колір одягу. Колір одягу змінює лише перші три тіла. Зброя, плащ і капелюх залежать від класу та спорядження.</p><div class="gm-pick" style="max-height:42vh;overflow:auto">' + kinds.map(k => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : '') + '><i>' + k[1] + '</i>' + k[2] + '</button>').join('') + '</div>' +
       '<p style="margin-bottom:6px">Колір одягу</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + ' 50%,' + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : '') + '></button>').join('') + '</div>';
@@ -694,9 +694,9 @@ export function open(ctx){
   // ---------- Підземелля Авантюристів ----------
   const fadeEl = document.createElement('div'); fadeEl.className = 'gm-fade'; root.appendChild(fadeEl);
   let under = false, curFloor = -1;
-  const lantern = new THREE.PointLight('#ffc48a', 0, 16, 2); scene.add(lantern);
+  const lantern = new THREE.PointLight('#ffc48a', 0, 24, 2); scene.add(lantern);
   function setUnder(on){
-    under = on; surface.forEach(o => { o.visible = !on; }); dun.group.visible = on; sky.setUnderground(on); lantern.intensity = on ? 16 : 0;
+    under = on; surface.forEach(o => { o.visible = !on; }); dun.group.visible = on; sky.setUnderground(on); lantern.intensity = on ? 28 : 0;
     if(on){ cam.tPitch = Math.max(cam.tPitch, .62); cam.tDist = Math.min(Math.max(cam.tDist, 10.5), 16); }
   }
   function travel(x, z, heading, after){
@@ -745,7 +745,7 @@ export function open(ctx){
       P.dun.chest = false; P.gold += gold; const got = items.filter(it => RPG.addItem(P, it));
       RPG.save(); ui.hud(); const L = dun.floors[2].chestLid; if(L) L.rotation.x = -1.1;
       if(combat){ const p = heroObj.position; combat.emit(p.x, p.y + 1, p.z - 1.5, 80, '#ffd27a', 3, 1.4, .2, 2.5); }
-      sheetOpts({ title: '🗝️ Скарбниця відчинена!', html: '<p>Золото, самоцвіти й зброя давніх героїв.</p><div class="rp-q"><b>+' + gold + ' 🪙</b>' + got.map(it => '<div style="color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + ' ' + RPG.itemName(it) + (it.q > 1 ? ' ×' + it.q : '') + '</div>').join('') + (got.length < items.length ? '<div class="gm-note">Рюкзак переповнений — частина скарбів лишилася.</div>' : '') + '</div>',
+      sheetOpts({ title: '🗝️ Скарбниця відчинена!', html: '<p>Золото, самоцвіти й зброя давніх героїв.</p><div class="rp-q"><b>+' + gold + ' 💰</b>' + got.map(it => '<div style="color:' + RPG.itemColor(it) + '">' + RPG.itemIcon(it) + ' ' + RPG.itemName(it) + (it.q > 1 ? ' ×' + it.q : '') + '</div>').join('') + (got.length < items.length ? '<div class="gm-note">Рюкзак переповнений — частина скарбів лишилася.</div>' : '') + '</div>',
         buttons: [{ label: 'Чудово!', primary: true, fn: () => { hideSheet(); setTimeout(() => { if(L) L.rotation.x = 0; }, 2500); } }] });
     }
   }

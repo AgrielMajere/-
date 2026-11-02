@@ -49,7 +49,7 @@ export function createNav(o){
   root.appendChild(map);
   const fade = document.createElement('div'); fade.className = 'nv-fade'; root.appendChild(fade);
   const cv = map.querySelector('canvas'), cx = cv.getContext('2d'), pop = map.querySelector('.nv-pop');
-  map.querySelector('.nv-mbot').innerHTML = ['🏰 місто', '🏘 поселення', '💠 камінь шляху', '🕳 підземелля', '☠ Катастрофа', '❗ мета квесту', '🔵 друзі', '🟡 загони авантюристів'].map(t => '<span>' + t + '</span>').join('');
+  map.querySelector('.nv-mbot').innerHTML = ['🏰 місто', '🏘 поселення', '💠 камінь шляху', '🕳 підземелля', '☠ Катастрофа', '❗ мета квесту', '🔵 друзі', '💛 загони авантюристів'].map(t => '<span>' + t + '</span>').join('');
 
   // ---------- terrain picture for the map (built once, lazily) ----------
   let terrainImg = null, fogImg = null, fogN = -1;
