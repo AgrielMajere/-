@@ -564,8 +564,11 @@ export function open(ctx){
 
   function wardrobe(){
     const S = saveGet(); S.look3d = S.look3d || { kind: 'man', outfit: 0 };
-    const kinds = [['man', '🧔', 'Чоловік'], ['woman', '👩', 'Жінка'], ['soldier', '🛡️', 'У латах'], ['nm_catfig', '🐱', 'Котяча шапка']];
-    const html = '<p>Оберіть тіло героя й колір одягу. Зброя, плащ і капелюх залежать від класу та спорядження.</p><div class="gm-pick">' + kinds.map(k => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : '') + '><i>' + k[1] + '</i>' + k[2] + '</button>').join('') + '</div>' +
+    const kinds = [['man', '🧔', 'Чоловік'], ['woman', '👩', 'Жінка'], ['soldier', '🛡️', 'У латах'], ['nm_catfig', '🐱', 'Котяча шапка'],
+      ['nm_mx_akai', '🏹', 'Акай'], ['nm_mx_erika', '🎯', 'Еріка'], ['nm_mx_arissa', '🗡️', 'Арісса'], ['nm_mx_kachujin', '⚔️', 'Качуджин'], ['nm_mx_maria', '🪓', 'Марія'], ['nm_mx_maria_w', '🗡️', 'Марія з мечем'],
+      ['nm_mx_eve', '🧭', 'Єва'], ['nm_mx_medea', '🔮', 'Медея'], ['nm_mx_brute', '💪', 'Громило'], ['nm_mx_ch05', '🪖', 'Ветеран'], ['nm_mx_dreyar', '🛡️', 'Дреяр'], ['nm_mx_ganfaul', '🧙', 'Ганфаул'],
+      ['nm_mx_heraklios', '🎭', 'Гераклій'], ['nm_mx_paladin', '✝️', 'Паладин'], ['nm_mx_uriel', '👑', 'Уріель'], ['nm_mx_peasant_m', '🌾', 'Селянин'], ['nm_mx_peasant_f', '🧺', 'Селянка']];
+    const html = '<p>Оберіть тіло героя й колір одягу. Колір одягу змінює лише перші три тіла. Зброя, плащ і капелюх залежать від класу та спорядження.</p><div class="gm-pick" style="max-height:42vh;overflow:auto">' + kinds.map(k => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : '') + '><i>' + k[1] + '</i>' + k[2] + '</button>').join('') + '</div>' +
       '<p style="margin-bottom:6px">Колір одягу</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + ' 50%,' + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : '') + '></button>').join('') + '</div>';
     sheetOpts({ title: 'Герой', html, buttons: [{ label: 'Готово', primary: true, fn: hideSheet }], after: el => {
       el.querySelectorAll('[data-k]').forEach(b => b.onclick = async () => { S.look3d.kind = b.dataset.k; saveCommit(); el.querySelectorAll('[data-k]').forEach(x => x.classList.toggle('on', x === b)); await spawnHero(); });

@@ -62520,8 +62520,30 @@ ${candidateLine}`;
     function wardrobe() {
       const S = get();
       S.look3d = S.look3d || { kind: "man", outfit: 0 };
-      const kinds = [["man", "\u{1F9D4}", "\u0427\u043E\u043B\u043E\u0432\u0456\u043A"], ["woman", "\u{1F469}", "\u0416\u0456\u043D\u043A\u0430"], ["soldier", "\u{1F6E1}\uFE0F", "\u0423 \u043B\u0430\u0442\u0430\u0445"], ["nm_catfig", "\u{1F431}", "\u041A\u043E\u0442\u044F\u0447\u0430 \u0448\u0430\u043F\u043A\u0430"]];
-      const html = '<p>\u041E\u0431\u0435\u0440\u0456\u0442\u044C \u0442\u0456\u043B\u043E \u0433\u0435\u0440\u043E\u044F \u0439 \u043A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443. \u0417\u0431\u0440\u043E\u044F, \u043F\u043B\u0430\u0449 \u0456 \u043A\u0430\u043F\u0435\u043B\u044E\u0445 \u0437\u0430\u043B\u0435\u0436\u0430\u0442\u044C \u0432\u0456\u0434 \u043A\u043B\u0430\u0441\u0443 \u0442\u0430 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F.</p><div class="gm-pick">' + kinds.map((k) => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : "") + "><i>" + k[1] + "</i>" + k[2] + "</button>").join("") + '</div><p style="margin-bottom:6px">\u041A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + " 50%," + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : "") + "></button>").join("") + "</div>";
+      const kinds = [
+        ["man", "\u{1F9D4}", "\u0427\u043E\u043B\u043E\u0432\u0456\u043A"],
+        ["woman", "\u{1F469}", "\u0416\u0456\u043D\u043A\u0430"],
+        ["soldier", "\u{1F6E1}\uFE0F", "\u0423 \u043B\u0430\u0442\u0430\u0445"],
+        ["nm_catfig", "\u{1F431}", "\u041A\u043E\u0442\u044F\u0447\u0430 \u0448\u0430\u043F\u043A\u0430"],
+        ["nm_mx_akai", "\u{1F3F9}", "\u0410\u043A\u0430\u0439"],
+        ["nm_mx_erika", "\u{1F3AF}", "\u0415\u0440\u0456\u043A\u0430"],
+        ["nm_mx_arissa", "\u{1F5E1}\uFE0F", "\u0410\u0440\u0456\u0441\u0441\u0430"],
+        ["nm_mx_kachujin", "\u2694\uFE0F", "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D"],
+        ["nm_mx_maria", "\u{1FA93}", "\u041C\u0430\u0440\u0456\u044F"],
+        ["nm_mx_maria_w", "\u{1F5E1}\uFE0F", "\u041C\u0430\u0440\u0456\u044F \u0437 \u043C\u0435\u0447\u0435\u043C"],
+        ["nm_mx_eve", "\u{1F9ED}", "\u0404\u0432\u0430"],
+        ["nm_mx_medea", "\u{1F52E}", "\u041C\u0435\u0434\u0435\u044F"],
+        ["nm_mx_brute", "\u{1F4AA}", "\u0413\u0440\u043E\u043C\u0438\u043B\u043E"],
+        ["nm_mx_ch05", "\u{1FA96}", "\u0412\u0435\u0442\u0435\u0440\u0430\u043D"],
+        ["nm_mx_dreyar", "\u{1F6E1}\uFE0F", "\u0414\u0440\u0435\u044F\u0440"],
+        ["nm_mx_ganfaul", "\u{1F9D9}", "\u0413\u0430\u043D\u0444\u0430\u0443\u043B"],
+        ["nm_mx_heraklios", "\u{1F3AD}", "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439"],
+        ["nm_mx_paladin", "\u271D\uFE0F", "\u041F\u0430\u043B\u0430\u0434\u0438\u043D"],
+        ["nm_mx_uriel", "\u{1F451}", "\u0423\u0440\u0456\u0435\u043B\u044C"],
+        ["nm_mx_peasant_m", "\u{1F33E}", "\u0421\u0435\u043B\u044F\u043D\u0438\u043D"],
+        ["nm_mx_peasant_f", "\u{1F9FA}", "\u0421\u0435\u043B\u044F\u043D\u043A\u0430"]
+      ];
+      const html = '<p>\u041E\u0431\u0435\u0440\u0456\u0442\u044C \u0442\u0456\u043B\u043E \u0433\u0435\u0440\u043E\u044F \u0439 \u043A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443. \u041A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443 \u0437\u043C\u0456\u043D\u044E\u0454 \u043B\u0438\u0448\u0435 \u043F\u0435\u0440\u0448\u0456 \u0442\u0440\u0438 \u0442\u0456\u043B\u0430. \u0417\u0431\u0440\u043E\u044F, \u043F\u043B\u0430\u0449 \u0456 \u043A\u0430\u043F\u0435\u043B\u044E\u0445 \u0437\u0430\u043B\u0435\u0436\u0430\u0442\u044C \u0432\u0456\u0434 \u043A\u043B\u0430\u0441\u0443 \u0442\u0430 \u0441\u043F\u043E\u0440\u044F\u0434\u0436\u0435\u043D\u043D\u044F.</p><div class="gm-pick" style="max-height:42vh;overflow:auto">' + kinds.map((k) => '<button data-k="' + k[0] + '"' + (S.look3d.kind === k[0] ? ' class="on"' : "") + "><i>" + k[1] + "</i>" + k[2] + "</button>").join("") + '</div><p style="margin-bottom:6px">\u041A\u043E\u043B\u0456\u0440 \u043E\u0434\u044F\u0433\u0443</p><div class="gm-sw">' + OUTFITS.map((o, i) => '<button data-o="' + i + '" style="background:linear-gradient(135deg,' + o.top + " 50%," + o.bottom + ' 50%)"' + ((S.look3d.outfit || 0) === i ? ' class="on"' : "") + "></button>").join("") + "</div>";
       sheetOpts({ title: "\u0413\u0435\u0440\u043E\u0439", html, buttons: [{ label: "\u0413\u043E\u0442\u043E\u0432\u043E", primary: true, fn: hideSheet }], after: (el) => {
         el.querySelectorAll("[data-k]").forEach((b) => b.onclick = async () => {
           S.look3d.kind = b.dataset.k;
