@@ -245,17 +245,27 @@ if len(sys.argv) > 7 and sys.argv[7] == 'legs':
         if not ob.vertex_groups.get(g): ob.vertex_groups.new(name=g)
     allg = [g.index for g in ob.vertex_groups]
     W = np.zeros((len(P_), len(LB))); insel = np.zeros(len(P_), bool); insel[sel] = True
+    # side of each vertex = the closer leg chain (not the sign of x: legs that stand close cross the midline)
+    def dseg(p, a, b):
+        ab = b - a; t = np.clip(np.dot(p - a, ab)/max(1e-9, ab @ ab), 0, 1); return np.linalg.norm(p - (a + t*ab))
+    chain = {s: [(np.array(J[s + b]), np.array(J[TAIL[s + b]])) for b in ('UpLeg', 'Leg', 'Foot')] for s in ('Left', 'Right')}
+    crotch = min(J['LeftUpLeg'][2], J['RightUpLeg'][2]) - .03*H
+    SIDE = np.zeros(len(P_), int)
     for i in sel:
-        p = P_[i]; side = 1 if p[0] > 0 else -1
+        p = P_[i]; dl = min(dseg(p, a, b) for a, b in chain['Left']); dr = min(dseg(p, a, b) for a, b in chain['Right']); SIDE[i] = -1 if dl < dr else 1
+    for i in sel:
+        p = P_[i]; side = SIDE[i]; low = p[2] < crotch
         for j, bn in enumerate(LB):
-            ab = B_[j] - A_[j]; t = np.clip(np.dot(p - A_[j], ab)/max(1e-9, ab @ ab), 0, 1); dd = np.linalg.norm(p - (A_[j] + t*ab))
-            if abs(p[0]) > .025*H and ((bn.startswith('Left') and side < 0) or (bn.startswith('Right') and side > 0)): dd += H
+            dd = dseg(p, A_[j], B_[j])
+            if low and ((bn.startswith('Left') and side > 0) or (bn.startswith('Right') and side < 0)): dd += H
             if bn == 'Hips': dd *= 1.0 + 3*max(0, (hz(.45) - p[2])/H)
             W[i, j] = 1/max(dd, .01*H)**4
         W[i] /= W[i].sum()
     # smooth along the surface so knees and ankles bend softly
     E = np.array([e.vertices[:] for e in me.edges]); E = E[insel[E[:, 0]] & insel[E[:, 1]]]
-    for it in range(8):
+    E = E[(SIDE[E[:, 0]] == SIDE[E[:, 1]]) | ((P_[E[:, 0], 2] >= crotch) & (P_[E[:, 1], 2] >= crotch))]   # never smooth across the legs
+    import os
+    for it in range(int(os.environ.get('RIG_SMOOTH', '8'))):
         acc = np.zeros_like(W); cnt = np.zeros(len(P_))
         np.add.at(acc, E[:, 0], W[E[:, 1]]); np.add.at(acc, E[:, 1], W[E[:, 0]]); np.add.at(cnt, E[:, 0], 1); np.add.at(cnt, E[:, 1], 1)
         m = insel & (cnt > 0); W[m] = .5*W[m] + .5*acc[m]/cnt[m][:, None]
@@ -265,6 +275,14 @@ if len(sys.argv) > 7 and sys.argv[7] == 'legs':
         for j in top:
             if w2[j] > .01: ob.vertex_groups[LB[j]].add([int(i)], float(w2[j]), 'REPLACE')
     print('legs reweighted', len(sel))
+    # faces that bridge the two legs (legs modelled touching) would stretch into a web when the legs part: cut them
+    import bmesh
+    bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table()
+    web = [f for f in bm.faces if len({int(SIDE[v.index]) for v in f.verts}) > 1 and any(P_[v.index][2] < crotch for v in f.verts)]
+    bmesh.ops.delete(bm, geom=web, context='FACES_ONLY'); bm.to_mesh(me); bm.free(); me.update()
+    print('web faces cut', len(web))
+    kn = J['LeftLeg'][2]; lowv = [i for i in sel if P_[i][2] < kn]; mism = sum(1 for i in lowv if SIDE[i] != (1 if P_[i][0] > 0 else -1))
+    print('DIAG side', len(lowv), 'mismatch', mism, 'J', [tuple(round(x,3) for x in J[b]) for b in ('LeftUpLeg','LeftLeg','LeftFoot','RightUpLeg','RightLeg','RightFoot')], 'H', H)
 # keep hair / cloaks / props hanging near the arms out of the arm bones: anything far from the arm chain goes to the torso
 ARMB = [b for b in ('LeftArm', 'LeftForeArm', 'LeftHand', 'RightArm', 'RightForeArm', 'RightHand') if ob.vertex_groups.get(b)]
 DRAPE = len(sys.argv) > 8 and sys.argv[8] == 'drape'   # T-pose model with cloth hanging from the arms

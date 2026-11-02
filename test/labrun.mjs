@@ -14,8 +14,13 @@ for(const id of ids){
   try{
     await p.evaluate(() => document.querySelector('[data-a="Walk"]').click());
     await p.evaluate(i => { const e = document.querySelector(`.lb-card[data-id="${i}"] b`); e.click(); }, id); await p.waitForTimeout(5500);
-    await p.evaluate(() => document.querySelector('[data-a="Run"]').click()); await p.waitForTimeout(1500);
-    for(let k = 0; k < 4; k++){ await shot(id, 'r' + k); await p.waitForTimeout(170); }
+    for(let k = 0; k < 3; k++){ await shot(id, 'w' + k); await p.waitForTimeout(230); }
+    await p.evaluate(() => document.querySelector('[data-a="Run"]').click()); await p.waitForTimeout(1200);
+    for(let k = 0; k < 3; k++){ await shot(id, 'r' + k); await p.waitForTimeout(170); }
+    await p.mouse.move(280, 300); await p.mouse.down(); await p.mouse.move(400, 300, { steps: 8 }); await p.mouse.up(); await p.waitForTimeout(300);
+    for(let k = 0; k < 3; k++){ await shot(id, 's' + k); await p.waitForTimeout(170); }
+    await p.evaluate(() => document.querySelector('[data-a="Walk"]').click()); await p.waitForTimeout(800);
+    for(let k = 0; k < 3; k++){ await shot(id, 't' + k); await p.waitForTimeout(230); }
   }catch(e){ logs.push('FAIL ' + id + ' ' + e.message.slice(0, 100)); }
   fs.writeFileSync(path.join(OUT, 'log.txt'), logs.join('\n'));
 }
