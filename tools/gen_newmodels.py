@@ -43,7 +43,7 @@ S = {
  'urukhai': ('monster', 2.0, 0, 'Це сценка: двоє бійців на підставці. Не рухається.'),
  'catfig': ('hero', 1.6, 0, 'Твоя фігурка з артефакту — тепер з кістками, можна грати нею.'),
  'wolfgirl': ('race', 1.7, 0, 'Увага: кашкет і червона пов\'язка на рукаві схожі на нацистську форму — раджу 👎.')}
-STATIC = {'bishop', 'urukhai', 'dark_wraith', 'mermaid', 'demon_dragon'}
+STATIC = {'bishop', 'rabbitman', 'monk', 'urukhai', 'dark_wraith', 'mermaid', 'demon_dragon'}
 DROP = {'minotaur_s', 'icy_dragon'}
 missing = set(M) - set(S) - DROP; assert not missing, missing
 for k in DROP: S.pop(k, None)

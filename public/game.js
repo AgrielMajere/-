@@ -58560,6 +58560,318 @@ ${candidateLine}`;
     return { npcQuests, hud: updHud, target: setTarget, float, toast, hurt, frame, inventory, shop, forge, guild, questBoard, showCard, tavern, gate, death, register, buildActions, zoneBanner };
   }
 
+  // src/credits.json
+  var credits_default = [
+    {
+      id: "alpha_wolf",
+      t: "Alpha wolf",
+      a: "PrinceAli",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/alpha-wolf-eabfb1220f3d4c4c88f3216bcf3d3bd0"
+    },
+    {
+      id: "anime_girl",
+      t: "3D Anime Character girl for Blender C1",
+      a: "CGCOOL",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/3d-anime-character-girl-for-blender-c1-4592848f6d2d47d1b0544e1ddbbc6e87"
+    },
+    {
+      id: "bear",
+      t: "Bear Walk",
+      a: "LostBoyz2078",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/bear-walk-ac9dd35ccb8b4b71804e2c30715d93db"
+    },
+    {
+      id: "bishop",
+      t: "Bishop / Alfil",
+      a: "Abrazafarolas",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/bishop-alfil-0cdd8d7bae3c48e4aa3344f8b49e7941"
+    },
+    {
+      id: "bunnygirl",
+      t: "[Lowpoly][APose] Bunny girl",
+      a: "Kanna-Nakajima",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/lowpolyapose-bunny-girl-cd92793e5e9c4668a10b0da896d6047a"
+    },
+    {
+      id: "cat",
+      t: "Bicolor Cat",
+      a: "kenchoo",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/bicolor-cat-e623a618ca344a8393d7ba4d63ec23cf"
+    },
+    {
+      id: "catboy",
+      t: "Cat boy new model",
+      a: "*Pluem*",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/cat-boy-new-model-7122510872da4a9c944faaccbea16a18"
+    },
+    {
+      id: "chiya",
+      t: "Chiya",
+      a: "Tiago.Carneiro",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/chiya-4c6920bf665546d6a59b68a4d49babb9"
+    },
+    {
+      id: "crow",
+      t: "Crow (Crow)",
+      a: "the guy who uploads things",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/crow-crow-198900466a064b098125d470d675e9e2"
+    },
+    {
+      id: "dark_orc",
+      t: "Dark Orc Warrior",
+      a: "RavenMalmhaus",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/dark-orc-warrior-4b9f2a23153246178a1668d2500ccab2"
+    },
+    {
+      id: "dark_wraith",
+      t: "The Dark Wraith",
+      a: "davidkong",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/the-dark-wraith-392342e94ee94c1b823a367a8ddcf9ee"
+    },
+    {
+      id: "deer",
+      t: "Animated Deer",
+      a: "igor-lir",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/animated-deer-4cff1e63f4e941198b3d56300b3393b9"
+    },
+    {
+      id: "demon_dragon",
+      t: "Demon Dragon Full Texture",
+      a: "endlessvoidmc",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/demon-dragon-full-texture-19035a72cdcb4abfa2c161de32823e6b"
+    },
+    {
+      id: "dire_wolf",
+      t: "The Elder Scrolls Blades Dire Wolf",
+      a: "OrangeSauceu",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/the-elder-scrolls-blades-dire-wolf-fa64bec830824492b20ada39f22d3574"
+    },
+    {
+      id: "druid",
+      t: "Druid clothes",
+      a: "ArtLeaving",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/druid-clothes-9d4331e7b7524146a5a01aeb9a302a06"
+    },
+    {
+      id: "dwarf",
+      t: "Iron Hills Dwarf Warrior",
+      a: "KevBot",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/iron-hills-dwarf-warrior-907279b222e34918a9fce24999a7a33c"
+    },
+    {
+      id: "dwarf_adv",
+      t: "Dwarf adventurer",
+      a: "Fastplay",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/dwarf-adventurer-b920dc867d2d44329c4f1b364904f1f5"
+    },
+    {
+      id: "fox",
+      t: "Fox",
+      a: "Alexei Ostapenko",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/fox-4e37c303f8a241aaa2511bd9f3019273"
+    },
+    {
+      id: "foxgirl",
+      t: "Fox Girl",
+      a: "Placidone",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/fox-girl-7b3a8cd0fdcc4452951b7acb4b4eb499"
+    },
+    {
+      id: "golem",
+      t: "Stone Golem",
+      a: "Uder Gidro",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/stone-golem-023399b8c18a45b699d721b190750a7f"
+    },
+    {
+      id: "gravok",
+      t: "GRAVOK // The Thornhelm Ravager",
+      a: "6",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/gravok-the-thornhelm-ravager-20b59364fa534075ba936b6e9867dd45"
+    },
+    {
+      id: "horse",
+      t: "Horse",
+      a: "MAXDESIGN-3D",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/horse-6d0f9c1ce82f41048a282b6c47a50684"
+    },
+    {
+      id: "kobold",
+      t: "Animated Kobold",
+      a: "greeneyed3DArtist",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/animated-kobold-0da9989223424d4d80137c0bbf4979fa"
+    },
+    {
+      id: "kobold2",
+      t: "Kobold Trap_Setter-Female",
+      a: "milakpro",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/kobold-trap-setter-female-ff9cce8c0aad46e4a33ed0daba854f59"
+    },
+    {
+      id: "kyra",
+      t: "Kyra - cleric",
+      a: "Miniatures-With-Personality",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/kyra-cleric-7b1d373b8c654097a7e37a176a7dc497"
+    },
+    {
+      id: "lich",
+      t: "Cloaked Lich",
+      a: "Morgan Friend",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/cloaked-lich-9fb0d5219a714cfea9fe0611ba90f93b"
+    },
+    {
+      id: "lich_king",
+      t: "Lich King",
+      a: "Yury Misiyuk",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/lich-king-9543086c15c249839fa795b92795bf6d"
+    },
+    {
+      id: "lizardman",
+      t: "Lizardman gameready free",
+      a: "pashtetuser",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/lizardman-gameready-free-f88c7d0371d34cd9bbacecb52605279a"
+    },
+    {
+      id: "magma_golem",
+      t: "Giant Stone Magma Golem",
+      a: "Pigcraft",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/giant-stone-magma-golem-6d1a637971a24e54a8a82f9339be97b1"
+    },
+    {
+      id: "mermaid",
+      t: "Mermaid",
+      a: "CharlieCatling",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/mermaid-30534d0eff154f73b5afc16f90b4eb4b"
+    },
+    {
+      id: "minotaur_boss",
+      t: "Minotaur",
+      a: "Gabor Kis-Juhasz",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/minotaur-b7daaf8ad19045bb8f4faca4efd30841"
+    },
+    {
+      id: "monk",
+      t: "Monk",
+      a: "creator424",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/monk-a37a0ea77f654aee830920ed148ec0f2"
+    },
+    {
+      id: "oldwizard",
+      t: "Old Wizard",
+      a: "XiaoBuBu80",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/old-wizard-c2cd59151c5a44adb17f510ebcde4652"
+    },
+    {
+      id: "orc_shaman",
+      t: "Orc shaman",
+      a: "valkiriaixda",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/orc-shaman-e1c7d1da70854278a728742f7bb98c9b"
+    },
+    {
+      id: "orc_warrior",
+      t: "Orc warrior",
+      a: "valkiriaixda",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/orc-warrior-d5a86322d7b54c1483c5e5f6b936702f"
+    },
+    {
+      id: "priest",
+      t: "Priest",
+      a: "Chenchanchong",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/priest-fd43670a97804a388540320cd9d98c7a"
+    },
+    {
+      id: "rabbit",
+      t: "Rabbit Rigged",
+      a: "FourthGreen",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/rabbit-rigged-e7213589744d436b9d96e2dbb31198a5"
+    },
+    {
+      id: "rabbitman",
+      t: "Rabbit Man Warrior (Animated)",
+      a: "Jungle Jim",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/rabbit-man-warrior-animated-7dd8546fb8a444de817ec42d5a8e22a7"
+    },
+    {
+      id: "stone_monster",
+      t: "Stone Monster Statue",
+      a: "zisisbad",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/stone-monster-statue-fda7fd8e5c8243c28974fd3ee2fd8d22"
+    },
+    {
+      id: "urukhai",
+      t: "Uruk Hai - LOTR",
+      a: "Ulrik Langvandsbr\xE5ten",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/uruk-hai-lotr-c86d316b3f314d11bf3234771b2cc212"
+    },
+    {
+      id: "werewolf",
+      t: "Skyrim Werewolf Rig",
+      a: "NO DONT EAT ME CASEOH",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/skyrim-werewolf-rig-0e3429ce7cf141338917d00d2dbb6c18"
+    },
+    {
+      id: "wolf",
+      t: "Grey Wolf Rebuilt",
+      a: "kenchoo",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/grey-wolf-rebuilt-c0fd1738fa31413b906e2914f5a332b9"
+    },
+    {
+      id: "wolfgirl",
+      t: "Furry army wolf girl",
+      a: "CommuAnism",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/furry-army-wolf-girl-3cf66fc5810a482a8744b81fbe8d1762"
+    },
+    {
+      id: "wraith",
+      t: "Wraith",
+      a: "Vasian-Digital3D",
+      l: "CC-BY-4.0",
+      u: "https://sketchfab.com/3d-models/wraith-ac1cc4d4f2344633940a3d9e44224ab6"
+    }
+  ];
+
   // src/life_data.js
   var LIFE_MATS = {
     chamomile: { n: "\u0426\u0456\u043B\u044E\u0449\u0430 \u0440\u043E\u043C\u0430\u0448\u043A\u0430", i: "\u{1F33C}", price: 6 },
@@ -59262,13 +59574,13 @@ ${candidateLine}`;
   }
 
   // src/newmodels.js
-  var NEW_MODELS = [{ "id": "nm_mx_akai", "n": "\u0410\u043A\u0430\u0439 (\u0432\u043E\u0457\u043D \u0443 \u043C\u0430\u0441\u0446\u0456)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_arissa", "n": "\u0410\u0440\u0456\u0441\u0441\u0430 (\u043D\u0430\u0439\u043C\u0430\u043D\u043A\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_brute", "n": "\u0413\u0440\u043E\u043C\u0438\u043B\u043E", "g": "hero", "h": 2, "yaw": 0, "note": "\u041A\u0440\u0435\u043C\u0435\u0437\u043D\u0438\u0439 \u0433\u043E\u043B\u0438\u0439 \u043F\u043E \u043F\u043E\u044F\u0441 \u0431\u043E\u0454\u0446\u044C." }, { "id": "nm_mx_ch05", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch05", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u0414\u0443\u0436\u0435 \u0441\u0445\u043E\u0436\u0438\u0439 \u043D\u0430 \u041A\u0440\u0430\u0442\u043E\u0441\u0430 \u0437 God of War \u2014 \u0442\u0438 \u043F\u0440\u043E\u0441\u0438\u0432 \u043D\u0435 \u0431\u0440\u0430\u0442\u0438 \u0432\u0456\u0434\u043E\u043C\u0438\u0445 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0456\u0432; \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_dreyar", "n": "\u0414\u0440\u0435\u044F\u0440 (\u0441\u0442\u0430\u0440\u0438\u0439 \u0432\u043E\u0457\u043D)", "g": "hero", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_erika", "n": "\u0415\u0440\u0456\u043A\u0430 (\u043B\u0443\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_eve", "n": "\u0404\u0432\u0430", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_ganfaul", "n": "\u0413\u0430\u043D\u0444\u0430\u0443\u043B (\u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A)", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_heraklios", "n": "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439 (\u043B\u0438\u0446\u0430\u0440)", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A \u0443 \u0448\u043A\u0456\u0440\u044F\u043D\u043E\u043C\u0443 \u043F\u043B\u0430\u0449\u0456 \u0439 \u043C\u0430\u0441\u0446\u0456." }, { "id": "nm_mx_kachujin", "n": "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D (\u043C\u0435\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_maria", "n": "\u041C\u0430\u0440\u0456\u044F (\u0432\u043E\u0457\u0442\u0435\u043B\u044C\u043A\u0430)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_maria_w", "n": "\u041C\u0430\u0440\u0456\u044F \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0422\u0430 \u0441\u0430\u043C\u0430 \u041C\u0430\u0440\u0456\u044F, \u0430\u043B\u0435 \u0437 \u043C\u0435\u0447\u0435\u043C \u0443 \u0440\u0443\u0446\u0456." }, { "id": "nm_mx_medea", "n": "\u041C\u0435\u0434\u0435\u044F (\u0432\u0456\u0434\u044C\u043C\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "\u041E\u0434\u044F\u0433 \u0442\u0440\u043E\u0445\u0438 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043D\u0430 \u0432\u0438\u0433\u043B\u044F\u0434." }, { "id": "nm_mx_nightshade", "n": "\u041D\u0430\u0439\u0442\u0448\u0435\u0439\u0434 (\u0432\u0431\u0438\u0432\u0446\u044F)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin_w", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.9, "yaw": 0, "note": "\u0422\u043E\u0439 \u0441\u0430\u043C\u0438\u0439 \u043F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0449\u0438\u0442\u043E\u043C \u0456 \u043C\u0435\u0447\u0435\u043C." }, { "id": "nm_mx_pirate", "n": "\u041F\u0456\u0440\u0430\u0442", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0421\u0442\u0438\u043B\u044C \u0442\u0440\u043E\u0445\u0438 \xAB\u043D\u0430\u0443\u043A\u043E\u0432\u043E-\u0444\u0430\u043D\u0442\u0430\u0441\u0442\u0438\u0447\u043D\u0438\u0439\xBB." }, { "id": "nm_mx_uriel", "n": "\u0423\u0440\u0456\u0435\u043B\u044C (\u0430\u043D\u0433\u0435\u043B-\u0432\u043E\u0457\u0442\u0435\u043B\u044C)", "g": "hero", "h": 1.95, "yaw": 0, "note": "" }, { "id": "nm_priest", "n": "\u0416\u0440\u0435\u0446\u044C", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041F\u043E\u0440\u0443\u0447 \u0441\u0442\u043E\u044F\u0442\u044C \u043C\u0435\u0447 \u0456 \u043A\u043D\u0438\u0433\u0430 \u2014 \u0432\u043E\u043D\u0438 \u043F\u0440\u0438\u0432'\u044F\u0437\u0430\u043D\u0456 \u0434\u043E \u043C\u043E\u0434\u0435\u043B\u0456." }, { "id": "nm_druid", "n": "\u0414\u0440\u0443\u0457\u0434", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_kyra", "n": "\u041A\u0430\u0439\u0440\u0430", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0434\u043E\u0432\u0433\u0438\u0439 \u043E\u0434\u044F\u0433 \u043C\u043E\u0436\u0435 \u0433\u043D\u0443\u0442\u0438\u0441\u044F \u043D\u0435\u043F\u0440\u0438\u0440\u043E\u0434\u043D\u043E." }, { "id": "nm_monk", "n": "\u041C\u043E\u043D\u0430\u0445", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0448\u0438\u0440\u043E\u043A\u0456 \u0440\u0443\u043A\u0430\u0432\u0438." }, { "id": "nm_oldwizard", "n": "\u0421\u0442\u0430\u0440\u0438\u0439 \u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_catfig", "n": "\u0424\u0456\u0433\u0443\u0440\u043A\u0430 \u0432 \u043A\u043E\u0442\u044F\u0447\u0456\u0439 \u0448\u0430\u043F\u0446\u0456", "g": "hero", "h": 1.6, "yaw": 0, "note": "\u0422\u0432\u043E\u044F \u0444\u0456\u0433\u0443\u0440\u043A\u0430 \u0437 \u0430\u0440\u0442\u0435\u0444\u0430\u043A\u0442\u0443 \u2014 \u0442\u0435\u043F\u0435\u0440 \u0437 \u043A\u0456\u0441\u0442\u043A\u0430\u043C\u0438, \u043C\u043E\u0436\u043D\u0430 \u0433\u0440\u0430\u0442\u0438 \u043D\u0435\u044E.", "armOut": 0.22 }, { "id": "nm_anime_girl", "n": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.6, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430 \u0437 \u0440\u0456\u0436\u043A\u0430\u043C\u0438; \u0433\u043E\u043B\u043E\u0432\u0430 \u0437\u0430\u0432\u0435\u043B\u0438\u043A\u0430 \u2014 \u043C\u043E\u0436\u043B\u0438\u0432\u043E, \u0437\u0430\u043D\u0430\u0434\u0442\u043E \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0430." }, { "id": "nm_dwarf_adv", "n": "\u0413\u043D\u043E\u043C-\u0448\u0443\u043A\u0430\u0447 \u043F\u0440\u0438\u0433\u043E\u0434", "g": "race", "h": 1.35, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0441\u0442\u0438\u043B\u044C.", "own": true }, { "id": "nm_kobold2", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434 2", "g": "race", "h": 1.4, "yaw": 0, "note": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u043E\u0431\u043E\u043B\u044C\u0434 (\u044F\u0449\u0456\u0440\u043A\u0430).", "own": true }, { "id": "nm_rabbitman", "n": "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0456 \u043F\u0440\u043E\u043F\u043E\u0440\u0446\u0456\u0457 \u2014 \u0432\u0435\u043B\u0438\u043A\u0430 \u0433\u043E\u043B\u043E\u0432\u0430." }, { "id": "nm_mermaid", "n": "\u0420\u0443\u0441\u0430\u043B\u043A\u0430", "g": "race", "h": 2, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u043B\u0430\u043C\u0430\u0454 \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "static": true }, { "id": "nm_bunnygirl", "n": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u0440\u043E\u043B\u0438\u0446\u044F", "g": "race", "h": 1.6, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u043F\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0456 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u043E." }, { "id": "nm_catboy", "n": "\u041A\u043E\u0442\u043E\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041F\u0443\u0445\u043D\u0430\u0441\u0442\u0438\u0439 \u0441\u0442\u0438\u043B\u044C, \u0442\u0440\u043E\u0445\u0438 \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_chiya", "n": "\u0427\u0456\u044F", "g": "race", "h": 1.65, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_dwarf", "n": "\u0413\u043D\u043E\u043C", "g": "race", "h": 1.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_foxgirl", "n": "\u041B\u0438\u0441\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.65, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u043B\u0438\u0441\u0438\u0446\u044F \u0437 \u0434\u0435\u0432'\u044F\u0442\u044C\u043C\u0430 \u0445\u0432\u043E\u0441\u0442\u0430\u043C\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_wolfgirl", "n": "\u0412\u043E\u0432\u0447\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.7, "yaw": 0, "note": "\u0423\u0432\u0430\u0433\u0430: \u043A\u0430\u0448\u043A\u0435\u0442 \u0456 \u0447\u0435\u0440\u0432\u043E\u043D\u0430 \u043F\u043E\u0432'\u044F\u0437\u043A\u0430 \u043D\u0430 \u0440\u0443\u043A\u0430\u0432\u0456 \u0441\u0445\u043E\u0436\u0456 \u043D\u0430 \u043D\u0430\u0446\u0438\u0441\u0442\u0441\u044C\u043A\u0443 \u0444\u043E\u0440\u043C\u0443 \u2014 \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_ch09", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch09", "g": "npc", "h": 1.15, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0445\u043B\u043E\u043F\u0447\u0438\u043A \u2014 \u0433\u043E\u0434\u0438\u0442\u044C\u0441\u044F \u043B\u0438\u0448\u0435 \u0434\u043B\u044F \u0434\u0438\u0442\u0438\u043D\u0438-NPC (\u044F\u043A \u0422\u0456\u043C\u043C\u0456)." }, { "id": "nm_mx_peasant_f", "n": "\u0421\u0435\u043B\u044F\u043D\u043A\u0430", "g": "npc", "h": 1.68, "yaw": 0, "note": "" }, { "id": "nm_mx_peasant_m", "n": "\u0421\u0435\u043B\u044F\u043D\u0438\u043D", "g": "npc", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_prisoner", "n": "\u0412'\u044F\u0437\u0435\u043D\u044C", "g": "npc", "h": 1.8, "yaw": 0, "note": "\u0421\u043C\u0443\u0433\u0430\u0441\u0442\u0430 \u0442\u044E\u0440\u0435\u043C\u043D\u0430 \u0440\u043E\u0431\u0430 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0430." }, { "id": "nm_bishop", "n": "\u0404\u043F\u0438\u0441\u043A\u043E\u043F", "g": "npc", "h": 2.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0442\u0430\u0442\u0443\u044F \u043D\u0430 \u043F\u043E\u0441\u0442\u0430\u043C\u0435\u043D\u0442\u0456 \u2014 \u0434\u043B\u044F \u043C\u0456\u0441\u0442\u0430 \u044F\u043A \u043F\u0440\u0438\u043A\u0440\u0430\u0441\u0430, \u043D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_ch30", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch30", "g": "monster", "h": 2, "yaw": 0, "note": "\u0411\u0435\u0437\u0448\u043A\u0456\u0440\u0438\u0439 \u2014 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E \u0437 \u043E\u0433\u043E\u043B\u0435\u043D\u0438\u043C\u0438 \u043C'\u044F\u0437\u0430\u043C\u0438." }, { "id": "nm_mx_demon", "n": "\u0414\u0435\u043C\u043E\u043D", "g": "monster", "h": 2.2, "yaw": 0, "note": "" }, { "id": "nm_mx_goblin", "n": "\u0413\u043E\u0431\u043B\u0456\u043D", "g": "monster", "h": 1.15, "yaw": 0, "note": "" }, { "id": "nm_mx_maw", "n": "\u041C\u0430\u0443 (\u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E)", "g": "monster", "h": 2.6, "yaw": 0, "note": "" }, { "id": "nm_mx_mutant", "n": "\u041C\u0443\u0442\u0430\u043D\u0442", "g": "monster", "h": 2.3, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u0430\u0445 \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u0432\u0438\u0433\u043B\u044F\u0434\u0430\u0454 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_parasite", "n": "\u041F\u0430\u0440\u0430\u0437\u0438\u0442", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u043E\u0432\u0438\u0445 \u0448\u043E\u0440\u0442\u0430\u0445 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043E\u0434\u044F\u0433." }, { "id": "nm_wraith", "n": "\u041F\u0440\u0438\u0432\u0438\u0434", "g": "monster", "h": 2.4, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u043F\u043E\u043B\u044C\u043E\u0442\u0443.", "own": true }, { "id": "nm_kobold", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434", "g": "monster", "h": 1.3, "yaw": 0, "note": "\u0413\u0440\u0430\u0454 \u0432\u043B\u0430\u0441\u043D\u0443 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044E \u0441\u043F\u043E\u043A\u043E\u044E.", "own": true }, { "id": "nm_golem", "n": "\u0413\u043E\u043B\u0435\u043C", "g": "monster", "h": 2.8, "yaw": 0, "note": "\u041D\u0430\u0448\u0456 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u0439\u043E\u0433\u043E \u043B\u0430\u043C\u0430\u044E\u0442\u044C \u2014 \u043F\u043E\u043A\u0438 \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "own": true }, { "id": "nm_lizardman", "n": "\u042F\u0449\u0435\u0440\u043E\u043B\u044E\u0434", "g": "monster", "h": 2, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F + \u043D\u0430\u0448\u0456." }, { "id": "nm_werewolf", "n": "\u041F\u0435\u0440\u0435\u0432\u0435\u0440\u0442\u0435\u043D\u044C", "g": "monster", "h": 2.4, "yaw": 0, "note": "29 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439 \u0430\u0442\u0430\u043A.", "own": true }, { "id": "nm_dark_orc", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043E\u0440\u043A", "g": "monster", "h": 1.95, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_shaman", "n": "\u041E\u0440\u043A-\u0448\u0430\u043C\u0430\u043D", "g": "monster", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_warrior", "n": "\u041E\u0440\u043A-\u0432\u043E\u0457\u043D", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_urukhai", "n": "\u0423\u0440\u0443\u043A-\u0445\u0430\u0439", "g": "monster", "h": 2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0434\u0432\u043E\u0454 \u0431\u0456\u0439\u0446\u0456\u0432 \u043D\u0430 \u043F\u0456\u0434\u0441\u0442\u0430\u0432\u0446\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_skelzombie", "n": "\u0421\u043A\u0435\u043B\u0435\u0442-\u0437\u043E\u043C\u0431\u0456", "g": "undead", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_survivor", "n": "\u0412\u0438\u0436\u0438\u0432\u0430\u043B\u044C\u043D\u0438\u0446\u044F", "g": "undead", "h": 1.8, "yaw": 0, "note": "" }, { "id": "nm_mx_warzombie", "n": "\u0417\u043E\u043C\u0431\u0456-\u0432\u043E\u0457\u043D", "g": "undead", "h": 1.85, "yaw": 0, "note": "\u0421\u043E\u043B\u0434\u0430\u0442\u0441\u044C\u043A\u0430 \u0444\u043E\u0440\u043C\u0430 XX \u0441\u0442\u043E\u043B\u0456\u0442\u0442\u044F \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_zombiegirl", "n": "\u0417\u043E\u043C\u0431\u0456-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "undead", "h": 1.7, "yaw": 0, "note": "" }, { "id": "nm_lich", "n": "\u041B\u0456\u0447", "g": "undead", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_demon_dragon", "n": "\u0414\u0435\u043C\u043E\u043D\u0456\u0447\u043D\u0438\u0439 \u0434\u0440\u0430\u043A\u043E\u043D", "g": "boss", "h": 6, "yaw": 0, "note": "\u041C\u0430\u0454 \u0441\u0432\u043E\u0457 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u043F\u043E\u043B\u044C\u043E\u0442\u0443, \u0430\u043B\u0435 \u0432\u043E\u043D\u0438 \u0437\u0441\u0443\u0432\u0430\u044E\u0442\u044C \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0438 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u043D\u0435\u0440\u0443\u0445\u043E\u043C\u043E.", "static": true }, { "id": "nm_dark_wraith", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043F\u0440\u0438\u0432\u0438\u0434 (\u0431\u043E\u0441)", "g": "boss", "h": 3.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0432\u0435\u0440\u0448\u043D\u0438\u043A \u043D\u0430 \u043A\u043E\u043D\u0456 \u0440\u0430\u0437\u043E\u043C \u0437\u0456 \u0448\u043C\u0430\u0442\u043A\u043E\u043C \u0437\u0435\u043C\u043B\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_gravok", "n": "\u0413\u0440\u0430\u0432\u043E\u043A (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_lich_king", "n": "\u041A\u043E\u0440\u043E\u043B\u044C-\u043B\u0456\u0447 (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u0411\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 (\u0442\u0430\u043A \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456). \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_magma_golem", "n": "\u041C\u0430\u0433\u043C\u043E\u0432\u0438\u0439 \u0433\u043E\u043B\u0435\u043C (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_minotaur_boss", "n": "\u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440-\u0431\u043E\u0441", "g": "boss", "h": 3, "yaw": 0, "note": "\u0412 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u0431\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 \u2014 \u044F \u043F\u0435\u0440\u0435\u0431\u0443\u0434\u0443\u0432\u0430\u0432 \u043F\u043E\u0432\u0435\u0440\u0445\u043D\u044E \u0439 \u0434\u0430\u0432 \u043A\u043E\u043B\u0456\u0440 \u0448\u043A\u0456\u0440\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_stone_monster", "n": "\u041A\u0430\u043C'\u044F\u043D\u0435 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_alpha_wolf", "n": "\u0412\u043E\u0432\u043A-\u0432\u043E\u0436\u0430\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_bear", "n": "\u0412\u0435\u0434\u043C\u0456\u0434\u044C", "g": "animal", "h": 2.2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }, { "id": "nm_cat", "n": "\u041A\u0456\u0442", "g": "animal", "h": 0.7, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_crow", "n": "\u0412\u043E\u0440\u043E\u043D\u0430", "g": "animal", "h": 0.55, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_dire_wolf", "n": "\u041B\u044E\u0442\u043E\u0432\u043E\u0432\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "13 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439.", "own": true, "fit": "max" }, { "id": "nm_fox", "n": "\u041B\u0438\u0441", "g": "animal", "h": 0.9, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \xAB\u043F\u0440\u043E\u043A\u0438\u0434\u0430\u0454\u0442\u044C\u0441\u044F\xBB.", "own": true, "fit": "max" }, { "id": "nm_horse", "n": "\u041A\u0456\u043D\u044C", "g": "animal", "h": 2.4, "yaw": 0, "note": "\u0414\u043B\u044F \u043A\u0456\u043D\u043D\u043E\u0457 \u0457\u0437\u0434\u0438.", "own": true, "fit": "max" }, { "id": "nm_rabbit", "n": "\u041A\u0440\u043E\u043B\u0438\u043A", "g": "animal", "h": 0.45, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_wolf", "n": "\u0412\u043E\u0432\u043A", "g": "animal", "h": 1.6, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_deer", "n": "\u041E\u043B\u0435\u043D\u044C", "g": "animal", "h": 2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }];
+  var NEW_MODELS = [{ "id": "nm_mx_akai", "n": "\u0410\u043A\u0430\u0439 (\u0432\u043E\u0457\u043D \u0443 \u043C\u0430\u0441\u0446\u0456)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_arissa", "n": "\u0410\u0440\u0456\u0441\u0441\u0430 (\u043D\u0430\u0439\u043C\u0430\u043D\u043A\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_brute", "n": "\u0413\u0440\u043E\u043C\u0438\u043B\u043E", "g": "hero", "h": 2, "yaw": 0, "note": "\u041A\u0440\u0435\u043C\u0435\u0437\u043D\u0438\u0439 \u0433\u043E\u043B\u0438\u0439 \u043F\u043E \u043F\u043E\u044F\u0441 \u0431\u043E\u0454\u0446\u044C." }, { "id": "nm_mx_ch05", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch05", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u0414\u0443\u0436\u0435 \u0441\u0445\u043E\u0436\u0438\u0439 \u043D\u0430 \u041A\u0440\u0430\u0442\u043E\u0441\u0430 \u0437 God of War \u2014 \u0442\u0438 \u043F\u0440\u043E\u0441\u0438\u0432 \u043D\u0435 \u0431\u0440\u0430\u0442\u0438 \u0432\u0456\u0434\u043E\u043C\u0438\u0445 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0456\u0432; \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_dreyar", "n": "\u0414\u0440\u0435\u044F\u0440 (\u0441\u0442\u0430\u0440\u0438\u0439 \u0432\u043E\u0457\u043D)", "g": "hero", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_erika", "n": "\u0415\u0440\u0456\u043A\u0430 (\u043B\u0443\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_eve", "n": "\u0404\u0432\u0430", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_ganfaul", "n": "\u0413\u0430\u043D\u0444\u0430\u0443\u043B (\u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A)", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_heraklios", "n": "\u0413\u0435\u0440\u0430\u043A\u043B\u0456\u0439 (\u043B\u0438\u0446\u0430\u0440)", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041C\u0430\u043D\u0434\u0440\u0456\u0432\u043D\u0438\u043A \u0443 \u0448\u043A\u0456\u0440\u044F\u043D\u043E\u043C\u0443 \u043F\u043B\u0430\u0449\u0456 \u0439 \u043C\u0430\u0441\u0446\u0456." }, { "id": "nm_mx_kachujin", "n": "\u041A\u0430\u0447\u0443\u0434\u0436\u0438\u043D (\u043C\u0435\u0447\u043D\u0438\u0446\u044F)", "g": "hero", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_maria", "n": "\u041C\u0430\u0440\u0456\u044F (\u0432\u043E\u0457\u0442\u0435\u043B\u044C\u043A\u0430)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_maria_w", "n": "\u041C\u0430\u0440\u0456\u044F \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0422\u0430 \u0441\u0430\u043C\u0430 \u041C\u0430\u0440\u0456\u044F, \u0430\u043B\u0435 \u0437 \u043C\u0435\u0447\u0435\u043C \u0443 \u0440\u0443\u0446\u0456." }, { "id": "nm_mx_medea", "n": "\u041C\u0435\u0434\u0435\u044F (\u0432\u0456\u0434\u044C\u043C\u0430)", "g": "hero", "h": 1.72, "yaw": 0, "note": "\u041E\u0434\u044F\u0433 \u0442\u0440\u043E\u0445\u0438 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043D\u0430 \u0432\u0438\u0433\u043B\u044F\u0434." }, { "id": "nm_mx_nightshade", "n": "\u041D\u0430\u0439\u0442\u0448\u0435\u0439\u0434 (\u0432\u0431\u0438\u0432\u0446\u044F)", "g": "hero", "h": 1.75, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D", "g": "hero", "h": 1.9, "yaw": 0, "note": "" }, { "id": "nm_mx_paladin_w", "n": "\u041F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0437\u0431\u0440\u043E\u0454\u044E", "g": "hero", "h": 1.9, "yaw": 0, "note": "\u0422\u043E\u0439 \u0441\u0430\u043C\u0438\u0439 \u043F\u0430\u043B\u0430\u0434\u0438\u043D \u0437\u0456 \u0449\u0438\u0442\u043E\u043C \u0456 \u043C\u0435\u0447\u0435\u043C." }, { "id": "nm_mx_pirate", "n": "\u041F\u0456\u0440\u0430\u0442", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u0421\u0442\u0438\u043B\u044C \u0442\u0440\u043E\u0445\u0438 \xAB\u043D\u0430\u0443\u043A\u043E\u0432\u043E-\u0444\u0430\u043D\u0442\u0430\u0441\u0442\u0438\u0447\u043D\u0438\u0439\xBB." }, { "id": "nm_mx_uriel", "n": "\u0423\u0440\u0456\u0435\u043B\u044C (\u0430\u043D\u0433\u0435\u043B-\u0432\u043E\u0457\u0442\u0435\u043B\u044C)", "g": "hero", "h": 1.95, "yaw": 0, "note": "" }, { "id": "nm_priest", "n": "\u0416\u0440\u0435\u0446\u044C", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041F\u043E\u0440\u0443\u0447 \u0441\u0442\u043E\u044F\u0442\u044C \u043C\u0435\u0447 \u0456 \u043A\u043D\u0438\u0433\u0430 \u2014 \u0432\u043E\u043D\u0438 \u043F\u0440\u0438\u0432'\u044F\u0437\u0430\u043D\u0456 \u0434\u043E \u043C\u043E\u0434\u0435\u043B\u0456." }, { "id": "nm_druid", "n": "\u0414\u0440\u0443\u0457\u0434", "g": "hero", "h": 1.85, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_kyra", "n": "\u041A\u0430\u0439\u0440\u0430", "g": "hero", "h": 1.75, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0434\u043E\u0432\u0433\u0438\u0439 \u043E\u0434\u044F\u0433 \u043C\u043E\u0436\u0435 \u0433\u043D\u0443\u0442\u0438\u0441\u044F \u043D\u0435\u043F\u0440\u0438\u0440\u043E\u0434\u043D\u043E." }, { "id": "nm_monk", "n": "\u041C\u043E\u043D\u0430\u0445", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456; \u0448\u0438\u0440\u043E\u043A\u0456 \u0440\u0443\u043A\u0430\u0432\u0438.", "static": true }, { "id": "nm_oldwizard", "n": "\u0421\u0442\u0430\u0440\u0438\u0439 \u0447\u0430\u0440\u0456\u0432\u043D\u0438\u043A", "g": "hero", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_catfig", "n": "\u0424\u0456\u0433\u0443\u0440\u043A\u0430 \u0432 \u043A\u043E\u0442\u044F\u0447\u0456\u0439 \u0448\u0430\u043F\u0446\u0456", "g": "hero", "h": 1.6, "yaw": 0, "note": "\u0422\u0432\u043E\u044F \u0444\u0456\u0433\u0443\u0440\u043A\u0430 \u0437 \u0430\u0440\u0442\u0435\u0444\u0430\u043A\u0442\u0443 \u2014 \u0442\u0435\u043F\u0435\u0440 \u0437 \u043A\u0456\u0441\u0442\u043A\u0430\u043C\u0438, \u043C\u043E\u0436\u043D\u0430 \u0433\u0440\u0430\u0442\u0438 \u043D\u0435\u044E.", "armOut": 0.22 }, { "id": "nm_anime_girl", "n": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.6, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u0434\u0456\u0432\u0447\u0438\u043D\u0430 \u0437 \u0440\u0456\u0436\u043A\u0430\u043C\u0438; \u0433\u043E\u043B\u043E\u0432\u0430 \u0437\u0430\u0432\u0435\u043B\u0438\u043A\u0430 \u2014 \u043C\u043E\u0436\u043B\u0438\u0432\u043E, \u0437\u0430\u043D\u0430\u0434\u0442\u043E \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0430." }, { "id": "nm_dwarf_adv", "n": "\u0413\u043D\u043E\u043C-\u0448\u0443\u043A\u0430\u0447 \u043F\u0440\u0438\u0433\u043E\u0434", "g": "race", "h": 1.35, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0441\u0442\u0438\u043B\u044C.", "own": true }, { "id": "nm_kobold2", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434 2", "g": "race", "h": 1.4, "yaw": 0, "note": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u043E\u0431\u043E\u043B\u044C\u0434 (\u044F\u0449\u0456\u0440\u043A\u0430).", "own": true }, { "id": "nm_rabbitman", "n": "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0456 \u043F\u0440\u043E\u043F\u043E\u0440\u0446\u0456\u0457 \u2014 \u0432\u0435\u043B\u0438\u043A\u0430 \u0433\u043E\u043B\u043E\u0432\u0430.", "static": true }, { "id": "nm_mermaid", "n": "\u0420\u0443\u0441\u0430\u043B\u043A\u0430", "g": "race", "h": 2, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u043B\u0430\u043C\u0430\u0454 \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "static": true }, { "id": "nm_bunnygirl", "n": "\u0414\u0456\u0432\u0447\u0438\u043D\u0430-\u043A\u0440\u043E\u043B\u0438\u0446\u044F", "g": "race", "h": 1.6, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u043F\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0456 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u043E." }, { "id": "nm_catboy", "n": "\u041A\u043E\u0442\u043E\u043B\u044E\u0434", "g": "race", "h": 1.7, "yaw": 0, "note": "\u041F\u0443\u0445\u043D\u0430\u0441\u0442\u0438\u0439 \u0441\u0442\u0438\u043B\u044C, \u0442\u0440\u043E\u0445\u0438 \u043C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_chiya", "n": "\u0427\u0456\u044F", "g": "race", "h": 1.65, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_dwarf", "n": "\u0413\u043D\u043E\u043C", "g": "race", "h": 1.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_foxgirl", "n": "\u041B\u0438\u0441\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.65, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0435-\u043B\u0438\u0441\u0438\u0446\u044F \u0437 \u0434\u0435\u0432'\u044F\u0442\u044C\u043C\u0430 \u0445\u0432\u043E\u0441\u0442\u0430\u043C\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_wolfgirl", "n": "\u0412\u043E\u0432\u0447\u0438\u0446\u044F-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "race", "h": 1.7, "yaw": 0, "note": "\u0423\u0432\u0430\u0433\u0430: \u043A\u0430\u0448\u043A\u0435\u0442 \u0456 \u0447\u0435\u0440\u0432\u043E\u043D\u0430 \u043F\u043E\u0432'\u044F\u0437\u043A\u0430 \u043D\u0430 \u0440\u0443\u043A\u0430\u0432\u0456 \u0441\u0445\u043E\u0436\u0456 \u043D\u0430 \u043D\u0430\u0446\u0438\u0441\u0442\u0441\u044C\u043A\u0443 \u0444\u043E\u0440\u043C\u0443 \u2014 \u0440\u0430\u0434\u0436\u0443 \u{1F44E}." }, { "id": "nm_mx_ch09", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch09", "g": "npc", "h": 1.15, "yaw": 0, "note": "\u041C\u0443\u043B\u044C\u0442\u044F\u0448\u043D\u0438\u0439 \u0445\u043B\u043E\u043F\u0447\u0438\u043A \u2014 \u0433\u043E\u0434\u0438\u0442\u044C\u0441\u044F \u043B\u0438\u0448\u0435 \u0434\u043B\u044F \u0434\u0438\u0442\u0438\u043D\u0438-NPC (\u044F\u043A \u0422\u0456\u043C\u043C\u0456)." }, { "id": "nm_mx_peasant_f", "n": "\u0421\u0435\u043B\u044F\u043D\u043A\u0430", "g": "npc", "h": 1.68, "yaw": 0, "note": "" }, { "id": "nm_mx_peasant_m", "n": "\u0421\u0435\u043B\u044F\u043D\u0438\u043D", "g": "npc", "h": 1.72, "yaw": 0, "note": "" }, { "id": "nm_mx_prisoner", "n": "\u0412'\u044F\u0437\u0435\u043D\u044C", "g": "npc", "h": 1.8, "yaw": 0, "note": "\u0421\u043C\u0443\u0433\u0430\u0441\u0442\u0430 \u0442\u044E\u0440\u0435\u043C\u043D\u0430 \u0440\u043E\u0431\u0430 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0430." }, { "id": "nm_bishop", "n": "\u0404\u043F\u0438\u0441\u043A\u043E\u043F", "g": "npc", "h": 2.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0442\u0430\u0442\u0443\u044F \u043D\u0430 \u043F\u043E\u0441\u0442\u0430\u043C\u0435\u043D\u0442\u0456 \u2014 \u0434\u043B\u044F \u043C\u0456\u0441\u0442\u0430 \u044F\u043A \u043F\u0440\u0438\u043A\u0440\u0430\u0441\u0430, \u043D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_ch30", "n": "\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 Ch30", "g": "monster", "h": 2, "yaw": 0, "note": "\u0411\u0435\u0437\u0448\u043A\u0456\u0440\u0438\u0439 \u2014 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E \u0437 \u043E\u0433\u043E\u043B\u0435\u043D\u0438\u043C\u0438 \u043C'\u044F\u0437\u0430\u043C\u0438." }, { "id": "nm_mx_demon", "n": "\u0414\u0435\u043C\u043E\u043D", "g": "monster", "h": 2.2, "yaw": 0, "note": "" }, { "id": "nm_mx_goblin", "n": "\u0413\u043E\u0431\u043B\u0456\u043D", "g": "monster", "h": 1.15, "yaw": 0, "note": "" }, { "id": "nm_mx_maw", "n": "\u041C\u0430\u0443 (\u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E)", "g": "monster", "h": 2.6, "yaw": 0, "note": "" }, { "id": "nm_mx_mutant", "n": "\u041C\u0443\u0442\u0430\u043D\u0442", "g": "monster", "h": 2.3, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u0430\u0445 \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u0432\u0438\u0433\u043B\u044F\u0434\u0430\u0454 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_parasite", "n": "\u041F\u0430\u0440\u0430\u0437\u0438\u0442", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u0423 \u0434\u0436\u0438\u043D\u0441\u043E\u0432\u0438\u0445 \u0448\u043E\u0440\u0442\u0430\u0445 \u2014 \u0441\u0443\u0447\u0430\u0441\u043D\u0438\u0439 \u043E\u0434\u044F\u0433." }, { "id": "nm_wraith", "n": "\u041F\u0440\u0438\u0432\u0438\u0434", "g": "monster", "h": 2.4, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F \u043F\u043E\u043B\u044C\u043E\u0442\u0443.", "own": true }, { "id": "nm_kobold", "n": "\u041A\u043E\u0431\u043E\u043B\u044C\u0434", "g": "monster", "h": 1.3, "yaw": 0, "note": "\u0413\u0440\u0430\u0454 \u0432\u043B\u0430\u0441\u043D\u0443 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044E \u0441\u043F\u043E\u043A\u043E\u044E.", "own": true }, { "id": "nm_golem", "n": "\u0413\u043E\u043B\u0435\u043C", "g": "monster", "h": 2.8, "yaw": 0, "note": "\u041D\u0430\u0448\u0456 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u0439\u043E\u0433\u043E \u043B\u0430\u043C\u0430\u044E\u0442\u044C \u2014 \u043F\u043E\u043A\u0438 \u0431\u0435\u0437 \u0440\u0443\u0445\u0443.", "own": true }, { "id": "nm_lizardman", "n": "\u042F\u0449\u0435\u0440\u043E\u043B\u044E\u0434", "g": "monster", "h": 2, "yaw": 0, "note": "\u0421\u0432\u043E\u044F \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u044F + \u043D\u0430\u0448\u0456." }, { "id": "nm_werewolf", "n": "\u041F\u0435\u0440\u0435\u0432\u0435\u0440\u0442\u0435\u043D\u044C", "g": "monster", "h": 2.4, "yaw": 0, "note": "29 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439 \u0430\u0442\u0430\u043A.", "own": true }, { "id": "nm_dark_orc", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043E\u0440\u043A", "g": "monster", "h": 1.95, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_shaman", "n": "\u041E\u0440\u043A-\u0448\u0430\u043C\u0430\u043D", "g": "monster", "h": 1.8, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_orc_warrior", "n": "\u041E\u0440\u043A-\u0432\u043E\u0457\u043D", "g": "monster", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_urukhai", "n": "\u0423\u0440\u0443\u043A-\u0445\u0430\u0439", "g": "monster", "h": 2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0434\u0432\u043E\u0454 \u0431\u0456\u0439\u0446\u0456\u0432 \u043D\u0430 \u043F\u0456\u0434\u0441\u0442\u0430\u0432\u0446\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_mx_skelzombie", "n": "\u0421\u043A\u0435\u043B\u0435\u0442-\u0437\u043E\u043C\u0431\u0456", "g": "undead", "h": 1.85, "yaw": 0, "note": "" }, { "id": "nm_mx_survivor", "n": "\u0412\u0438\u0436\u0438\u0432\u0430\u043B\u044C\u043D\u0438\u0446\u044F", "g": "undead", "h": 1.8, "yaw": 0, "note": "" }, { "id": "nm_mx_warzombie", "n": "\u0417\u043E\u043C\u0431\u0456-\u0432\u043E\u0457\u043D", "g": "undead", "h": 1.85, "yaw": 0, "note": "\u0421\u043E\u043B\u0434\u0430\u0442\u0441\u044C\u043A\u0430 \u0444\u043E\u0440\u043C\u0430 XX \u0441\u0442\u043E\u043B\u0456\u0442\u0442\u044F \u2014 \u0434\u043B\u044F \u0444\u0435\u043D\u0442\u0435\u0437\u0456 \u043D\u0435\u0434\u043E\u0440\u0435\u0447\u043D\u043E." }, { "id": "nm_mx_zombiegirl", "n": "\u0417\u043E\u043C\u0431\u0456-\u0434\u0456\u0432\u0447\u0438\u043D\u0430", "g": "undead", "h": 1.7, "yaw": 0, "note": "" }, { "id": "nm_lich", "n": "\u041B\u0456\u0447", "g": "undead", "h": 1.9, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_demon_dragon", "n": "\u0414\u0435\u043C\u043E\u043D\u0456\u0447\u043D\u0438\u0439 \u0434\u0440\u0430\u043A\u043E\u043D", "g": "boss", "h": 6, "yaw": 0, "note": "\u041C\u0430\u0454 \u0441\u0432\u043E\u0457 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u043F\u043E\u043B\u044C\u043E\u0442\u0443, \u0430\u043B\u0435 \u0432\u043E\u043D\u0438 \u0437\u0441\u0443\u0432\u0430\u044E\u0442\u044C \u043C\u043E\u0434\u0435\u043B\u044C \u2014 \u043F\u043E\u043A\u0438 \u043F\u043E\u043A\u0430\u0437\u0443\u044E \u043D\u0435\u0440\u0443\u0445\u043E\u043C\u043E.", "static": true }, { "id": "nm_dark_wraith", "n": "\u0422\u0435\u043C\u043D\u0438\u0439 \u043F\u0440\u0438\u0432\u0438\u0434 (\u0431\u043E\u0441)", "g": "boss", "h": 3.2, "yaw": 0, "note": "\u0426\u0435 \u0441\u0446\u0435\u043D\u043A\u0430: \u0432\u0435\u0440\u0448\u043D\u0438\u043A \u043D\u0430 \u043A\u043E\u043D\u0456 \u0440\u0430\u0437\u043E\u043C \u0437\u0456 \u0448\u043C\u0430\u0442\u043A\u043E\u043C \u0437\u0435\u043C\u043B\u0456. \u041D\u0435 \u0440\u0443\u0445\u0430\u0454\u0442\u044C\u0441\u044F.", "static": true }, { "id": "nm_gravok", "n": "\u0413\u0440\u0430\u0432\u043E\u043A (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_lich_king", "n": "\u041A\u043E\u0440\u043E\u043B\u044C-\u043B\u0456\u0447 (\u0431\u043E\u0441)", "g": "boss", "h": 2.4, "yaw": 0, "note": "\u0411\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 (\u0442\u0430\u043A \u0432 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456). \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_magma_golem", "n": "\u041C\u0430\u0433\u043C\u043E\u0432\u0438\u0439 \u0433\u043E\u043B\u0435\u043C (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_minotaur_boss", "n": "\u041C\u0456\u043D\u043E\u0442\u0430\u0432\u0440-\u0431\u043E\u0441", "g": "boss", "h": 3, "yaw": 0, "note": "\u0412 \u043E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u0456 \u0431\u0435\u0437 \u0442\u0435\u043A\u0441\u0442\u0443\u0440 \u2014 \u044F \u043F\u0435\u0440\u0435\u0431\u0443\u0434\u0443\u0432\u0430\u0432 \u043F\u043E\u0432\u0435\u0440\u0445\u043D\u044E \u0439 \u0434\u0430\u0432 \u043A\u043E\u043B\u0456\u0440 \u0448\u043A\u0456\u0440\u0438. \u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_stone_monster", "n": "\u041A\u0430\u043C'\u044F\u043D\u0435 \u0447\u0443\u0434\u043E\u0432\u0438\u0441\u044C\u043A\u043E (\u0431\u043E\u0441)", "g": "boss", "h": 3.4, "yaw": 0, "note": "\u041A\u0456\u0441\u0442\u043A\u0438 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u043D\u0456." }, { "id": "nm_alpha_wolf", "n": "\u0412\u043E\u0432\u043A-\u0432\u043E\u0436\u0430\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_bear", "n": "\u0412\u0435\u0434\u043C\u0456\u0434\u044C", "g": "animal", "h": 2.2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }, { "id": "nm_cat", "n": "\u041A\u0456\u0442", "g": "animal", "h": 0.7, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_crow", "n": "\u0412\u043E\u0440\u043E\u043D\u0430", "g": "animal", "h": 0.55, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_dire_wolf", "n": "\u041B\u044E\u0442\u043E\u0432\u043E\u0432\u043A", "g": "animal", "h": 1.9, "yaw": 0, "note": "13 \u0432\u043B\u0430\u0441\u043D\u0438\u0445 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0439.", "own": true, "fit": "max" }, { "id": "nm_fox", "n": "\u041B\u0438\u0441", "g": "animal", "h": 0.9, "yaw": 0, "note": "\u0410\u043D\u0456\u043C\u0430\u0446\u0456\u044F \xAB\u043F\u0440\u043E\u043A\u0438\u0434\u0430\u0454\u0442\u044C\u0441\u044F\xBB.", "own": true, "fit": "max" }, { "id": "nm_horse", "n": "\u041A\u0456\u043D\u044C", "g": "animal", "h": 2.4, "yaw": 0, "note": "\u0414\u043B\u044F \u043A\u0456\u043D\u043D\u043E\u0457 \u0457\u0437\u0434\u0438.", "own": true, "fit": "max" }, { "id": "nm_rabbit", "n": "\u041A\u0440\u043E\u043B\u0438\u043A", "g": "animal", "h": 0.45, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_wolf", "n": "\u0412\u043E\u0432\u043A", "g": "animal", "h": 1.6, "yaw": 0, "note": "", "own": true, "fit": "max" }, { "id": "nm_deer", "n": "\u041E\u043B\u0435\u043D\u044C", "g": "animal", "h": 2, "yaw": -1.570796325, "note": "", "own": true, "fit": "max" }];
   NEW_MODELS.forEach((m2) => {
     BODIES[m2.id] = { file: m2.id, height: m2.h, yaw: m2.yaw || 0, walk: ["x", "walk"], run: ["s", "Run"], bbox: true, own: !!m2.own, static: !!m2.static, fit: m2.fit, armOut: m2.armOut };
   });
 
   // src/roster.js
-  var ROSTER_ON = false;
+  var ROSTER_ON = true;
   var Z2 = (id) => ZONES.find((z) => z.id === id);
   var M2 = MONSTERS;
   var fig = (body, height) => ({ body, height });
@@ -59390,9 +59702,9 @@ ${candidateLine}`;
       T("r_peasant_f", "nm_mx_peasant_f", 1.66, "\u0421\u0435\u043B\u044F\u043D\u043A\u0430 \u041E\u043A\u0441\u0430\u043D\u0430", ["\u041A\u0443\u043F\u0456\u0442\u044C \u044F\u0431\u043B\u0443\u0447\u043A\u0430!", "\u041A\u043E\u043B\u0438 \u043A\u0440\u0438\u0432\u0430\u0432\u0438\u0439 \u043C\u0456\u0441\u044F\u0446\u044C \u2014 \u0433\u043E\u0431\u043B\u0456\u043D\u0438 \u043B\u0456\u0437\u0443\u0442\u044C \u043D\u0430 \u0445\u0443\u0442\u0456\u0440."], town(32)),
       T("r_peasant_m", "nm_mx_peasant_m", 1.7, "\u0421\u0435\u043B\u044F\u043D\u0438\u043D \u041F\u0430\u043D\u0430\u0441", ["\u041E\u0445, \u0441\u043F\u0438\u043D\u0430 \u0431\u043E\u043B\u0438\u0442\u044C\u2026", "\u0414\u043E\u0449 \u0431\u0443\u0434\u0435 \u2014 \u0440\u0438\u0431\u0430 \u043A\u043B\u044E\u0432\u0430\u0442\u0438\u043C\u0435!"], town(32)),
       T("r_peasant_m2", "nm_mx_peasant_m", 1.7, "\u0414\u0456\u0434 \u0406\u0432\u0430\u043D", ["\u0423 \u043C\u043E\u0457 \u0447\u0430\u0441\u0438 \u0432\u043E\u0432\u043A\u0438 \u0431\u0443\u043B\u0438 \u043C\u0435\u043D\u0448\u0456."], cap(50)),
-      T("r_chiya", "nm_chiya", 1.65, "\u0427\u0456\u044F \u0437 \u041F\u0430\u0433\u043E\u0440\u0431\u0456\u0432", ["\u0422\u0438 \u043F\u0430\u0445\u043D\u0435\u0448 \u043C\u0456\u0441\u0442\u043E\u043C!", "\u0412\u043E\u0436\u0430\u043A \u0437\u0433\u0440\u0430\u0457 \u2014 \u043C\u0456\u0439 \u0434\u044F\u0434\u044C\u043A\u043E."], { area: [ZB.x, ZB.z, 22] }),
-      T("r_rabbitman", "nm_rabbitman", 1.7, "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434 \u0422\u0443\u043F\u043E\u0442\u0443\u043D", ["\u0422\u0443\u043F\u0443-\u0442\u0443\u043F\u0443! \u042F \u043D\u0430\u0439\u0448\u0432\u0438\u0434\u0448\u0438\u0439 \u0443 \u041F\u0430\u0433\u043E\u0440\u0431\u0430\u0445!"], { area: [ZB.x, ZB.z, 24] }),
-      T("r_kobold2", "nm_kobold2", 1.4, "\u041A\u043E\u0431\u043E\u043B\u044C\u0434\u0438\u0445\u0430 \u041B\u0456\u0441\u043A\u0430", ["\u042F \u043D\u0435 \u0442\u0430\u043A\u0430, \u044F\u043A \u0442\u0456 \u043A\u043E\u0431\u043E\u043B\u044C\u0434\u0438 \u0432 \u043F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u0456!"], { area: [ZB.x, ZB.z, 20] }),
+      T("r_chiya", "nm_chiya", 1.65, "\u0427\u0456\u044F \u0437 \u041F\u0430\u0433\u043E\u0440\u0431\u0456\u0432", ["\u0422\u0438 \u043F\u0430\u0445\u043D\u0435\u0448 \u043C\u0456\u0441\u0442\u043E\u043C!", "\u0412\u043E\u0436\u0430\u043A \u0437\u0433\u0440\u0430\u0457 \u2014 \u043C\u0456\u0439 \u0434\u044F\u0434\u044C\u043A\u043E."], { at: [ZB.x + 5, ZB.z - 3], face: 2.4 }),
+      T("r_rabbitman", "nm_rabbitman", 1.7, "\u0417\u0430\u0439\u0446\u0435\u043B\u044E\u0434 \u0422\u0443\u043F\u043E\u0442\u0443\u043D", ["\u0422\u0443\u043F\u0443-\u0442\u0443\u043F\u0443! \u042F \u043D\u0430\u0439\u0448\u0432\u0438\u0434\u0448\u0438\u0439 \u0443 \u041F\u0430\u0433\u043E\u0440\u0431\u0430\u0445!"], { at: [ZB.x + 2, ZB.z + 7], face: 3 }),
+      T("r_kobold2", "nm_kobold2", 1.4, "\u041A\u043E\u0431\u043E\u043B\u044C\u0434\u0438\u0445\u0430 \u041B\u0456\u0441\u043A\u0430", ["\u042F \u043D\u0435 \u0442\u0430\u043A\u0430, \u044F\u043A \u0442\u0456 \u043A\u043E\u0431\u043E\u043B\u044C\u0434\u0438 \u0432 \u043F\u0456\u0434\u0437\u0435\u043C\u0435\u043B\u043B\u0456!"], { at: [ZB.x - 6, ZB.z + 4], face: 1.2 }),
       T("r_dwarf", "nm_dwarf", 1.4, "\u0413\u043D\u043E\u043C-\u0432\u0430\u0440\u0442\u043E\u0432\u0438\u0439 \u0411\u0430\u0440\u0456\u043D", ["\u0417\u0430\u043B\u0456\u0437\u043D\u0438\u0439 \u041A\u0440\u044F\u0436 \u0441\u0442\u043E\u0457\u0442\u044C \u0442\u0438\u0441\u044F\u0447\u0443 \u0440\u043E\u043A\u0456\u0432!"], { area: [ZD.x, ZD.z, 16] }),
       T("r_cursed", "nm_dark_wraith", 3.2, "\u041F\u0440\u043E\u043A\u043B\u044F\u0442\u0438\u0439 \u043C\u0435\u0447\u043D\u0438\u043A", ["\u2026\u042F \u043D\u0435 \u0432\u043E\u0440\u043E\u0433 \u0442\u043E\u0431\u0456. \u041F\u0440\u043E\u043A\u043B\u044F\u0442\u0442\u044F \u0442\u0440\u0438\u043C\u0430\u0454 \u043C\u0435\u043D\u0435 \u0442\u0443\u0442.", "\u041A\u043E\u043B\u0438\u0441\u044C \u043C\u0435\u043D\u0435 \u0437\u0440\u0430\u0434\u0438\u0432 \u0442\u043E\u0439, \u043A\u043E\u043C\u0443 \u044F \u0432\u0456\u0440\u0438\u0432 \u043D\u0430\u0439\u0431\u0456\u043B\u044C\u0448\u0435.", "\u041C\u043E\u0436\u0435, \u043A\u043E\u043B\u0438\u0441\u044C \u0442\u0438 \u0434\u043E\u043F\u043E\u043C\u043E\u0436\u0435\u0448 \u043C\u0435\u043D\u0456 \u0437\u0432\u0456\u043B\u044C\u043D\u0438\u0442\u0438\u0441\u044F."], { at: [ZS.x - 14, ZS.z - 8], face: 0.6, stat: false, statue: true })
     ];
@@ -60672,11 +60984,16 @@ ${candidateLine}`;
       tut("bag");
       return inv0(m2);
     };
+    function creditsSheet() {
+      const esc3 = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      const h = '<p class="gm-note">\u0427\u0430\u0441\u0442\u0438\u043D\u0430 3D-\u043C\u043E\u0434\u0435\u043B\u0435\u0439 \u2014 \u0440\u043E\u0431\u043E\u0442\u0438 \u0430\u0432\u0442\u043E\u0440\u0456\u0432 \u0456\u0437 Sketchfab \u0437\u0430 \u043B\u0456\u0446\u0435\u043D\u0437\u0456\u0454\u044E CC BY 4.0 (\u043C\u043E\u0434\u0435\u043B\u0456 \u0437\u043C\u0456\u043D\u0435\u043D\u043E: \u0441\u043F\u0440\u043E\u0449\u0435\u043D\u043E, \u0434\u043E\u0434\u0430\u043D\u043E \u043A\u0456\u0441\u0442\u043A\u0438 \u0439 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457). \u041B\u044E\u0434\u0441\u044C\u043A\u0456 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0456 \u0439 \u0430\u043D\u0456\u043C\u0430\u0446\u0456\u0457 \u2014 Adobe Mixamo. \u0414\u044F\u043A\u0443\u0454\u043C\u043E!</p><div style="max-height:52vh;overflow:auto;font-size:13px;line-height:1.5">' + credits_default.map((c) => `<div>\xAB${esc3(c.t)}\xBB \u2014 <b>${esc3(c.a)}</b> \xB7 <a href="${esc3(c.u)}" target="_blank" rel="noopener" style="color:#e6c47a">Sketchfab</a> \xB7 ${esc3(c.l)}</div>`).join("") + "</div>";
+      A.sheet({ title: "\u0410\u0432\u0442\u043E\u0440\u0438 \u043C\u043E\u0434\u0435\u043B\u0435\u0439", html: h, buttons: [{ label: "\u041D\u0430\u0437\u0430\u0434", fn: settingsSheet }, { label: "\u0413\u043E\u0442\u043E\u0432\u043E", primary: true, fn: A.hide }] });
+    }
     function settingsSheet() {
       const v = volumes();
       const sl = (k, n, val, a, b, st) => "<label>" + n + ' \xB7 <b data-v="' + k + '">' + Math.round(val * 100) + '%</b></label><input type="range" data-s="' + k + '" min="' + a + '" max="' + b + '" step="' + st + '" value="' + val + '">';
       const h = '<div class="lf-set">' + sl("sfx", "\u{1F50A} \u0417\u0432\u0443\u043A\u0438 (\u0443\u0434\u0430\u0440\u0438, \u043A\u0440\u043E\u043A\u0438)", v.sfx, 0, 1, 0.05) + sl("amb", "\u{1F332} \u0410\u0442\u043C\u043E\u0441\u0444\u0435\u0440\u0430 (\u0432\u0456\u0442\u0435\u0440, \u043F\u0442\u0430\u0445\u0438, \u0434\u043E\u0449)", v.amb, 0, 1, 0.05) + sl("music", "\u{1F3B5} \u041C\u0443\u0437\u0438\u043A\u0430", v.music, 0, 1, 0.05) + sl("cam", "\u{1F3A5} \u0427\u0443\u0442\u043B\u0438\u0432\u0456\u0441\u0442\u044C \u043A\u0430\u043C\u0435\u0440\u0438", SET.cam, 0.3, 2.5, 0.05) + sl("ui", "\u{1F520} \u0420\u043E\u0437\u043C\u0456\u0440 \u0456\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0443", SET.ui, 0.75, 1.4, 0.05) + '</div><p class="gm-note">\u042F\u043A\u0456\u0441\u0442\u044C \u0433\u0440\u0430\u0444\u0456\u043A\u0438 \u2014 \u043A\u043D\u043E\u043F\u043A\u0430 \u043D\u0438\u0436\u0447\u0435. \u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F \u0437\u0431\u0435\u0440\u0456\u0433\u0430\u044E\u0442\u044C\u0441\u044F \u0432 \u0446\u044C\u043E\u043C\u0443 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0456.</p>';
-      A.sheet({ title: "\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F", html: h, buttons: [{ label: "\u042F\u043A\u0456\u0441\u0442\u044C \u0433\u0440\u0430\u0444\u0456\u043A\u0438", fn: () => A.quality() }, { label: "\u0413\u043E\u0442\u043E\u0432\u043E", primary: true, fn: A.hide }], after: (s) => {
+      A.sheet({ title: "\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F", html: h, buttons: [{ label: "\u042F\u043A\u0456\u0441\u0442\u044C \u0433\u0440\u0430\u0444\u0456\u043A\u0438", fn: () => A.quality() }, { label: "\u0410\u0432\u0442\u043E\u0440\u0438 \u043C\u043E\u0434\u0435\u043B\u0435\u0439", fn: creditsSheet }, { label: "\u0413\u043E\u0442\u043E\u0432\u043E", primary: true, fn: A.hide }], after: (s) => {
         s.querySelectorAll("[data-s]").forEach((r) => r.oninput = () => {
           const k = r.dataset.s, val = +r.value;
           s.querySelector('[data-v="' + k + '"]').textContent = Math.round(val * 100) + "%";

@@ -5,6 +5,7 @@
 //  choices, a first-minutes tutorial, settings, music themes and enterable interiors.
 //  main.js calls a handful of hooks; everything else lives here.
 // =====================================================================================
+import CREDITS from './credits.json';
 import * as THREE from 'three';
 import * as RPG from './rpg.js';
 import * as F from './figures.js';
@@ -638,12 +639,18 @@ export function createLife(A){
   // =====================================================================
   //  settings
   // =====================================================================
+  function creditsSheet(){
+    const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    const h = '<p class="gm-note">Частина 3D-моделей — роботи авторів із Sketchfab за ліцензією CC BY 4.0 (моделі змінено: спрощено, додано кістки й анімації). Людські персонажі й анімації — Adobe Mixamo. Дякуємо!</p><div style="max-height:52vh;overflow:auto;font-size:13px;line-height:1.5">' +
+      CREDITS.map(c => `<div>«${esc(c.t)}» — <b>${esc(c.a)}</b> · <a href="${esc(c.u)}" target="_blank" rel="noopener" style="color:#e6c47a">Sketchfab</a> · ${esc(c.l)}</div>`).join('') + '</div>';
+    A.sheet({ title: 'Автори моделей', html: h, buttons: [{ label: 'Назад', fn: settingsSheet }, { label: 'Готово', primary: true, fn: A.hide }] });
+  }
   function settingsSheet(){
     const v = volumes();
     const sl = (k, n, val, a, b, st) => '<label>' + n + ' · <b data-v="' + k + '">' + Math.round(val*100) + '%</b></label><input type="range" data-s="' + k + '" min="' + a + '" max="' + b + '" step="' + st + '" value="' + val + '">';
     const h = '<div class="lf-set">' + sl('sfx', '🔊 Звуки (удари, кроки)', v.sfx, 0, 1, .05) + sl('amb', '🌲 Атмосфера (вітер, птахи, дощ)', v.amb, 0, 1, .05) + sl('music', '🎵 Музика', v.music, 0, 1, .05) +
       sl('cam', '🎥 Чутливість камери', SET.cam, .3, 2.5, .05) + sl('ui', '🔠 Розмір інтерфейсу', SET.ui, .75, 1.4, .05) + '</div><p class="gm-note">Якість графіки — кнопка нижче. Налаштування зберігаються в цьому браузері.</p>';
-    A.sheet({ title: 'Налаштування', html: h, buttons: [{ label: 'Якість графіки', fn: () => A.quality() }, { label: 'Готово', primary: true, fn: A.hide }], after: s => {
+    A.sheet({ title: 'Налаштування', html: h, buttons: [{ label: 'Якість графіки', fn: () => A.quality() }, { label: 'Автори моделей', fn: creditsSheet }, { label: 'Готово', primary: true, fn: A.hide }], after: s => {
       s.querySelectorAll('[data-s]').forEach(r => r.oninput = () => { const k = r.dataset.s, val = +r.value; s.querySelector('[data-v="' + k + '"]').textContent = Math.round(val*100) + '%';
         if(k === 'cam' || k === 'ui'){ SET[k] = val; lsSet('ritm-game-settings', SET); if(k === 'ui') applyUi(); } else setVolumes({ [k]: val }); });
     } });

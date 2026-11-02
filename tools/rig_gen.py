@@ -267,13 +267,14 @@ if len(sys.argv) > 7 and sys.argv[7] == 'legs':
     print('legs reweighted', len(sel))
 # keep hair / cloaks / props hanging near the arms out of the arm bones: anything far from the arm chain goes to the torso
 ARMB = [b for b in ('LeftArm', 'LeftForeArm', 'LeftHand', 'RightArm', 'RightForeArm', 'RightHand') if ob.vertex_groups.get(b)]
-if ARMB and not TPOSE:   # T-pose sleeves are wide by nature: leave them on the arms
+DRAPE = len(sys.argv) > 8 and sys.argv[8] == 'drape'   # T-pose model with cloth hanging from the arms
+if ARMB and (not TPOSE or DRAPE):   # T-pose sleeves are wide by nature: leave them on the arms
     segs = [(np.array(J[b]), np.array(J[TAIL[b]])) for b in ARMB]
     def dseg(p, a, b):
         ab = b - a; t = max(0.0, min(1.0, float(np.dot(p - a, ab)/max(1e-9, np.dot(ab, ab))))); return float(np.linalg.norm(p - (a + t*ab)))
     gi = {ob.vertex_groups[b].index: b for b in ARMB}
     sp2 = ob.vertex_groups.get('Spine2') or ob.vertex_groups.new(name='Spine2'); hip = ob.vertex_groups.get('Hips') or ob.vertex_groups.new(name='Hips')
-    R = .085*H; moved = 0
+    R = (float(sys.argv[9]) if len(sys.argv) > 9 else .11 if DRAPE else .085)*H; moved = 0
     for v in me.vertices:
         arm_w = [(g.group, g.weight) for g in v.groups if g.group in gi]
         if not arm_w: continue

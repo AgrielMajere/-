@@ -7,7 +7,7 @@ import * as RPG from './rpg.js';
 import { ZONES, CITY2 } from './world.js';
 import './newmodels.js';
 
-export const ROSTER_ON = false;   // switched on after the roster is checked in-game
+export const ROSTER_ON = true;   // switched on after the roster is checked in-game
 const Z = id => ZONES.find(z => z.id === id);
 const M = RPG.MONSTERS;
 const fig = (body, height) => ({ body, height });
@@ -105,9 +105,9 @@ export function rosterNpcs(){
     T('r_peasant_f', 'nm_mx_peasant_f', 1.66, 'Селянка Оксана', ['Купіть яблучка!', 'Коли кривавий місяць — гобліни лізуть на хутір.'], town(32)),
     T('r_peasant_m', 'nm_mx_peasant_m', 1.7, 'Селянин Панас', ['Ох, спина болить…', 'Дощ буде — риба клюватиме!'], town(32)),
     T('r_peasant_m2', 'nm_mx_peasant_m', 1.7, 'Дід Іван', ['У мої часи вовки були менші.'], cap(50)),
-    T('r_chiya', 'nm_chiya', 1.65, 'Чія з Пагорбів', ['Ти пахнеш містом!', 'Вожак зграї — мій дядько.'], { area: [ZB.x, ZB.z, 22] }),
-    T('r_rabbitman', 'nm_rabbitman', 1.7, 'Зайцелюд Тупотун', ['Тупу-тупу! Я найшвидший у Пагорбах!'], { area: [ZB.x, ZB.z, 24] }),
-    T('r_kobold2', 'nm_kobold2', 1.4, 'Кобольдиха Ліска', ['Я не така, як ті кобольди в підземеллі!'], { area: [ZB.x, ZB.z, 20] }),
+    T('r_chiya', 'nm_chiya', 1.65, 'Чія з Пагорбів', ['Ти пахнеш містом!', 'Вожак зграї — мій дядько.'], { at: [ZB.x + 5, ZB.z - 3], face: 2.4 }),
+    T('r_rabbitman', 'nm_rabbitman', 1.7, 'Зайцелюд Тупотун', ['Тупу-тупу! Я найшвидший у Пагорбах!'], { at: [ZB.x + 2, ZB.z + 7], face: 3.0 }),
+    T('r_kobold2', 'nm_kobold2', 1.4, 'Кобольдиха Ліска', ['Я не така, як ті кобольди в підземеллі!'], { at: [ZB.x - 6, ZB.z + 4], face: 1.2 }),
     T('r_dwarf', 'nm_dwarf', 1.4, 'Гном-вартовий Барін', ['Залізний Кряж стоїть тисячу років!'], { area: [ZD.x, ZD.z, 16] }),
     T('r_cursed', 'nm_dark_wraith', 3.2, 'Проклятий мечник', ['…Я не ворог тобі. Прокляття тримає мене тут.', 'Колись мене зрадив той, кому я вірив найбільше.', 'Може, колись ти допоможеш мені звільнитися.'], { at: [ZS.x - 14, ZS.z - 8], face: .6, stat: false, statue: true })
   ];
